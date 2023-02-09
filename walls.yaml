@@ -35,6 +35,10 @@ Stove:
         pos: bg_width-rt_cab_width, 17.1/2
         size: rt_cab_width, rt_cab_height
         color: cabinet
+    uWave:
+        pos: lt_cab_width, uw_offset
+        size: 30, uw_height
+        color: silver
     cab_over_uWave:
         pos: lt_cab_width, uw_offset + uw_height
         size: 30, 35.1/4 - uw_height

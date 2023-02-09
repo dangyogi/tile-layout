@@ -5,9 +5,13 @@ from tile import Tile
 
 
 def read_tiles(colors, filename="tiles.csv"):
-    return {name: Tile.create(name, eval_num(height, {}), eval_num(width, {}),
-                              eval_color(color, colors))
-            for name, height, width, color in read_csv(filename)}
+    tiles = {}
+    for name, height, width, color in read_csv(filename):
+        tile = Tile.create(name, eval_num(width, {}), eval_num(height, {}),
+                           eval_color(color, colors))
+        for t in tile.tiles():
+            tiles[t.name] = t
+    return tiles
 
 
 

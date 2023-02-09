@@ -12,6 +12,8 @@ def erase_tiles():
 
 
 class Tile:
+    flipped = None
+
     @classmethod
     def create(cls, name, width, height, color):
         ans = cls(name, width, height, color)
@@ -27,6 +29,11 @@ class Tile:
 
     def __str__(self):
         return f"<Tile: {self.name}>"
+
+    def tiles(self):
+        yield self
+        if self.flipped is not None:
+            yield self.flipped
 
     def place_at(self, corner, point, angle, max_x, max_y, test=False):
         r'''max_x and max_y are in inches.

@@ -4,8 +4,9 @@ from math import radians
 from fractions import Fraction
 from operator import attrgetter
 from itertools import zip_longest
+from functools import partial
 import tkinter as tk
-from tkinter import simpledialog
+from tkinter import simpledialog, ttk
 
 import app
 from hopscotch import hopscotch
@@ -87,113 +88,90 @@ def color_entry(master):
     return e
 
 
+def tile_entry(master):
+    values = sorted(Tiles.keys())
+    print(f"tile_entry {values=}")
+    e = ttk.Combobox(master, values=values)
+    e.type_fn = lambda s: Tiles[s]
+    return e
+
+
 Hop_defaults = [
-    "big",     # tile_a: name
-    "9.7/8",   # tile_a: width
-    "4.1/4",   # tile_a: height
-    "black",   # tile_a: color
-    "small",   # tile_b: name
-    "4.1/4",   # tile_b: width
-    "1",       # tile_b: height
-    "#b0b000", # tile_b: color
-    "1/4",     # grout_gap
-    "7",       # angle
+    "First Subway",              # tile_a
+    "Sliver for First Subway",   # tile_b
+    "1/4",                       # grout_gap
+    "7",                         # angle
 ]
 
 def run_hop():
     def do_hop(dialog):
         print("Adding hopscotch tiles")
         values = tuple(map(attrgetter('value'), dialog.entry_widgets))
-        print(f"do_hop creating tile_a: {values[0:4]=}")
-        tile_a = Tile.create(*values[0:4])
-        print(f"do_hop creating tile_b: {values[4:8]=}")
-        tile_b = Tile.create(*values[4:8])
-        grout_gap = values[8]
+        tile_a = values[0]
+        tile_b = values[1]
+        grout_gap = values[2]
         print(f"do_hop {grout_gap=}")
-        angle = values[9]
+        angle = values[3]
         print(f"do_hop {angle=}")
         erase_tiles()
         hopscotch(tile_a, tile_b, grout_gap, angle, bg_width, bg_height)
 
     run_dialog("Hopscotch", do_hop, Hop_defaults, (
-                  ("tile_a: name", tk.Entry),
-                  ("tile_a: width", fraction_entry),
-                  ("tile_a: height", fraction_entry),
-                  ("tile_a: color", color_entry),
-
-                  ("tile_b: name", tk.Entry),
-                  ("tile_b: width", fraction_entry),
-                  ("tile_b: height", fraction_entry),
-                  ("tile_b: color", color_entry),
-
+                  ("tile_a", tile_entry),
+                  ("tile_b", tile_entry),
                   ("grout_gap", fraction_entry),
                   ("angle", angle_entry)))
 
 
 Herr_defaults = [
-    "big",     # tile: name
-    "9.7/8",   # tile: width
-    "4.1/4",   # tile: height
-    "black",   # tile: color
-    "1/4",     # grout_gap
-    "-45",     # angle
+    "First Subway",   # tile
+    "1/4",            # grout_gap
+    "-45",            # angle
 ]
 
 def run_herr():
     def do_herr(dialog):
         print("Adding herringbone tiles")
         values = tuple(map(attrgetter('value'), dialog.entry_widgets))
-        print(f"do_herr creating tile_a: {values[0:4]=}")
-        tile_a = Tile.create(*values[0:4])
-        tile_b = Tile.create(values[0], values[2], values[1], values[3])
-        grout_gap = values[4]
+        tile_a = values[0]
+        tile_b = tile_a.flipped
+        grout_gap = values[1]
         print(f"do_herr {grout_gap=}")
-        angle = values[5]
+        angle = values[2]
         print(f"do_herr {angle=}")
         erase_tiles()
         hopscotch(tile_a, tile_b, grout_gap, angle, bg_width, bg_height)
 
     run_dialog("Herringbone", do_herr, Herr_defaults, (
-                  ("tile: name", tk.Entry),
-                  ("tile: width", fraction_entry),
-                  ("tile: height", fraction_entry),
-                  ("tile: color", color_entry),
-
+                  ("tile", tile_entry),
                   ("grout_gap", fraction_entry),
                   ("angle", angle_entry)))
 
 
 Step_defaults = [
-    "big",      # tile: name
-    "9.7/8",    # tile: width
-    "4.1/4",    # tile: height
-    "black",    # tile: color
-    "1/3",      # offset
-    "1/4",      # grout_gap
-    "11",       # angle
+    "First Subway",   # tile
+    "1/3",            # offset
+    "1/4",            # grout_gap
+    "11",             # angle
 ]
 
 def run_step():
     def do_step(dialog):
         print("Adding stepped tiles")
         values = tuple(map(attrgetter('value'), dialog.entry_widgets))
-        print(f"do_step creating tile: {values[0:4]=}")
-        tile = Tile.create(*values[0:4])
-        offset = values[4]
+        print(f"{values=}")
+        tile = values[0]
+        offset = values[1]
         print(f"do_step {offset=}")
-        grout_gap = values[5]
+        grout_gap = values[2]
         print(f"do_step {grout_gap=}")
-        angle = values[6]
+        angle = values[3]
         print(f"do_step {angle=}")
         erase_tiles()
         stepped(tile, offset, grout_gap, angle, bg_width, bg_height)
 
     run_dialog("Stepped", do_step, Step_defaults, (
-                  ("tile: name", tk.Entry),
-                  ("tile: width", fraction_entry),
-                  ("tile: height", fraction_entry),
-                  ("tile: color", color_entry),
-
+                  ("tile", tile_entry),
                   ("offset", fraction_entry),
                   ("grout_gap", fraction_entry),
                   ("angle", angle_entry)))
@@ -227,12 +205,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     from colors import read_colors
+    from tiles import read_tiles
+    from walls import read_walls
 
     Colors = read_colors()
 
     cabinet = Colors['cabinet']
     silver = Colors['silver']
     grout_color = Colors['joyful orange']
+
+    Tiles = read_tiles(Colors)
+
+    Walls = read_walls(Colors)
 
     def choose_color():
         print(f"choose_color -> {colorchooser.askcolor()}")
@@ -258,59 +242,19 @@ if __name__ == "__main__":
         #                               app.canvas.width - bg_width, bg_height,
         #                               bg_color, ("background", "topmost"))
 
-    def sink():
-        print("Adding sink background")
-        grout_bg(fraction("96.1/16"), fraction("17.1/2"))
-        app.myapp.create_rectangle(0, fraction("17.3/8"),
-                                   fraction("31.1/4"), 37,
-                                   cabinet, ("background", "topmost"))       # left cab
-        cab_width = fraction("32.3/4")
-        app.myapp.create_rectangle(bg_width-cab_width, fraction("17.1/2"),
-                                   cab_width, fraction("36.1/2"),
-                                   cabinet, ("background", "topmost"))       # right cab
-        app.myapp.create_rectangle(fraction("32.7/16"), fraction("9.3/8"),
-                                   fraction("29.3/4"), fraction("26.1/2"),
-                                   "#CCC", ("background", "topmost"))        # window
-
-    def stove():
-        print("Adding stove background")
-        grout_bg(96, fraction("17.1/2"))
-        lt_cab_width = fraction("19.1/4")
-        app.myapp.create_rectangle(0, fraction("17.1/2"),
-                                   lt_cab_width, fraction("36.7/8"),
-                                   cabinet, ("background", "topmost"))       # left cab
-        rt_cab_width = fraction("46.7/8")
-        rt_cab_height = fraction("36.3/4")
-        app.myapp.create_rectangle(bg_width-rt_cab_width, fraction("17.1/2"),
-                                   rt_cab_width, rt_cab_height,
-                                   cabinet, ("background", "topmost"))       # right cab
-        uw_offset = fraction("19.1/8")
-        uw_height = fraction("16.7/8")
-        app.myapp.create_rectangle(lt_cab_width, uw_offset,
-                                   30, uw_height,
-                                   silver, ("background", "topmost"))        # uWave
-        app.myapp.create_rectangle(lt_cab_width, uw_offset + uw_height,
-                                   30, fraction("35.1/4") - uw_height,
-                                   cabinet, ("background", "topmost"))       # cab over uWave
-        app.myapp.create_rectangle(lt_cab_width, 0,
-                                   30, 10,
-                                   "white", ("background", "topmost"))       # stove back
-
-    def dining():
-        print("Adding dining background")
-        grout_bg(fraction("90.1/16"), fraction("17.1/2"))
-        app.myapp.create_rectangle(0, fraction("17.1/2"),
-                                   fraction("25.5/8"), fraction("36.3/4"),
-                                   cabinet, ("background", "topmost"))       # left cab
-        rt_cab_width = fraction("25.3/8")
-        app.myapp.create_rectangle(bg_width-rt_cab_width, fraction("17.1/2"),
-                                   rt_cab_width, fraction("36.11/16"),
-                                   cabinet, ("background", "topmost"))       # right cab
+    def create_wall(name):
+        rects = Walls[name]
+        grout_bg(rects[0][0], rects[0][1])
+        for pos, size, color in rects[1:]:
+            print(f"{pos=}, {size=}, {color=}")
+            app.myapp.create_rectangle(pos[0], pos[1], size[0], size[1], color,
+                                       ("background", "topmost"))
 
     app.init((("Choose Color", choose_color),
              #("Dialog Test", run_dialog),
-              ("Sink Background", sink), ("Stove Background", stove),
-              ("Dining Background", dining),
+              ("Sink Background", partial(create_wall, 'Sink')),
+              ("Stove Background", partial(create_wall, 'Stove')),
+              ("Dining Background", partial(create_wall, 'Dining')),
               ("Set Grout Color", run_set_grout_color),
               ("Hopscotch", run_hop), ("Herringbone", run_herr), ("Stepped", run_step)))
 
