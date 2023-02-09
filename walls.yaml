@@ -1,0 +1,58 @@
+# walls.yaml
+
+---
+
+Sink:
+    grout: 96.1/16, 17.1/2
+    constants:
+        cab_width: 32.3/4
+    left_cab:
+        pos: 0, 17.1/2
+        size: 31.1/4, 37
+        color: cabinet
+    right_cab:
+        pos: bg_width-cab_width, 17.1/2
+        size: cab_width, 36.1/2
+        color: cabinet
+    window:
+        pos: 32.7/16, 9.3/8
+        size: 29.3/4, 26.1/2
+        color: "#CCC"
+
+Stove:
+    grout: 96, 17.1/2
+    constants:
+        lt_cab_width: 19.1/4
+        rt_cab_width: 46.7/8
+        rt_cab_height: 36.3/4
+        uw_offset: 19.1/8
+        uw_height: 16.7/8
+    left_cab:
+        pos: 0, 17.1/2
+        size: lt_cab_width, 36.7/8
+        color: cabinet
+    right_cab:
+        pos: bg_width-rt_cab_width, 17.1/2
+        size: rt_cab_width, rt_cab_height
+        color: cabinet
+    cab_over_uWave:
+        pos: lt_cab_width, uw_offset + uw_height
+        size: 30, 35.1/4 - uw_height
+        color: cabinet
+    stove_back:
+        pos: lt_cab_width, 0
+        size: 30, 10
+        color: white
+
+Dining:
+    grout: 90.1/16, 17.1/2
+    constants:
+        rt_cab_width: 25.3/8
+    left_cab:
+        pos: 0, 17.1/2
+        size: 25.5/8, 36.3/4
+        color: cabinet
+    right_cab:
+        pos: bg_width - rt_cab_width, 17.1/2
+        size: rt_cab_width, 36.11/16
+        color: cabinet
