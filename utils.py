@@ -30,7 +30,18 @@ def fraction(s):
 
 
 def f_to_str(f):
-    n, d = f.numerator, f.denominator
+    if isinstance(f, tuple):
+        segments = ['(']
+        for i, n in enumerate(f):
+            if i:
+                segments.append(f", {f_to_str(n)}")
+            else:
+                segments.append(f_to_str(n))
+        segments.append(')')
+        return ''.join(segments)
+    if isinstance(f, float):
+        return str(f)
+    n, d = f.numerator, f.denominator  # this works for int's too!
     if d == 1:
         return str(n)
     if -1 < f < 1:

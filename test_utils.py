@@ -27,6 +27,8 @@ def test_fraction(s, value):
 @pytest.mark.parametrize("f, str", (
     (3, "3"),
     (-3, "-3"),
+    (3.14, "3.14"),
+    ((Fraction(4, 3), (-3, Fraction(-4, 3))), "(1.1/3, (-3, -1.1/3))"),
     (Fraction(1, 3), "1/3"),
     (Fraction(-1, 3), "-1/3"),
     (Fraction(4, 3), "1.1/3"),

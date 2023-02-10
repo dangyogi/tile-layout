@@ -56,7 +56,7 @@ class Placement:
         self.left = left
         self.top = top
         if not test:
-            item = app.myapp.create_polygon(self.tile.color,
+            item = app.canvas.create_my_polygon("tile placement", self.tile.color,
                      rotate((self.left, self.bottom), angle),
                      rotate((self.right, self.bottom), angle),
                      rotate((self.right, self.top), angle),

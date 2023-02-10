@@ -12,7 +12,7 @@ import app
 from hopscotch import hopscotch
 from stepped import stepped
 from tile import Tile, erase_tiles
-from utils import fraction, eval_color
+from utils import fraction, f_to_str, eval_color
 from colors import read_colors
 from tiles import read_tiles
 from walls import read_walls
@@ -117,7 +117,7 @@ def run_hop():
         angle = values[3]
         print(f"do_hop {angle=}")
         erase_tiles()
-        hopscotch(tile_a, tile_b, grout_gap, angle, bg_width, bg_height)
+        hopscotch(tile_a, tile_b, grout_gap, angle, app.myapp.bg_width, app.myapp.bg_height)
 
     run_dialog("Hopscotch", do_hop, Hop_defaults, (
                   ("tile_a", tile_entry),
@@ -143,7 +143,7 @@ def run_herr():
         angle = values[2]
         print(f"do_herr {angle=}")
         erase_tiles()
-        hopscotch(tile_a, tile_b, grout_gap, angle, bg_width, bg_height)
+        hopscotch(tile_a, tile_b, grout_gap, angle, app.myapp.bg_width, app.myapp.bg_height)
 
     run_dialog("Herringbone", do_herr, Herr_defaults, (
                   ("tile", tile_entry),
@@ -171,7 +171,7 @@ def run_step():
         angle = values[3]
         print(f"do_step {angle=}")
         erase_tiles()
-        stepped(tile, offset, grout_gap, angle, bg_width, bg_height)
+        stepped(tile, offset, grout_gap, angle, app.myapp.bg_width, app.myapp.bg_height)
 
     run_dialog("Stepped", do_step, Step_defaults, (
                   ("tile", tile_entry),
@@ -232,34 +232,42 @@ if __name__ == "__main__":
         print(f"choose_color -> {colorchooser.askcolor()}")
 
     def grout_bg(width, height, color='joyful orange'):
-        global bg_width, bg_height
         bg_width = width              # inches
         bg_height = height            # inches
         app.canvas.delete("all")
-        app.myapp.scale_width(bg_width)
-        app.myapp.create_rectangle(0, 0, bg_width, bg_height, Colors[color],
-                                   ("background", "grout"))
+        app.myapp.bg_width = bg_width
+        app.myapp.bg_height = bg_height
+        app.canvas.set_scale()
+        app.canvas.create_my_rectangle("grout_bg", 0, 0, bg_width, bg_height, Colors[color],
+                                       ("background", "grout"))
         bg_color = app.canvas.cget('background')
 
-        # clip above grout background
-        if app.canvas.height > app.myapp.in_to_px(bg_height):
-            app.myapp.create_rectangle(0, bg_height,
-                                       app.canvas.width, app.canvas.height - bg_height,
-                                       bg_color, ("background", "topmost"))
+        # clip above grout background, across entire canvas
+        if app.canvas.my_height > app.canvas.in_to_px(bg_height):
+            app.canvas.create_my_rectangle(
+              "grout clip above", 0, bg_height,
+              app.canvas.px_to_in(app.canvas.my_width),
+              app.canvas.px_to_in(app.canvas.my_height) - bg_height,
+              bg_color, ("background", "topmost"))
 
         # clip to the right of grout background
-        #if app.canvas.width > app.myapp.in_to_px(bg_width):
-        #    app.myapp.create_rectangle(bg_width, 0,
-        #                               app.canvas.width - bg_width, bg_height,
-        #                               bg_color, ("background", "topmost"))
+        if app.canvas.my_width > app.canvas.in_to_px(bg_width):
+            app.canvas.create_my_rectangle(
+              "grout clip right", bg_width, 0,
+              app.canvas.px_to_in(app.canvas.my_width) - bg_width, bg_height,
+              bg_color, ("background", "topmost"))
 
     def create_wall(name):
         rects = Walls[name]
         grout_bg(rects[0][0], rects[0][1])
         for pos, size, color in rects[1:]:
-            print(f"{pos=}, {size=}, {color=}")
-            app.myapp.create_rectangle(pos[0], pos[1], size[0], size[1], color,
-                                       ("background", "topmost"))
+            print(f"pos={f_to_str(pos)}, size={f_to_str(size)}, {color=}")
+            if isinstance(size, (tuple, list)):
+                app.canvas.create_my_rectangle("wall", pos[0], pos[1], size[0], size[1],
+                                               color, ("background", "topmost"))
+            else:
+                app.canvas.create_my_circle("wall", color, pos, size,
+                                            ("background", "topmost"))
 
     def quit():
         app.root.destroy()
