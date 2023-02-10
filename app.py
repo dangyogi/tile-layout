@@ -120,11 +120,13 @@ def spew():
     #print(f'{myapp.canvas.width=}, {myapp.canvas.height=}')
     print(f'{myapp.canvas_size()=}, {myapp.canvas_size()[0] / myapp.scale} W x '
           f'{myapp.canvas_size()[1] / myapp.scale} H')
+    #print(f"{dir(myapp.submenus['Wall'])=}")
+    print(f"{myapp.submenus['Wall'].index('end')=}")
     print("Done Spewing!")
 
 
 def init(menus=(), test=False):
-    global root, mainmenu, submenus, myapp, canvas
+    global root, myapp, canvas
     root = Tk()
     root.geometry("750x250")
     mainmenu = Menu(root)
@@ -133,17 +135,19 @@ def init(menus=(), test=False):
         name, *rest = item
         if not rest:
             submenu = Menu(mainmenu, tearoff=0)
-            mainmenu.addcascade(label=name, menu=submenu)
+            mainmenu.add_cascade(label=name, menu=submenu)
             submenus[name] = submenu
         elif isinstance(rest[0], (tuple, list)):
             submenu = Menu(mainmenu, tearoff=0)
             for subname, command in rest[0]:
                 submenu.add_command(label=subname, command=command)
-            mainmenu.addcascade(label=name, menu=submenu)
+            mainmenu.add_cascade(label=name, menu=submenu)
         else:
             mainmenu.add_command(label=name, command=rest[0])
     root.configure(menu=mainmenu)
     myapp = App(root, test)
+    myapp.mainmenu = mainmenu
+    myapp.submenus = submenus
     canvas = myapp.canvas
 
 def run():

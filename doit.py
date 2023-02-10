@@ -199,9 +199,22 @@ def run_set_grout_color():
 def init():
     global Colors, Tiles, Walls
 
+    print("doit.init called")
+
     Colors = read_colors()
     Tiles = read_tiles(Colors)
     Walls = read_walls(Colors)
+    wall = app.myapp.submenus['Wall']
+    wall.delete(0, 'end')
+    for name in sorted(Walls.keys()):
+        wall.add_command(label=name, command=partial(create_wall, name))
+
+    pattern = app.myapp.submenus['Pattern']
+    pattern.delete(0, 'end')
+    pattern.add_command(label="Hopscotch", command=run_hop)
+    pattern.add_command(label="Herringbone", command=run_herr)
+    pattern.add_command(label="Stepped", command=run_step)
+
 
 
 if __name__ == "__main__":
@@ -248,14 +261,18 @@ if __name__ == "__main__":
             app.myapp.create_rectangle(pos[0], pos[1], size[0], size[1], color,
                                        ("background", "topmost"))
 
-    app.init((("Spew", app.spew),
-              ("Choose Color", choose_color),
+    def quit():
+        app.root.destroy()
+
+    app.init((("Quit", quit),
+              ("Spew", app.spew),
+              ("Reload", init),
              #("Dialog Test", run_dialog),
-              ("Sink Background", partial(create_wall, 'Sink')),
-              ("Stove Background", partial(create_wall, 'Stove')),
-              ("Dining Background", partial(create_wall, 'Dining')),
+              ("Choose Color", choose_color),
               ("Set Grout Color", run_set_grout_color),
-              ("Hopscotch", run_hop), ("Herringbone", run_herr), ("Stepped", run_step)))
+              ("Wall",),
+              ("Pattern",),
+            ))
 
     init()
 
