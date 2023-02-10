@@ -51,18 +51,21 @@ def test_eval_num(s, constants, value):
     ('1.1/4', Fraction(5, 4)),
     ('a', 1),
     ('b + 1.1/4 - a', Fraction(9, 4)),
+    (123, 123),
 ))
 def test_my_eval(s, constants, value):
     assert utils.my_eval(s, constants) == value
 
 
-@pytest.mark.parametrize("s, value", (
-    ('1.1/4, a', (Fraction(5, 4), 1)),
-    ('a + 1/4, 79', (Fraction(5, 4), 79)),
-    ('a + 1/4, a + b', (Fraction(5, 4), 3)),
+@pytest.mark.parametrize("s, relaxed, value", (
+    ('1.1/4, a', False, (Fraction(5, 4), 1)),
+    ('a + 1/4, 79', False, (Fraction(5, 4), 79)),
+    ('a + 1/4, a + b', False, (Fraction(5, 4), 3)),
+    ('a + 1/4', True, Fraction(5, 4)),
+    (123, True, 123),
 ))
-def test_eval_pair(s, constants, value):
-    assert utils.eval_pair(s, constants) == value
+def test_eval_pair(s, constants, relaxed, value):
+    assert utils.eval_pair(s, constants, relaxed) == value
 
 
 @pytest.mark.parametrize("s, value", (

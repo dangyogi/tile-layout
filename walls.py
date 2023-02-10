@@ -16,7 +16,7 @@ def read_walls(colors, filename='walls.yaml'):
         for name, panel in specs.items():
             #print(f"got {name=} {panel=}")
             ans.append((eval_pair(panel['pos'], constants),
-                        eval_pair(panel['size'], constants),
+                        eval_pair(panel['size'], constants, relaxed=True),
                         eval_color(panel['color'], colors)))
         return ans
         #return [(eval_pair(panel['pos'], constants),

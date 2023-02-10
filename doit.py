@@ -13,6 +13,9 @@ from hopscotch import hopscotch
 from stepped import stepped
 from tile import Tile, erase_tiles
 from utils import fraction, eval_color
+from colors import read_colors
+from tiles import read_tiles
+from walls import read_walls
 
 
 def tile_arg(s):
@@ -193,6 +196,14 @@ def run_set_grout_color():
                   ("color", color_entry),))
 
 
+def init():
+    global Colors, Tiles, Walls
+
+    Colors = read_colors()
+    Tiles = read_tiles(Colors)
+    Walls = read_walls(Colors)
+
+
 if __name__ == "__main__":
     import argparse
     from tkinter import colorchooser
@@ -204,30 +215,17 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    from colors import read_colors
-    from tiles import read_tiles
-    from walls import read_walls
-
-    Colors = read_colors()
-
-    cabinet = Colors['cabinet']
-    silver = Colors['silver']
-    grout_color = Colors['joyful orange']
-
-    Tiles = read_tiles(Colors)
-
-    Walls = read_walls(Colors)
-
     def choose_color():
         print(f"choose_color -> {colorchooser.askcolor()}")
 
-    def grout_bg(width, height, color=grout_color):
+    def grout_bg(width, height, color='joyful orange'):
         global bg_width, bg_height
         bg_width = width              # inches
         bg_height = height            # inches
         app.canvas.delete("all")
         app.myapp.scale_width(bg_width)
-        app.myapp.create_rectangle(0, 0, bg_width, bg_height, color, ("background", "grout"))
+        app.myapp.create_rectangle(0, 0, bg_width, bg_height, Colors[color],
+                                   ("background", "grout"))
         bg_color = app.canvas.cget('background')
 
         # clip above grout background
@@ -250,13 +248,16 @@ if __name__ == "__main__":
             app.myapp.create_rectangle(pos[0], pos[1], size[0], size[1], color,
                                        ("background", "topmost"))
 
-    app.init((("Choose Color", choose_color),
+    app.init((("Spew", app.spew),
+              ("Choose Color", choose_color),
              #("Dialog Test", run_dialog),
               ("Sink Background", partial(create_wall, 'Sink')),
               ("Stove Background", partial(create_wall, 'Stove')),
               ("Dining Background", partial(create_wall, 'Dining')),
               ("Set Grout Color", run_set_grout_color),
               ("Hopscotch", run_hop), ("Herringbone", run_herr), ("Stepped", run_step)))
+
+    init()
 
     app.run()
 

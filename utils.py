@@ -49,6 +49,8 @@ def eval_num(s, constants):
 
 
 def my_eval(s, constants):
+    if isinstance(s, int):
+        return s
     ans = 0
     op = None
     start = 0
@@ -66,7 +68,9 @@ def my_eval(s, constants):
     return a
 
 
-def eval_pair(s, constants):
+def eval_pair(s, constants, relaxed=False):
+    if relaxed and (not isinstance(s, str) or ',' not in s):
+        return my_eval(s, constants)
     a, b = s.split(',')
     return my_eval(a, constants), my_eval(b, constants)
 

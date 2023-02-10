@@ -5,30 +5,23 @@ from tkinter.ttk import *
 
 
 class App(Frame):
-    def __init__(self, master, buttons, test=False):
+    def __init__(self, master, test=False):
         super().__init__(master)
         master.columnconfigure(0, weight=1)
         master.rowconfigure(0, weight=1)
         #self.master = master
         fix(self)
         self.scale = 10  # pixels/tile-inch
-        self.create_widgets((("Spew", spew),) + buttons, test)
+        self.create_widgets(test)
 
     def in_to_px(self, in_):
         return float(in_) * self.scale
 
-    def create_widgets(self, buttons, test):
-        self.rowconfigure(0, weight=0)
-        self.rowconfigure(1, weight=1)
-        self.buttons = []
-        for col, (name, fn) in enumerate(buttons):
-            self.columnconfigure(col, weight=1)
-            print(f"creating button {name}")
-            button = Button(self, text=name, command=fn)
-            self.buttons.append(button)
-            fix(button, 0, col)
+    def create_widgets(self, test):
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
         self.canvas = MyCanvas(self, bg="#777")
-        fix(self.canvas, 1, 0, columnspan=len(buttons))
+        fix(self.canvas, 0, 0)
         print(f"{self.canvas['width']=}, {self.canvas['height']=}") 
         print(f"{self.canvas.winfo_reqwidth()=}, {self.canvas.winfo_reqheight()=}") 
         if test:
@@ -77,7 +70,7 @@ class MyCanvas(Canvas):
         self.config(width=event.width, height=event.height)
         print(f"on_resize: ({event.width=}, {event.height=}, "
               f"({self.winfo_reqwidth()=}, {self.winfo_reqheight()=}")
-        self.move("math", 0, dheight)
+        #self.move("math", 0, dheight)
 
     def create_my_rectangle(self, ll_corner, width, height, color, tags=()):
         return self.create_rectangle(
@@ -88,6 +81,10 @@ class MyCanvas(Canvas):
     def create_my_polygon(self, color, *points, tags=()):
         return self.create_polygon(*(self.math_coord(pt) for pt in points),
                                    width=0, fill=color, tags=tags + ("math",))
+
+    def create_my_circle(self, color, pos, diameter, tags=()):
+        return self.create_circle(self.math_coord(pos), diameter=diameter,
+                                  width=0, fill=color, tags=tags + ("math",))
 
     def size(self):
         r'''Returns width, height in pixels.
@@ -117,9 +114,8 @@ def fix(thing, row=None, col=None, **kwargs):
 
 def spew():
     print("Spewing:")
-    print(f"Screen: width {myapp.master.winfo_screenwidth()}, height {myapp.master.winfo_screenheight()}")
-    print(f"root width {myapp.master.winfo_width()}, height {myapp.master.winfo_height()}")
-    print(f'{myapp.buttons[0].grid_size()=}')
+    print(f"Screen: width {root.winfo_screenwidth()}, height {root.winfo_screenheight()}")
+    print(f"root width {root.winfo_width()}, height {root.winfo_height()}")
     print(f"{myapp.canvas.cget('background')=}")
     #print(f'{myapp.canvas.width=}, {myapp.canvas.height=}')
     print(f'{myapp.canvas_size()=}, {myapp.canvas_size()[0] / myapp.scale} W x '
@@ -127,11 +123,27 @@ def spew():
     print("Done Spewing!")
 
 
-def init(buttons=(), test=False):
-    global root, myapp, canvas
+def init(menus=(), test=False):
+    global root, mainmenu, submenus, myapp, canvas
     root = Tk()
     root.geometry("750x250")
-    myapp = App(root, buttons, test)
+    mainmenu = Menu(root)
+    submenus = {}
+    for item in menus:
+        name, *rest = item
+        if not rest:
+            submenu = Menu(mainmenu, tearoff=0)
+            mainmenu.addcascade(label=name, menu=submenu)
+            submenus[name] = submenu
+        elif isinstance(rest[0], (tuple, list)):
+            submenu = Menu(mainmenu, tearoff=0)
+            for subname, command in rest[0]:
+                submenu.add_command(label=subname, command=command)
+            mainmenu.addcascade(label=name, menu=submenu)
+        else:
+            mainmenu.add_command(label=name, command=rest[0])
+    root.configure(menu=mainmenu)
+    myapp = App(root, test)
     canvas = myapp.canvas
 
 def run():
