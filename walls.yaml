@@ -63,39 +63,60 @@ Dining:
 
 Shower Back:
     grout: 52.7/8, 88.1/2
+    constants:
+        laser_line: 3.1/8
+        tile_thickness: 1/2
     window:
-        pos: 9.3/4, bg_height - 8 - 3.5/8
-        size: 35.5/8, 8
-        color: white
+        pos: 9.5/8, 74.1/2 + laser_line    # bg_height - 8 - 3.5/8
+        size: 35.3/4, 7.3/4
+        color: "#AAA"
     niche:
-        pos: 13.3/8, bg_height - 12 - 24.5/16
+        pos: 13.3/8, 49.1/8 + laser_line   # bg_height - 12 - 24.5/16
         size: 27.15/16, 12
-        color: white
+        color: "#AAA"
+    right_GB_end:
+        pos: bg_width - 11.7/16, 39
+        size: 3.1/2
+        color: silver
+    left_GB_end:
+        pos: bg_width - 34.1/8, 31.1/4
+        size: 3.1/2
+        color: silver
+    #GB:
+    #    pos: bg_width - 11.7/16, 39
+    #    size: 1.1/4
+    #    color: silver
 
 Shower Left:
-    grout: 31.1/4, 88.1/2
+    constants:
+        laser_line: 3.1/8
+        tile_thickness: 1/2
+    grout: 31.1/16 - tile_thickness, 88.1/2
 
 Shower Right:
-    grout: 31, 88.1/2
+    constants:
+        laser_line: 3.1/8
+        tile_thickness: 1/2
+        bar_x: 8.5/8 + 7.1/8 - tile_thickness  # 15.25
+        bar_y: 41.1/4 + laser_line
+    grout: 30.7/8 - tile_thickness, 88.1/2
     valve:
-        pos: 8.5/8, 44.1/4
+        pos: 8.5/8 - tile_thickness, bar_y
         size: 7
         color: silver
-    constants:
-        bar_x: 8.5/8 + 7.1/8
     bar_bottom:
-        pos: bar_x, 44.1/4
+        pos: bar_x, bar_y
         size: 2.1/2
         color: silver
     bar_top:
-        pos: bar_x, 44.1/4 + 31.1/4
+        pos: bar_x, bar_y + 31.1/4
         size: 2.1/2
         color: silver
     bar:
-        pos: bar_x - 1/2, 44.1/4
+        pos: bar_x - 1/2, bar_y
         size: 1, 31.1/4
         color: silver
     nipple:
-        pos: 20, 44.1/4
+        pos: 20 - tile_thickness, bar_y
         size: 1.7/8
         color: silver

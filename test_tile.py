@@ -13,7 +13,7 @@ def tile_a():
 
 @pytest.fixture
 def placement_a(tile_a):
-    return tile.Placement(tile_a, 10, 20, 0, test=True)
+    return tile.Placement(tile_a, 10, 20, 0, 0, 0, test=True)
 
 
 def test_placement(placement_a, tile_a):
@@ -36,30 +36,49 @@ def test_placement_at(placement_a, corner, delta_X, delta_Y, answer):
     assert placement_a.at(corner, delta_X, delta_Y) == answer
 
 
-@pytest.mark.parametrize("corner, point, angle, left, top", (
-    ("ul", (10, 20), 0, 10, 20),
-    ("ur", (10, 20), 0, 9, 20),
-    ("ll", (10, 20), 0, 10, 22),
-    ("lr", (10, 20), 0, 9, 22),
+@pytest.mark.parametrize("corner, point, angle, x_offset, y_offset, left, top", (
+    ("ul", (10, 20), 0, 0, 0, 10, 20),
+    ("ul", (10, 20), 0, 1, 2, 10, 20),
+    ("ul", (10, 20), 0, -1, -2, 10, 20),
+    ("ur", (10, 20), 0, 0, 0, 9, 20),
+    ("ur", (10, 20), 0, 1, 2, 9, 20),
+    ("ur", (10, 20), 0, -1, -2, 9, 20),
+    ("ll", (10, 20), 0, 0, 0, 10, 22),
+    ("ll", (10, 20), 0, 1, 2, 10, 22),
+    ("ll", (10, 20), 0, -1, -2, 10, 22),
+    ("lr", (10, 20), 0, 0, 0, 9, 22),
+    ("lr", (10, 20), 0, 1, 2, 9, 22),
+    ("lr", (10, 20), 0, -1, -2, 9, 22),
 ))
-def test_place_at(tile_a, corner, point, angle, left, top):
-    p = tile_a.place_at(corner, point, angle, 100, 100, test=True)
+def test_place_at(tile_a, corner, point, angle, x_offset, y_offset, left, top):
+    p = tile_a.place_at(corner, point, angle, x_offset, y_offset, 100, 100, test=True)
     assert p.left == left
     assert p.top == top
 
 
-@pytest.mark.parametrize("corner, point, angle, max_x, max_y, success", (
-    ("ul", (10, 20), 0, 10, 50, False),
-    ("ul", (10, 20), 0, 11, 50, True),
-    ("ul", (10, 20), 0, 50, 18, False),
-    ("ul", (10, 20), 0, 50, 19, True),
-    ("ul", (0, 20),  0, 50, 50, True),
-    ("ul", (-1, 20), 0, 50, 50, False),
-    ("ul", (10, 1),  0, 50, 50, True),
-    ("ul", (10, 0),  0, 50, 50, False),
+@pytest.mark.parametrize("corner, point, angle, x_offset, y_offset, max_x, max_y, success", (
+    ("ul", (10, 20), 0, 0, 0, 10, 50, False),
+    ("ul", (10, 20), 0, -1, 0, 10, 50, True),
+    ("ul", (10, 20), 0, 0, 0, 11, 50, True),
+    ("ul", (10, 20), 0, 1, 0, 11, 50, False),
+    ("ul", (10, 20), 0, 0, 0, 50, 18, False),
+    ("ul", (10, 20), 0, 0, -1, 50, 18, True),
+    ("ul", (10, 20), 0, 0, 0, 50, 19, True),
+    ("ul", (10, 20), 0, 0, 1, 50, 19, False),
+    ("ul", (0, 20),  0, 0, 0, 50, 50, True),
+    ("ul", (0, 20),  0, -1, 0, 50, 50, False),
+    ("ul", (-1, 20), 0, 0, 0, 50, 50, False),
+    ("ul", (-1, 20), 0, 1, 0, 50, 50, True),
+    ("ul", (10, 1),  0, 0, 0, 50, 50, True),
+    ("ul", (10, 1),  0, 0, -1, 50, 50, False),
+    ("ul", (10, 0),  0, 0, 0, 50, 50, False),
+    ("ul", (10, 0),  0, 0, 1, 50, 50, True),
 ))
-def test_place_at_None(tile_a, corner, point, angle, max_x, max_y, success):
+def test_place_at_None(tile_a, corner, point, angle, x_offset, y_offset, max_x, max_y,
+                       success):
     if success:
-        assert tile_a.place_at(corner, point, angle, max_x, max_y, test=True) is not None
+        assert tile_a.place_at(corner, point, angle, x_offset, y_offset, max_x, max_y, 
+                               test=True) is not None
     else:
-        assert tile_a.place_at(corner, point, angle, max_x, max_y, test=True) is None
+        assert tile_a.place_at(corner, point, angle, x_offset, y_offset, max_x, max_y,
+                               test=True) is None

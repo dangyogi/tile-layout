@@ -26,6 +26,8 @@ def fraction(s):
     rest = Fraction(b)
     if rest.denominator == 1:
         raise ValueError(f"invalid fraction: {s!r}")
+    if i[0] == '-':
+        return int(i) - rest
     return int(i) + rest
 
 

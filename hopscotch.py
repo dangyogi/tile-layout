@@ -17,7 +17,7 @@ def hopscotch(tile_a, tile_b, grout_gap, angle, max_x, max_y):
                                          placement_b.at(b_corner,
                                                         delta_x * grout_gap,
                                                         delta_y * grout_gap),
-                                         angle, max_x, max_y),
+                                         angle, 0, 0, max_x, max_y),
                          depth + 1)
     def spread_b(placement_a, depth=0):
         #print(f"{' ' * depth}spread_b({placement_a})")
@@ -27,7 +27,7 @@ def hopscotch(tile_a, tile_b, grout_gap, angle, max_x, max_y):
                                          placement_a.at(a_corner,
                                                         -delta_x * grout_gap,
                                                         -delta_y * grout_gap),
-                                         angle, max_x, max_y),
+                                         angle, 0, 0, max_x, max_y),
                          depth + 1)
-    spread_b(tile_a.place_at("ll", (0, 0), angle, max_x, max_y))
+    spread_b(tile_a.place_at("ll", (0, 0), angle, 0, 0, max_x, max_y))
 

@@ -1,11 +1,10 @@
 Name,Height,Width,Color
-First Subway,4.1/4,9.7/8,black
-Sliver for First Subway,4.1/4,1,#b0b000
-4" square,4,4,white
-6" square,6,6,white
-4x12,4,12,white
-4x16,4,16,white
-3x6 TMK,3,6,white
-3x12 TMK,3,12,white
-6x12 TMK,6,12,white
-12x24 TMK,12,24,white
+8" square white,8,8,white
+12" square,12,12,white
+16" square,16,16,white
+18" square,18,18,white
+20" square,20,20,white
+6x12,6,12,white
+8x12,8,12,white
+8x20,8,20,white
+12x24,11.39/64,23.13/32,white

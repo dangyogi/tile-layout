@@ -100,10 +100,10 @@ def tile_entry(master):
 
 
 Hop_defaults = [
-    "First Subway",              # tile_a
-    "Sliver for First Subway",   # tile_b
-    "1/4",                       # grout_gap
-    "7",                         # angle
+    "12x24",              # tile_a
+    "3x6",   # tile_b
+    "1/8",                       # grout_gap
+    "0",                         # angle
 ]
 
 def run_hop():
@@ -127,9 +127,9 @@ def run_hop():
 
 
 Herr_defaults = [
-    "First Subway",   # tile
-    "1/4",            # grout_gap
-    "-45",            # angle
+    "12x24",       # tile
+    "1/8",         # grout_gap
+    "-45",         # angle
 ]
 
 def run_herr():
@@ -152,10 +152,37 @@ def run_herr():
 
 
 Step_defaults = [
-    "First Subway",   # tile
-    "1/3",            # offset
-    "1/4",            # grout_gap
-    "11",             # angle
+    "12x24",        # tile
+    "0",            # offset    stacked
+    "-8.1/4",       # x_offset  -8.3/8 on shower right wall
+    "-5/8",         # y_offset
+    "1/8",          # grout_gap  or 3/16
+    "0",            # angle
+]
+
+# tile len w/o grout: 23.40625 == 23.13/32
+# 1/3 step: 7.84375 == 7.27/32
+# 1/2 of a 1/3 step: 3.921875 == 3.59/64
+
+Step_defaults = [
+    "12x24",        # tile
+    "1/3",          # offset   1/2 doesn't work, 1/4 doesn't work (too busy)
+    "-7.7/8",       # x_offset for back:
+                    # -3.15/16 grout line at center of openings, slivers at walls and niche
+                    # -4.15/16 grout line at center of wall, openings not centered
+                    # 0 centered halfway, but on wrong row
+                    # -7.7/8 centered halfway, has large sliver at window
+                    # -9.1/2 "centered" halfway, no window sliver, looks centered on wall
+  # "-8.3/16",      # x_offset for left: (checked)
+  #                 # -8.3/16 grout line centerd on wall
+  #                 # -4.17/64 full tile centered on wall
+  # "-16.1/16",     # x_offset for right: (checked)
+  #                 # -16.1/16 grout line on center of slide, lines up with back wall
+  #                 # -12.9/64 center between grout lines centered on slide, lines up with
+  #                 #          back wall
+    "-5/8",         # y_offset
+    "1/8",          # grout_gap
+    "0",            # angle
 ]
 
 def run_step():
@@ -165,17 +192,22 @@ def run_step():
         print(f"{values=}")
         tile = values[0]
         offset = values[1]
+        x_offset = values[2]
+        y_offset = values[3]
         print(f"do_step {offset=}")
-        grout_gap = values[2]
+        grout_gap = values[4]
         print(f"do_step {grout_gap=}")
-        angle = values[3]
+        angle = values[5]
         print(f"do_step {angle=}")
         erase_tiles()
-        stepped(tile, offset, grout_gap, angle, app.myapp.bg_width, app.myapp.bg_height)
+        stepped(tile, offset, grout_gap, angle, x_offset, y_offset,
+                app.myapp.bg_width, app.myapp.bg_height)
 
     run_dialog("Stepped", do_step, Step_defaults, (
                   ("tile", tile_entry),
                   ("offset", fraction_entry),
+                  ("x_offset", fraction_entry),
+                  ("y_offset", fraction_entry),
                   ("grout_gap", fraction_entry),
                   ("angle", angle_entry)))
 

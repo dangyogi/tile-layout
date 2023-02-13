@@ -35,10 +35,11 @@ class Tile:
         if self.flipped is not None:
             yield self.flipped
 
-    def place_at(self, corner, point, angle, max_x, max_y, test=False):
+    def place_at(self, corner, point, angle, x_offset, y_offset, max_x, max_y, test=False):
         r'''max_x and max_y are in inches.
         '''
-        return Placement.create(self, corner, point, angle, max_x, max_y, test)
+        return Placement.create(self, corner, point, angle, x_offset, y_offset,
+                                max_x, max_y, test)
 
 
 def rotate(point, angle):
@@ -46,26 +47,31 @@ def rotate(point, angle):
     x, y = point
     return x * c - y * s, x * s + y * c
 
+
+def translate_pt(pt, angle, x_offset, y_offset):
+    x, y = rotate(pt, angle)
+    return x + x_offset, y + y_offset
+
 class Placement:
     Seen = set()
     #Count = 0
 
-    def __init__(self, tile, left, top, angle=0, test=False):
+    def __init__(self, tile, left, top, angle, x_offset, y_offset, test=False):
         #print(f"{tile} placed at left={f_to_str(left)}, top={f_to_str(top)}")
         self.tile = tile
         self.left = left
         self.top = top
         if not test:
             item = app.canvas.create_my_polygon("tile placement", self.tile.color,
-                     rotate((self.left, self.bottom), angle),
-                     rotate((self.right, self.bottom), angle),
-                     rotate((self.right, self.top), angle),
-                     rotate((self.left, self.top), angle),
+                     translate_pt((self.left, self.bottom), angle, x_offset, y_offset),
+                     translate_pt((self.right, self.bottom), angle, x_offset, y_offset),
+                     translate_pt((self.right, self.top), angle, x_offset, y_offset),
+                     translate_pt((self.left, self.top), angle, x_offset, y_offset),
                      tags=('tile',))
             app.canvas.tag_lower(item, "topmost")
 
     @classmethod
-    def create(cls, tile, corner, point, angle, max_x, max_y, test):
+    def create(cls, tile, corner, point, angle, x_offset, y_offset, max_x, max_y, test):
         r'''max_x and max_y are in inches.
         '''
         x, y = point
@@ -79,7 +85,7 @@ class Placement:
             left, top = x - tile.width, y + tile.height
         else:
             raise ValueError(f"Invalid corner: {corner!r}")
-        points = [rotate((x, y), angle)
+        points = [translate_pt((x, y), angle, x_offset, y_offset)
                   for x in (left, left + tile.width)
                   for y in (top - tile.height, top)]
         to_left, to_right, to_top, to_bottom = False, False, False, False
@@ -96,7 +102,7 @@ class Placement:
         #    return None
         #cls.Count += 1
         cls.Seen.add((tile, left, top))
-        return cls(tile, left, top, angle, test)
+        return cls(tile, left, top, angle, x_offset, y_offset, test)
 
     def __str__(self):
         return f"<Placement: {self.tile} at ({f_to_str(self.left)}, {f_to_str(self.top)})>"

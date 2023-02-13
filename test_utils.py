@@ -19,6 +19,9 @@ def colors():
     ('4', 4),
     ('1/4', Fraction(1, 4)),
     ('1.1/4', Fraction(5, 4)),
+    ('-4', -4),
+    ('-1/4', Fraction(-1, 4)),
+    ('-1.1/4', Fraction(-5, 4)),
 ))
 def test_fraction(s, value):
     assert utils.fraction(s) == value

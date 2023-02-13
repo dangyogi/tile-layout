@@ -64,24 +64,27 @@ class MyCanvas(Canvas):
         print(f"new size in inches: {self.px_to_in(width)} W x {self.px_to_in(height)} H")
 
     def create_my_rectangle(self, caller, left_x, bottom_y, width, height, color, tags=()):
-        print(f"create_my_rectangle({caller=}, left_x={f_to_str(left_x)}, "
-              f"bottom_y={f_to_str(bottom_y)}, width={f_to_str(width)}, "
-              f"height={f_to_str(height)})")
-        print(f"create_rectangle({f_to_str(self.math_coord((left_x, bottom_y)))}, "
-                      f"{f_to_str(self.math_coord((left_x + width, bottom_y + height)))}")
+        #print(f"create_my_rectangle({caller=}, left_x={f_to_str(left_x)}, "
+        #      f"bottom_y={f_to_str(bottom_y)}, width={f_to_str(width)}, "
+        #      f"height={f_to_str(height)})")
+        #print(f"create_rectangle({f_to_str(self.math_coord((left_x, bottom_y)))}, "
+        #              f"{f_to_str(self.math_coord((left_x + width, bottom_y + height)))}")
         return self.create_rectangle(
                       self.math_coord((left_x, bottom_y)),
                       self.math_coord((left_x + width, bottom_y + height)),
                       width=0, fill=color, tags=tags + ("math",))
 
     def create_my_polygon(self, caller, color, *points, tags=()):
-        print(f"create_my_polygon({caller=}, points={f_to_str(points)})")
+        #print(f"create_my_polygon({caller=}, points={f_to_str(points)})")
+        start_x = max(0, points[0][0])
+        end_x = min(myapp.bg_width, points[1][0])
+        print(f"row {points[0][1]}: length of next tile in row {end_x - start_x}")
         return self.create_polygon(*(self.math_coord(pt) for pt in points),
                                    width=0, fill=color, tags=tags + ("math",))
 
     def create_my_circle(self, caller, color, pos, diameter, tags=()):
-        print(f"create_my_circle({caller=}, pos={f_to_str(pos)}, "
-              f"diameter={f_to_str(diameter)})")
+        #print(f"create_my_circle({caller=}, pos={f_to_str(pos)}, "
+        #      f"diameter={f_to_str(diameter)})")
         x, y = self.math_coord(pos)
         r = self.in_to_px(diameter / 2)
         return self.create_oval(x - r, y - r, x + r, y + r,
