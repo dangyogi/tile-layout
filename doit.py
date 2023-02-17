@@ -167,7 +167,7 @@ Step_defaults = [
 Step_defaults = [
     "12x24",        # tile
     "1/3",          # offset   1/2 doesn't work, 1/4 doesn't work (too busy)
-    "-7.7/8",       # x_offset for back:
+    "-8.1/16",      # x_offset for back:
                     # -3.15/16 grout line at center of openings, slivers at walls and niche
                     # -4.15/16 grout line at center of wall, openings not centered
                     # 0 centered halfway, but on wrong row

@@ -62,24 +62,25 @@ Dining:
         color: cabinet
 
 Shower Back:
-    grout: 52.7/8, 88.1/2
+    grout: 52.1/2, 88.1/2
     constants:
         laser_line: 3.1/8
         tile_thickness: 1/2
+        expansion_gap: 3/16
     window:
-        pos: 9.5/8, 74.1/2 + laser_line    # bg_height - 8 - 3.5/8
+        pos: 9.5/8 - expansion_gap, 74.1/2 + laser_line    # bg_height - 8 - 3.5/8
         size: 35.3/4, 7.3/4
         color: "#AAA"
     niche:
-        pos: 13.3/8, 49.1/8 + laser_line   # bg_height - 12 - 24.5/16
+        pos: 13.3/8 - expansion_gap, 49.1/8 + laser_line   # bg_height - 12 - 24.5/16
         size: 27.15/16, 12
         color: "#AAA"
     right_GB_end:
-        pos: bg_width - 11.7/16, 39
+        pos: bg_width - 11.7/16 - expansion_gap, 39
         size: 3.1/2
         color: silver
     left_GB_end:
-        pos: bg_width - 34.1/8, 31.1/4
+        pos: bg_width - 34.1/8 - expansion_gap, 31.1/4
         size: 3.1/2
         color: silver
     #GB:
@@ -91,17 +92,19 @@ Shower Left:
     constants:
         laser_line: 3.1/8
         tile_thickness: 1/2
-    grout: 31.1/16 - tile_thickness, 88.1/2
+        expansion_gap: 1/8
+    grout: 31.1/16 - tile_thickness - expansion_gap, 88.1/2
 
 Shower Right:
     constants:
         laser_line: 3.1/8
         tile_thickness: 1/2
-        bar_x: 8.5/8 + 7.1/8 - tile_thickness  # 15.25
+        expansion_gap: 1/8
+        bar_x: 8.5/8 + 7.1/8 - tile_thickness - expansion_gap  # 15.125
         bar_y: 41.1/4 + laser_line
-    grout: 30.7/8 - tile_thickness, 88.1/2
+    grout: 30.7/8 - tile_thickness - expansion_gap, 88.1/2
     valve:
-        pos: 8.5/8 - tile_thickness, bar_y
+        pos: 8.5/8 - tile_thickness - expansion_gap, bar_y
         size: 7
         color: silver
     bar_bottom:
@@ -117,6 +120,6 @@ Shower Right:
         size: 1, 31.1/4
         color: silver
     nipple:
-        pos: 20 - tile_thickness, bar_y
+        pos: 20 - tile_thickness - expansion_gap, bar_y
         size: 1.7/8
         color: silver

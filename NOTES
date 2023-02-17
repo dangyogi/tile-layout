@@ -1,7 +1,7 @@
 # tile len w/o grout: 23.40625 == 23.13/32
 # 1/3 step: 7.84375 == 7.27/32
 # 1/2 of a 1/3 step: 3.921875 == 3.59/64
-# bar_x (center of slide): 15.25
+# bar_x (center of slide): 15.125
 
 All Walls:
     tile: 12x24
@@ -11,47 +11,25 @@ All Walls:
     angle: 0
 
 Back:
-    x_offset: -7.7/8 at 1/3 step (selected)
-    left lengths: 15.53125, 23.375, 7.6875
+    x_offset: -8.1/16 at 1/3 step (selected)
+    left lengths: 15.53125 (15.1/2+), 23.1875 (23.3/16), 7.5 (7.1/2)
+    right lengths: 13.5 (13.1/2), 5.65625 (5.5/8+), 21.34375 (21.5/16+)
 
-    x_offset: ~ -1.7/8 at 1/2 step
+    x_offset: ~ -2.1/16 at 1/2 step
 
 Left:
-    x_offset: -8.3/16 at 1/3 step
-    *right* lengths: 15.21875, 7.375, 23.0625
+    x_offset: -8.1/4 at 1/3 step
+    *right* lengths: 15.21875 (15.3/16+), 7.375 (7.3/8), 23.0625 (23.1/16)
 
-    x_offset: -2.5/16 at 1/2 step (selected)
-    *right* lengths: 9.34375, 21.109375
+    x_offset: -2.3/8 at 1/2 step (selected)
+    left lengths: 21.03125 (21+), 9.265625 (9.1/4+)
+    right lengths: 9.28125 (9.1/4+), 21.046875 (21.1/16)
 
 Right:
-    x_offset: -16.1/16
+    x_offset: -16.3/16
     left lengths: 7.34375, 15.1875, 23.03125
 
-    x_offset: -14.3/32 at 1/2 step (selected)
-    left lengths: 9.3125, 21.078125
-
-
-
--------- cut here ---------
-
-Step_defaults = [
-    "12x24",        # tile
-    "1/3",          # offset   1/2 doesn't work, 1/4 doesn't work (too busy)
-    "-7.7/8",       # x_offset for back:
-                    # -3.15/16 grout line at center of openings, slivers at walls and niche
-                    # -4.15/16 grout line at center of wall, openings not centered
-                    # 0 centered halfway, but on wrong row
-                    # -7.7/8 centered halfway, has large sliver at window
-                    # -9.1/2 "centered" halfway, no window sliver, looks centered on wall
-  # "-8.3/16",      # x_offset for left: (checked)
-  #                 # -8.3/16 grout line centerd on wall
-  #                 # -4.17/64 full tile centered on wall
-  # "-16.1/16",     # x_offset for right: (checked)
-  #                 # -16.1/16 grout line on center of slide, lines up with back wall
-  #                 # -12.9/64 center between grout lines centered on slide, lines up with
-  #                 #          back wall
-    "-5/8",         # y_offset
-    "1/8",          # grout_gap
-    "0",            # angle
-]
+    x_offset: -14.7/32 at 1/2 step (selected)
+    left lengths: 9.1875 (9.3/16), 20.953125 (20.15/16+)
+    right lengths: 20.9375 (20.15/16), 9.171875 (9.3/16)
 
