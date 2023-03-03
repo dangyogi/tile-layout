@@ -10,7 +10,7 @@ from tkinter import simpledialog, ttk
 
 import app
 from hopscotch import hopscotch
-from stepped import stepped
+from stepped import stepped, stepped2
 from tile import Tile, erase_tiles
 from utils import fraction, f_to_str, eval_color
 from colors import read_colors
@@ -71,6 +71,12 @@ def run_dialog(title="Dialog Test", fn=lambda x: None, defaults=[], entries=()):
     print(f"run_dialog({title=!r})")
     dialog = Dialog(app.myapp, title, fn, defaults, entries)
     print("run_dialog -- DONE")
+
+
+def str_entry(master):
+    e = tk.Entry(master)
+    e.type_fn = lambda x: x
+    return e
 
 
 def fraction_entry(master):
@@ -180,7 +186,7 @@ Step_defaults = [
   #                 # -16.1/16 grout line on center of slide, lines up with back wall
   #                 # -12.9/64 center between grout lines centered on slide, lines up with
   #                 #          back wall
-    "-5/8",         # y_offset
+    "-3/4",         # y_offset
     "1/8",          # grout_gap
     "0",            # angle
 ]
@@ -191,21 +197,27 @@ def run_step():
         values = tuple(map(attrgetter('value'), dialog.entry_widgets))
         print(f"{values=}")
         tile = values[0]
-        offset = values[1]
         x_offset = values[2]
         y_offset = values[3]
-        print(f"do_step {offset=}")
         grout_gap = values[4]
         print(f"do_step {grout_gap=}")
         angle = values[5]
         print(f"do_step {angle=}")
         erase_tiles()
-        stepped(tile, offset, grout_gap, angle, x_offset, y_offset,
-                app.myapp.bg_width, app.myapp.bg_height)
+        if ',' in values[1]:
+            offsets = tuple(map(fraction, values[1].split(',')))
+            print(f"do_step {offsets=}")
+            stepped2(tile, offsets, grout_gap, angle, x_offset, y_offset,
+                     app.myapp.bg_width, app.myapp.bg_height)
+        else:
+            offset = fraction(values[1])
+            print(f"do_step {offset=}")
+            stepped(tile, offset, grout_gap, angle, x_offset, y_offset,
+                    app.myapp.bg_width, app.myapp.bg_height)
 
     run_dialog("Stepped", do_step, Step_defaults, (
                   ("tile", tile_entry),
-                  ("offset", fraction_entry),
+                  ("offset", str_entry),
                   ("x_offset", fraction_entry),
                   ("y_offset", fraction_entry),
                   ("grout_gap", fraction_entry),

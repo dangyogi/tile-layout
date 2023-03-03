@@ -1,35 +1,36 @@
 # tile len w/o grout: 23.40625 == 23.13/32
 # 1/3 step: 7.84375 == 7.27/32
 # 1/2 of a 1/3 step: 3.921875 == 3.59/64
-# bar_x (center of slide): 15.125
+# 1/2 step: 11.49/64
+# bar_x (center of slide): 15.125 (exactly at halfway on right wall)!
 
 All Walls:
     tile: 12x24
     offset: 1/3
-    y_offset: -5/8
+    y_offset: -3/4
     grout_gap: 1/8
     angle: 0
 
 Back:
-    x_offset: -8.1/16 at 1/3 step (selected)
-    left lengths: 15.53125 (15.1/2+), 23.1875 (23.3/16), 7.5 (7.1/2)
+ -> x_offset: -8.1/16 at 1/3 step (selected)
+    left lengths: 15.34375 (15.5/16+), 23.1875 (23.3/16), 7.5 (7.1/2)
     right lengths: 13.5 (13.1/2), 5.65625 (5.5/8+), 21.34375 (21.5/16+)
 
     x_offset: ~ -2.1/16 at 1/2 step
 
 Left:
     x_offset: -8.1/4 at 1/3 step
-    *right* lengths: 15.21875 (15.3/16+), 7.375 (7.3/8), 23.0625 (23.1/16)
+    right lengths: 15.21875 (15.3/16+), 7.375 (7.3/8), 23.0625 (23.1/16)
 
-    x_offset: -2.3/8 at 1/2 step (selected)
+ -> x_offset: -2.3/8 at 1/2 step (selected)
     left lengths: 21.03125 (21+), 9.265625 (9.1/4+)
-    right lengths: 9.28125 (9.1/4+), 21.046875 (21.1/16)
+    right lengths: 9.28125 (9.1/4+), 21.046875 (21+)
 
 Right:
     x_offset: -16.3/16
     left lengths: 7.34375, 15.1875, 23.03125
 
-    x_offset: -14.7/32 at 1/2 step (selected)
+ -> x_offset: -14.7/32 at 1/2 step (selected)
     left lengths: 9.1875 (9.3/16), 20.953125 (20.15/16+)
     right lengths: 20.9375 (20.15/16), 9.171875 (9.3/16)
 

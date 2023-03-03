@@ -1,11 +1,22 @@
 # stepped.py
 
-from itertools import islice, count
+from itertools import islice, count, cycle
 
 from utils import f_to_str
 
 
 def stepped(tile, offset, grout_gap, angle, x_offset, y_offset, max_x, max_y):
+    width = tile.width + grout_gap
+    offsets = []
+    for i in count(0):
+        next = width * offset * i
+        if next >= width:
+            break
+        offsets.append(next)
+    stepped2(tile, offsets, grout_gap, angle, x_offset, y_offset, max_x, max_y)
+
+
+def stepped2(tile, offsets, grout_gap, angle, x_offset, y_offset, max_x, max_y):
     width = tile.width + grout_gap
     def lay_row(left_start, bottom):
         visible = False
@@ -33,20 +44,19 @@ def stepped(tile, offset, grout_gap, angle, x_offset, y_offset, max_x, max_y):
         return visible
 
     # lay up
-    for i in count(0):
-        left = (width * offset * i) % width
+    for row_num, left in zip(count(0), cycle(offsets)):
         if left > 0:
             left -= width
-        #print("lay up", i, f_to_str(left), f_to_str(i * (tile.height + grout_gap)))
-        if not lay_row(left, i * (tile.height + grout_gap)):
+        #print("lay up", row_num, f_to_str(left),
+        #      f_to_str(row_num * (tile.height + grout_gap)))
+        if not lay_row(left, row_num * (tile.height + grout_gap)):
             break
 
     # lay down
-    for i in count(-1, -1):
-        left = (width * offset * i) % width
-        if left > 0:
-            left -= width
-        #print("lay down", i, f_to_str(left), f_to_str(i * (tile.height + grout_gap)))
-        if not lay_row(left, i * (tile.height + grout_gap)):
+    for row_num, left in zip(count(-1, -1), cycle(reversed(offsets))):
+        left = -left
+        #print("lay down", row_num, f_to_str(left),
+        #      f_to_str(row_num * (tile.height + grout_gap)))
+        if not lay_row(left, row_num * (tile.height + grout_gap)):
             break
 

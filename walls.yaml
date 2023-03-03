@@ -102,7 +102,7 @@ Shower Right:
         expansion_gap: 1/8
         bar_x: 8.5/8 + 7.1/8 - tile_thickness - expansion_gap  # 15.125
         bar_y: 41.1/4 + laser_line
-    grout: 30.7/8 - tile_thickness - expansion_gap, 88.1/2
+    grout: 30.7/8 - tile_thickness - expansion_gap, 88.1/2  # 30.1/4, 88.1/2
     valve:
         pos: 8.5/8 - tile_thickness - expansion_gap, bar_y
         size: 7
