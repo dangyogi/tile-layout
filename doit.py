@@ -191,6 +191,16 @@ Step_defaults = [
     "0",            # angle
 ]
 
+Step_defaults = [
+    "floor",        # tile
+    "1/2",          # offset    stacked
+    "0",            # x_offset  -1.1/2 grout line in center of entrance,
+                    #           5.7/8 center on shower
+    "-3.5/8",       # y_offset
+    "1/8",          # grout_gap  or 3/16
+    "0",            # angle
+]
+
 def run_step():
     def do_step(dialog):
         print("Adding stepped tiles")

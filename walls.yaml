@@ -123,3 +123,27 @@ Shower Right:
         pos: 20 - tile_thickness - expansion_gap, bar_y
         size: 1.7/8
         color: silver
+
+Guest Bath:
+    constants:
+        right_indent: 6.1/8
+        right_len: 23.1/4
+        left_indent: 15.1/16
+        left_len: 32.1/8
+    grout: 59, 66.3/8
+    left wall:
+        pos: 0, 0
+        size: left_indent, left_len
+        color: cabinet
+    right cabinet:
+        pos: bg_width - right_indent, 0
+        size: right_indent, right_len
+        color: yellow
+    vent:
+        pos: left_indent + 9, 8.1/2
+        size: 3.3/4, 9.1/2
+        color: "#99948e"
+    toilet:
+        pos: 11.1/2, left_len + 13.1/2
+        size: 6.1/2
+        color: black

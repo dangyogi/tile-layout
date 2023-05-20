@@ -10,7 +10,7 @@ def stepped(tile, offset, grout_gap, angle, x_offset, y_offset, max_x, max_y):
     offsets = []
     for i in count(0):
         next = width * offset * i
-        if next >= width:
+        if abs(next) >= width:
             break
         offsets.append(next)
     stepped2(tile, offsets, grout_gap, angle, x_offset, y_offset, max_x, max_y)
