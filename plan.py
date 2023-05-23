@@ -1,7 +1,7 @@
 # plan.py
 
 import app
-from utils import my_eval, eval_pair, eval_color, eval_tile
+from utils import my_eval, eval_color, eval_tile
 from tile import erase_tiles
 from alignment import Alignment
 
@@ -119,10 +119,10 @@ class Plan:
         if step['type'] == 'sequence':
             return self.sequence(offset, constants, *step['steps'], trace=trace)
         if step['type'] == 'repeat':
-            x, y = eval_pair(step.get('start', (0, 0)), constants)
+            x, y = my_eval(step.get('start', (0, 0)), constants)
             x_off, y_off = offset
             return self.repeat((x_off + x, y_off + y), constants, step['step'],
-                               eval_pair(step['increment'], constants),
+                               my_eval(step['increment'], constants),
                                my_eval(step.get('times', None), constants),
                                trace=trace)
 
@@ -159,7 +159,10 @@ class Plan:
                     if name == 'conditionals':
                         for conditional in value:
                             test = my_eval(conditional['test'], new_constants)
-                            add_constants(value[test])
+                            if trace:
+                                print(f"{self.name}: add_constants got conditional {test=!r}, "
+                                      f"{conditional=}")
+                            add_constants(conditional[test])
                     elif name == 'tile':
                         new_constants[name] = eval_tile(value, new_constants)
                     else:

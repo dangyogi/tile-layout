@@ -68,11 +68,14 @@ def test_eval_term(s, constants, value):
 
 @pytest.mark.parametrize("s, value", (
     ('1.1/4', Fraction(5, 4)),
+    ('-1.1/4', Fraction(-5, 4)),
     ('a', 1),
     ('b + 1.1/4 - a', Fraction(9, 4)),
     ('b + 2 - 2 * 2', 0),
     ('b + 2 - 2 / 2', 3),
+    ('-b + 2', 0),
     ('1 / 4', Fraction(1, 4)),
+    ('-1 / 4', Fraction(-1, 4)),
     ('2 * 2', 4),
     (123, 123),
 ))

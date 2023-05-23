@@ -125,13 +125,21 @@ def eval_term(s, constants, trace=False):
 
 
 def my_eval(s, constants, trace=False):
+    if isinstance(s, tuple):
+        return tuple(my_eval(x, constants, trace=trace) for x in s)
+    if isinstance(s, list):
+        return [my_eval(x, constants, trace=trace) for x in s]
     if not isinstance(s, str):
         return s
     ans = 0
     op = None
     start = 0
+    s = s.strip()
     for match in re.finditer(r'[-+]', s):
         #print(f"got op={match.group()!r}, {start=}, {match.start()=}, {match.end()}")
+        if match.start() == 0:
+            # skip unary minus
+            continue
         a = eval_term(s[start:match.start()], constants, trace=trace)
         if trace:
             print(f"my_eval: {ans=}, {op=}, {a=}")

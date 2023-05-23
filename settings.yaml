@@ -16,9 +16,9 @@ wall_settings:
     Shower Left:
         plans: {}
     Shower Right:
-        default_plan: test_plan
+        default_plan: stacked
         plans:
-            test_plan:
+            stacked:
                 grout_gap: 1/4
                 grout_color: orange
                 alignment:
@@ -28,3 +28,71 @@ wall_settings:
                 layout:
                     type: stacked
                     tile: 6x12
+            stepped:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: 6x12
+                    percent_offset: 1/3
+            stepped_rev:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: 6x12
+                    percent_offset: -1/3
+            hopscotch_right:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: hopscotch
+                    tile_a: 6x12
+                    tile_b: 8" square white
+                    right: true
+            hopscotch_left:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: hopscotch
+                    tile_a: 6x12
+                    tile_b: 8" square white
+                    right: false
+            herringbone_right:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: herringbone
+                    tile: 6x12
+                    right: true
+            herringbone_left:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: herringbone
+                    tile: 6x12
+                    right: false
