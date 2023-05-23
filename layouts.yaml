@@ -71,3 +71,27 @@ herringbone:
     tile_a: tile
     tile_b: tile.flipped
 
+checkerboard:
+    parameters: [tile_a, tile_b]
+    constants:
+        skip_x: tile_a.skip_x + tile_b.skip_x + 2 * plan.grout_gap
+    type: sequence
+    steps:
+        - type: repeat
+          step:
+              type: repeat
+              step:
+                  type: place
+                  tile: tile_a
+              increment: [skip_x, 0]
+          increment: [skip_x / 2, tile_a.skip_y + plan.grout_gap]
+        - type: repeat
+          step:
+              type: repeat
+              step:
+                  type: place
+                  tile: tile_b
+              increment: [skip_x, 0]
+              start: [skip_x / 2, 0]
+          increment: [skip_x / 2, tile_b.skip_y + plan.grout_gap]
+

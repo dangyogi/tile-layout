@@ -40,37 +40,37 @@ hex:
         - [side, height]
         - [side + point_height, height / 2]
         - [side, 0]
-    skip_x: side + point_height
+    skip_x: 2 * side + 2 * point_height
     skip_y: height / 2
 
 picket:
     type: polygon
     parameters:
-        - height
+        - length
         - width         # in middle (at widest point)
-        - bottom_width
+        - side_height
     points:
-        - [-bottom_width / 2, 0]
-        - [-width / 2, height / 2]
-        - [-bottom_width / 2, height]
-        - [bottom_width / 2, height]
-        - [width / 2, height / 2]
-        - [bottom_width / 2, 0]
-    skip_x: width - width / 2 + bottom_width / 2
-    skip_y: height
+        - [0, 0]
+        - [0, side_height]
+        - [length / 2, width / 2 + side_height / 2]
+        - [length, side_height]
+        - [length, 0]
+        - [length / 2, -width / 2 + side_height / 2]
+    skip_x: length
+    skip_y: width / 2 + side_height / 2
 
 diamond:
     type: polygon
     parameters:
-        - height
+        - length
         - width         # in middle (at widest point)
     points:
         - [0, 0]
-        - [-width / 2, height / 2]
-        - [0, height]
-        - [width / 2, height / 2]
-    skip_x: width / 2
-    skip_y: height
+        - [length / 2, width / 2]
+        - [length, 0]
+        - [length / 2, -width / 2]
+    skip_x: length
+    skip_y: width / 2
 
 star_cross:
     type: polygon

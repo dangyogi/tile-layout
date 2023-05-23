@@ -115,7 +115,7 @@ class Plan:
         constants['offset'] = offset
         constants['plan'] = self
         if step['type'] == 'place':
-            return self.place(offset, my_eval(step['tile'], constants), trace=trace)
+            return self.place(offset, eval_tile(step['tile'], constants), trace=trace)
         if step['type'] == 'sequence':
             return self.sequence(offset, constants, *step['steps'], trace=trace)
         if step['type'] == 'repeat':

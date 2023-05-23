@@ -96,3 +96,37 @@ wall_settings:
                     type: herringbone
                     tile: 6x12
                     right: false
+            hex:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: hex
+                    percent_offset: 1/2
+            picket:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: picket
+                    percent_offset: 1/2
+
+            star_cross:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: checkerboard
+                    tile_a: cross
+                    tile_b: star

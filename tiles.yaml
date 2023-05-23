@@ -56,3 +56,27 @@ floor:
     height: 11.13/16
     width: 23.1/2
     color: "#c4b4ae"
+
+star:
+    shape: star_cross
+    width: 5.25/32
+    point_direction: 1
+    color: white
+
+cross:
+    shape: star_cross
+    width: 5.25/32
+    point_direction: -1
+    color: white
+
+hex:
+    shape: hex
+    height: 8.15/32
+    color: "#EEE"
+
+picket:
+    shape: picket
+    length: 7.13/16
+    width: 3.7/8
+    side_height: 1.1/2
+    color: white
