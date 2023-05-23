@@ -3,24 +3,24 @@
 ---
 
 Sink:
-    grout: 96.1/16, 17.1/2
+    grout: [96.1/16, 17.1/2]
     constants:
         cab_width: 32.3/4
     left_cab:
-        pos: 0, 17.1/2
-        size: 31.1/4, 37
+        pos: [0, 17.1/2]
+        size: [31.1/4, 37]
         color: cabinet
     right_cab:
-        pos: bg_width-cab_width, 17.1/2
-        size: cab_width, 36.1/2
+        pos: [bg_width-cab_width, 17.1/2]
+        size: [cab_width, 36.1/2]
         color: cabinet
     window:
-        pos: 32.7/16, 9.3/8
-        size: 29.3/4, 26.1/2
+        pos: [32.7/16, 9.3/8]
+        size: [29.3/4, 26.1/2]
         color: "#CCC"
 
 Stove:
-    grout: 96, 17.1/2
+    grout: [96, 17.1/2]
     constants:
         lt_cab_width: 19.1/4
         rt_cab_width: 46.7/8
@@ -28,63 +28,63 @@ Stove:
         uw_offset: 19.1/8
         uw_height: 16.7/8
     left_cab:
-        pos: 0, 17.1/2
-        size: lt_cab_width, 36.7/8
+        pos: [0, 17.1/2]
+        size: [lt_cab_width, 36.7/8]
         color: cabinet
     right_cab:
-        pos: bg_width-rt_cab_width, 17.1/2
-        size: rt_cab_width, rt_cab_height
+        pos: [bg_width-rt_cab_width, 17.1/2]
+        size: [rt_cab_width, rt_cab_height]
         color: cabinet
     uWave:
-        pos: lt_cab_width, uw_offset
-        size: 30, uw_height
+        pos: [lt_cab_width, uw_offset]
+        size: [30, uw_height]
         color: silver
     cab_over_uWave:
-        pos: lt_cab_width, uw_offset + uw_height
-        size: 30, 35.1/4 - uw_height
+        pos: [lt_cab_width, uw_offset + uw_height]
+        size: [30, 35.1/4 - uw_height]
         color: cabinet
     stove_back:
-        pos: lt_cab_width, 0
-        size: 30, 10
+        pos: [lt_cab_width, 0]
+        size: [30, 10]
         color: white
 
 Dining:
-    grout: 90.1/16, 17.1/2
+    grout: [90.1/16, 17.1/2]
     constants:
         rt_cab_width: 25.3/8
     left_cab:
-        pos: 0, 17.1/2
-        size: 25.5/8, 36.3/4
+        pos: [0, 17.1/2]
+        size: [25.5/8, 36.3/4]
         color: cabinet
     right_cab:
-        pos: bg_width - rt_cab_width, 17.1/2
-        size: rt_cab_width, 36.11/16
+        pos: [bg_width - rt_cab_width, 17.1/2]
+        size: [rt_cab_width, 36.11/16]
         color: cabinet
 
 Shower Back:
-    grout: 52.1/2, 88.1/2
+    grout: [52.1/2, 88.1/2]
     constants:
         laser_line: 3.1/8
         tile_thickness: 1/2
         expansion_gap: 3/16
     window:
-        pos: 9.5/8 - expansion_gap, 74.1/2 + laser_line    # bg_height - 8 - 3.5/8
-        size: 35.3/4, 7.3/4
+        pos: [9.5/8 - expansion_gap, 74.1/2 + laser_line]    # bg_height - 8 - 3.5/8
+        size: [35.3/4, 7.3/4]
         color: "#AAA"
     niche:
-        pos: 13.3/8 - expansion_gap, 49.1/8 + laser_line   # bg_height - 12 - 24.5/16
-        size: 27.15/16, 12
+        pos: [13.3/8 - expansion_gap, 49.1/8 + laser_line]   # bg_height - 12 - 24.5/16
+        size: [27.15/16, 12]
         color: "#AAA"
     right_GB_end:
-        pos: bg_width - 11.7/16 - expansion_gap, 39
+        pos: [bg_width - 11.7/16 - expansion_gap, 39]
         size: 3.1/2
         color: silver
     left_GB_end:
-        pos: bg_width - 34.1/8 - expansion_gap, 31.1/4
+        pos: [bg_width - 34.1/8 - expansion_gap, 31.1/4]
         size: 3.1/2
         color: silver
     #GB:
-    #    pos: bg_width - 11.7/16, 39
+    #    pos: [bg_width - 11.7/16, 39]
     #    size: 1.1/4
     #    color: silver
 
@@ -93,7 +93,7 @@ Shower Left:
         laser_line: 3.1/8
         tile_thickness: 1/2
         expansion_gap: 1/8
-    grout: 31.1/16 - tile_thickness - expansion_gap, 88.1/2
+    grout: [31.1/16 - tile_thickness - expansion_gap, 88.1/2]
 
 Shower Right:
     constants:
@@ -102,25 +102,25 @@ Shower Right:
         expansion_gap: 1/8
         bar_x: 8.5/8 + 7.1/8 - tile_thickness - expansion_gap  # 15.125
         bar_y: 41.1/4 + laser_line
-    grout: 30.7/8 - tile_thickness - expansion_gap, 88.1/2  # 30.1/4, 88.1/2
+    grout: [30.7/8 - tile_thickness - expansion_gap, 88.1/2]   # 30.1/4, 88.1/2
     valve:
-        pos: 8.5/8 - tile_thickness - expansion_gap, bar_y
+        pos: [8.5/8 - tile_thickness - expansion_gap, bar_y]
         size: 7
         color: silver
     bar_bottom:
-        pos: bar_x, bar_y
+        pos: [bar_x, bar_y]
         size: 2.1/2
         color: silver
     bar_top:
-        pos: bar_x, bar_y + 31.1/4
+        pos: [bar_x, bar_y + 31.1/4]
         size: 2.1/2
         color: silver
     bar:
-        pos: bar_x - 1/2, bar_y
-        size: 1, 31.1/4
+        pos: [bar_x - 1/2, bar_y]
+        size: [1, 31.1/4]
         color: silver
     nipple:
-        pos: 20 - tile_thickness - expansion_gap, bar_y
+        pos: [20 - tile_thickness - expansion_gap, bar_y]
         size: 1.7/8
         color: silver
 
@@ -130,20 +130,20 @@ Guest Bath:
         right_len: 23.1/4
         left_indent: 15.1/16
         left_len: 32.1/8
-    grout: 59, 66.3/8
+    grout: [59, 66.3/8]
     left wall:
-        pos: 0, 0
-        size: left_indent, left_len
+        pos: [0, 0]
+        size: [left_indent, left_len]
         color: cabinet
     right cabinet:
-        pos: bg_width - right_indent, 0
-        size: right_indent, right_len
+        pos: [bg_width - right_indent, 0]
+        size: [right_indent, right_len]
         color: yellow
     vent:
-        pos: left_indent + 9, 8.1/2
-        size: 3.3/4, 9.1/2
+        pos: [left_indent + 9, 8.1/2]
+        size: [3.3/4, 9.1/2]
         color: "#99948e"
     toilet:
-        pos: 11.1/2, left_len + 13.1/2
+        pos: [11.1/2, left_len + 13.1/2]
         size: 6.1/2
         color: black

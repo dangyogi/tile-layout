@@ -1,0 +1,73 @@
+# layouts.yaml
+
+---
+
+row_infinite:
+    parameters: [tile]
+    type: repeat
+    step:
+        type: place
+        tile: tile
+    increment: [tile.skip_x + plan.grout_gap, 0]
+
+row_n:
+    parameters: [tile, count]
+    type: repeat
+    step:
+        type: place
+        tile: tile
+    increment: [tile.skip_x + plan.grout_gap, 0]
+    times: count
+
+stepped:
+    parameters: [tile, percent_offset]
+    constants:
+        x: tile.skip_x + plan.grout_gap
+    type: repeat
+    step:
+        type: row_infinite
+        tile: tile
+    increment: [x * percent_offset, tile.skip_y + plan.grout_gap]
+
+stacked:
+    parameters: [tile]
+    type: stepped
+    tile: tile
+    percent_offset: 0
+
+hopscotch:
+    parameters: [tile_a, tile_b, right]
+    constants:
+        conditionals:
+            - test: right
+              true:
+                  inc: [tile_a.skip_x + plan.grout_gap, -tile_b.skip_y - plan.grout_gap]
+                  b_placement: [0, tile_a.skip_y + plan.grout_gap]
+                  outer_inc: [tile_b.skip_x + plan.grout_gap, tile_a.skip_y + plan.grout_gap]
+              false:
+                  inc: [tile_a.skip_x + plan.grout_gap, tile_b.skip_y + plan.grout_gap]
+                  b_placement: [-tile_b.skip_x - plan.grout_gap, tile_a.skip_y - tile_b.skip_y]
+                  outer_inc: [-tile_b.skip_x - plan.grout_gap, tile_a.skip_y + plan.grout_gap]
+    type: repeat
+    step:
+        type: sequence
+        steps:
+            - type: repeat
+              step:
+                  type: place
+                  tile: tile_a
+              increment: inc
+            - type: repeat
+              step:
+                  type: place
+                  tile: tile_b
+              start: b_placement
+              increment: inc
+    increment: outer_inc
+
+herringbone:
+    parameters: [tile, right]
+    type: hopscotch
+    tile_a: tile
+    tile_b: tile.flipped
+

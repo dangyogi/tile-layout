@@ -9,13 +9,14 @@ import tkinter as tk
 from tkinter import simpledialog, ttk
 
 import app
-from hopscotch import hopscotch
-from stepped import stepped, stepped2
 from tile import Tile, erase_tiles
 from utils import fraction, f_to_str, eval_color
 from colors import read_colors
+from shapes import read_shapes
 from tiles import read_tiles
+from layouts import read_layouts
 from walls import read_walls
+from settings import read_settings
 
 
 def tile_arg(s):
@@ -87,22 +88,27 @@ def fraction_entry(master):
 
 def angle_entry(master):
     e = tk.Entry(master)
-    e.type_fn = lambda s: radians(float(s))
+    e.type_fn = float
     return e
 
 
 def color_entry(master):
     e = tk.Entry(master)
-    e.type_fn = lambda s: eval_color(s, Colors)
+    e.type_fn = lambda s: eval_color(s, app.Colors)
     return e
 
 
 def tile_entry(master):
-    values = sorted(Tiles.keys())
+    values = sorted(app.Tiles.keys())
     print(f"tile_entry {values=}")
     e = ttk.Combobox(master, values=values)
-    e.type_fn = lambda s: Tiles[s]
+    e.type_fn = lambda s: app.Tiles[s]
     return e
+
+
+def run_plan(name):
+    app.Plan = app.Plans[name]
+    app.Plan.create()
 
 
 Hop_defaults = [
@@ -244,30 +250,28 @@ def run_set_grout_color():
         values = tuple(map(attrgetter('value'), dialog.entry_widgets))
         color = values[0]
         print(f"do_grout_color {color=}")
-        app.canvas.itemconfig("grout", fill=color)
+        app.Plan.set_grout_color(color)
 
     run_dialog("Grout Color", do_grout_color, Grout_color_defaults, (
-                  ("color", color_entry),))
+                  ("color", str_entry),))
 
 
 def init():
-    global Colors, Tiles, Walls
-
     print("doit.init called")
 
-    Colors = read_colors()
-    Tiles = read_tiles(Colors)
-    Walls = read_walls(Colors)
+    app.Colors = read_colors()
+    app.Shapes = read_shapes()
+    app.Tiles = read_tiles()
+    app.Layouts = read_layouts()
+    app.Walls = read_walls()
+    app.Settings = read_settings()
     wall = app.myapp.submenus['Wall']
     wall.delete(0, 'end')
-    for name in sorted(Walls.keys()):
+    for name in sorted(app.Walls.keys()):
         wall.add_command(label=name, command=partial(create_wall, name))
 
-    pattern = app.myapp.submenus['Pattern']
-    pattern.delete(0, 'end')
-    pattern.add_command(label="Hopscotch", command=run_hop)
-    pattern.add_command(label="Herringbone", command=run_herr)
-    pattern.add_command(label="Stepped", command=run_step)
+    #if 'default_wall' in app.Settings:
+    #    create_wall(app.Settings['default_wall'])
 
 
 
@@ -285,43 +289,18 @@ if __name__ == "__main__":
     def choose_color():
         print(f"choose_color -> {colorchooser.askcolor()}")
 
-    def grout_bg(width, height, color='joyful orange'):
-        bg_width = width              # inches
-        bg_height = height            # inches
-        app.canvas.delete("all")
-        app.myapp.bg_width = bg_width
-        app.myapp.bg_height = bg_height
-        app.canvas.set_scale()
-        app.canvas.create_my_rectangle("grout_bg", 0, 0, bg_width, bg_height, Colors[color],
-                                       ("background", "grout"))
-        bg_color = app.canvas.cget('background')
-
-        # clip above grout background, across entire canvas
-        if app.canvas.my_height > app.canvas.in_to_px(bg_height):
-            app.canvas.create_my_rectangle(
-              "grout clip above", 0, bg_height,
-              app.canvas.px_to_in(app.canvas.my_width),
-              app.canvas.px_to_in(app.canvas.my_height) - bg_height,
-              bg_color, ("background", "topmost"))
-
-        # clip to the right of grout background
-        if app.canvas.my_width > app.canvas.in_to_px(bg_width):
-            app.canvas.create_my_rectangle(
-              "grout clip right", bg_width, 0,
-              app.canvas.px_to_in(app.canvas.my_width) - bg_width, bg_height,
-              bg_color, ("background", "topmost"))
-
     def create_wall(name):
-        rects = Walls[name]
-        grout_bg(rects[0][0], rects[0][1])
-        for pos, size, color in rects[1:]:
-            print(f"pos={f_to_str(pos)}, size={f_to_str(size)}, {color=}")
-            if isinstance(size, (tuple, list)):
-                app.canvas.create_my_rectangle("wall", pos[0], pos[1], size[0], size[1],
-                                               color, ("background", "topmost"))
-            else:
-                app.canvas.create_my_circle("wall", color, pos, size,
-                                            ("background", "topmost"))
+        app.Wall = app.Walls[name]
+        app.Wall_settings = app.Settings['wall_settings'][name]
+        app.Plans = app.Wall_settings['plans']
+        app.Wall.create()
+
+        plans = app.myapp.submenus['Plans']
+        plans.delete(0, 'end')
+        for name, plan in app.Plans.items():
+            plans.add_command(label=name, command=partial(run_plan, name))
+        if 'default_plan' in app.Wall_settings:
+            run_plan(app.Wall_settings['default_plan'])
 
     def quit():
         app.root.destroy()
@@ -331,9 +310,9 @@ if __name__ == "__main__":
               ("Reload", init),
              #("Dialog Test", run_dialog),
               ("Choose Color", choose_color),
-              ("Set Grout Color", run_set_grout_color),
               ("Wall",),
-              ("Pattern",),
+              ("Set Grout Color", run_set_grout_color),
+              ("Plans",),
             ))
 
     init()

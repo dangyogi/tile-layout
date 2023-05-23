@@ -1,21 +1,34 @@
 # tiles.py
 
-from utils import read_csv, eval_num, eval_color
-from tile import Tile
+from utils import read_yaml
+from tile import gen_tile
 
 
-def read_tiles(colors, filename="tiles.csv"):
-    tiles = {}
-    for name, height, width, color in read_csv(filename):
-        tile = Tile.create(name, eval_num(width, {}), eval_num(height, {}),
-                           eval_color(color, colors))
-        for t in tile.tiles():
-            tiles[t.name] = t
-    return tiles
+def read_tiles(shapes=None, colors=None, filename="tiles.yaml"):
+    return {name: tile
+            for tile_name, specs in read_yaml(filename).items()
+            for name, tile in gen_tile(tile_name, specs, shapes, colors)}
 
 
 
 if __name__ == "__main__":
     from pprint import pp
+    from colors import read_colors
+    from shapes import read_shapes
 
-    pp(read_tiles(dict(a='#1', b='#2')))
+    colors = read_colors()
+    shapes = read_shapes()
+
+    def dump(name, tile):
+        print(name)
+        print("  name:", tile.name)
+        print("  skip_x:", tile.skip_x)
+        print("  skip_y:", tile.skip_y)
+        print("  color:", tile.color)
+        print("  points:", tile.points)
+        if hasattr(tile, 'flipped'):
+            print("  flipped:", tile.flipped.name)
+        print()
+
+    for name, tile in read_tiles(shapes, colors).items():
+        dump(name, tile)

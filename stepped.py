@@ -7,13 +7,16 @@ from utils import f_to_str
 
 def stepped(tile, offset, grout_gap, angle, x_offset, y_offset, max_x, max_y):
     width = tile.width + grout_gap
-    offsets = []
+    offsets = []   # start at 0, inc by width + offset
     for i in count(0):
         next = width * offset * i
         if abs(next) >= width:
             break
         offsets.append(next)
     stepped2(tile, offsets, grout_gap, angle, x_offset, y_offset, max_x, max_y)
+
+
+def lay_row(tile, skip_x, skip_y, angle, x_offset, y_offset, max_x, max_y)
 
 
 def stepped2(tile, offsets, grout_gap, angle, x_offset, y_offset, max_x, max_y):

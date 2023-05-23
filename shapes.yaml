@@ -1,0 +1,108 @@
+# shapes.yaml
+
+---
+
+square:
+    type: polygon
+    parameters: [width]
+    points:
+        - [0,0]
+        - [0,width]
+        - [width,width]
+        - [width,0]
+    skip_x: width
+    skip_y: width
+
+rectangle:
+    type: polygon
+    parameters: [width, height]
+    points:
+        - [0,0]
+        - [0,height]
+        - [width,height]
+        - [width,0]
+    flipped:
+        shape: rectangle
+        arguments: [height, width]
+    skip_x: width
+    skip_y: height
+
+hex:
+    type: polygon
+    parameters: [height]
+    constants:
+        side: height / !3
+        point_height: side / 2
+    points:
+        - [0, 0]
+        - [-point_height, height / 2]
+        - [0, height]
+        - [side, height]
+        - [side + point_height, height / 2]
+        - [side, 0]
+    skip_x: side + point_height
+    skip_y: height / 2
+
+picket:
+    type: polygon
+    parameters:
+        - height
+        - width         # in middle (at widest point)
+        - bottom_width
+    points:
+        - [-bottom_width / 2, 0]
+        - [-width / 2, height / 2]
+        - [-bottom_width / 2, height]
+        - [bottom_width / 2, height]
+        - [width / 2, height / 2]
+        - [bottom_width / 2, 0]
+    skip_x: width - width / 2 + bottom_width / 2
+    skip_y: height
+
+diamond:
+    type: polygon
+    parameters:
+        - height
+        - width         # in middle (at widest point)
+    points:
+        - [0, 0]
+        - [-width / 2, height / 2]
+        - [0, height]
+        - [width / 2, height / 2]
+    skip_x: width / 2
+    skip_y: height
+
+star_cross:
+    type: polygon
+    parameters:
+        - width  # of square
+        - point_direction  # 1 for out (star), -1 for in (cross)
+    constants:
+        # width / 2 == side + side / !2 == side * (1 + 1/!2)
+        # side == width / (2 * (1 + 1/!2))
+        # side == width / (2 + !2)
+        side_to_width: 2 + !2
+        side: width / side_to_width
+        half_base: side / !2
+        base: 2 * half_base
+        height: point_direction * half_base
+    points:
+        - [0, 0]                                         # bottom left of square
+        - [0, side]
+        - [-height, side + half_base]                    # left point
+        - [0, side + base]
+        - [0, width]                                     # top left of square
+        - [side, width]
+        - [side + half_base, width + height]             # top point
+        - [side + base, width]
+        - [width, width]                                 # top right of square
+        - [width, width - side]
+        - [width + height, width - side - half_base]     # right point
+        - [width, side]
+        - [width, 0]                                     # bottom right of square
+        - [width - side, 0]
+        - [width - side - half_base, -height]            # bottom point
+        - [side, 0]
+    skip_x: width
+    skip_y: width
+

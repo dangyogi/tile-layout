@@ -3,128 +3,60 @@
 from math import sin, cos
 
 import app
-from utils import f_to_str
+from utils import my_eval, eval_pair, eval_color
 
 
 def erase_tiles():
     app.canvas.delete("tile")
-    Placement.Seen = set()
+
+def generate_tile(name, shape, args, color):
+    constants = args.copy()
+    if 'constants' in shape:
+        for name, exp in shape['constants'].items():
+            constants[name] = my_eval(exp, constants)
+    def get(name, eval_fn=my_eval):
+        #print(f"get({name!r})")
+        return eval_fn(shape[name], constants)
+    return Tile(name, get('points', eval_points), get('skip_x'), get('skip_y'), color)
+
+def eval_points(points, constants):
+    return tuple(eval_pair(p, constants) for p in points)
+
+def gen_tile(name, tile, shapes, colors):
+    #print(f"Generating Tile {name!r}")
+    if shapes is None:
+        shapes = app.Shapes
+    color = eval_color(tile['color'], colors)
+    shape = shapes[tile['shape']]
+    assert shape['type'] == 'polygon', f"expected type 'polygon', got '{shape['type']}'"
+    args = {param: tile[param] for param in shape['parameters']}
+    tile_1 = generate_tile(name, shape, args, color)
+    yield name, tile_1
+    if 'flipped' in shape:
+        f = shape['flipped']
+        if 'shape' in f:
+            shape = shapes[f['shape']]
+        args = {param: tile[arg_name]
+                for param, arg_name
+                 in zip(shape['parameters'], f['arguments'])}
+        name += ' - flipped'
+        tile_2 = generate_tile(name, shape, args, color)
+        yield name, tile_2
+        tile_1.flipped = tile_2
+        tile_2.flipped = tile_1
 
 
 class Tile:
-    flipped = None
-
-    @classmethod
-    def create(cls, name, width, height, color):
-        ans = cls(name, width, height, color)
-        if width != height:
-            ans.flipped = cls(name + ' - flipped', height, width, color)
-        return ans
-
-    def __init__(self, name, width, height, color):
+    def __init__(self, name, points, skip_x, skip_y, color):
         self.name = name
-        self.width = width
-        self.height = height
+        self.points = points
+        self.skip_x = skip_x
+        self.skip_y = skip_y
         self.color = color
 
     def __str__(self):
         return f"<Tile: {self.name}>"
 
-    def tiles(self):
-        yield self
-        if self.flipped is not None:
-            yield self.flipped
-
-    def place_at(self, corner, point, angle, x_offset, y_offset, max_x, max_y, test=False):
-        r'''max_x and max_y are in inches.
-        '''
-        return Placement.create(self, corner, point, angle, x_offset, y_offset,
-                                max_x, max_y, test)
-
-
-def rotate(point, angle):
-    s, c = sin(angle), cos(angle)
-    x, y = point
-    return x * c - y * s, x * s + y * c
-
-
-def translate_pt(pt, angle, x_offset, y_offset):
-    x, y = rotate(pt, angle)
-    return x + x_offset, y + y_offset
-
-class Placement:
-    Seen = set()
-    #Count = 0
-
-    def __init__(self, tile, left, top, angle, x_offset, y_offset, test=False):
-        #print(f"{tile} placed at left={f_to_str(left)}, top={f_to_str(top)}")
-        self.tile = tile
-        self.left = left
-        self.top = top
-        if not test:
-            item = app.canvas.create_my_polygon("tile placement", self.tile.color,
-                     translate_pt((self.left, self.bottom), angle, x_offset, y_offset),
-                     translate_pt((self.right, self.bottom), angle, x_offset, y_offset),
-                     translate_pt((self.right, self.top), angle, x_offset, y_offset),
-                     translate_pt((self.left, self.top), angle, x_offset, y_offset),
-                     tags=('tile',))
-            app.canvas.tag_lower(item, "topmost")
-
-    @classmethod
-    def create(cls, tile, corner, point, angle, x_offset, y_offset, max_x, max_y, test):
-        r'''max_x and max_y are in inches.
-        '''
-        x, y = point
-        if corner == 'ul':
-            left, top = x, y
-        elif corner == 'ur':
-            left, top = x - tile.width, y
-        elif corner == 'll':
-            left, top = x, y + tile.height
-        elif corner == 'lr':
-            left, top = x - tile.width, y + tile.height
-        else:
-            raise ValueError(f"Invalid corner: {corner!r}")
-        points = [translate_pt((x, y), angle, x_offset, y_offset)
-                  for x in (left, left + tile.width)
-                  for y in (top - tile.height, top)]
-        to_left, to_right, to_top, to_bottom = False, False, False, False
-        for x, y in points:
-            if x > 0: to_right = True
-            if x < max_x: to_left = True
-            if y > 0: to_top = True
-            if y < max_y: to_bottom = True
-        if not all((to_left, to_right, to_top, to_bottom)):
-            return None
-        if (tile, left, top) in cls.Seen:
-            return None
-        #if cls.Count > 50:
-        #    return None
-        #cls.Count += 1
-        cls.Seen.add((tile, left, top))
-        return cls(tile, left, top, angle, x_offset, y_offset, test)
-
-    def __str__(self):
-        return f"<Placement: {self.tile} at ({f_to_str(self.left)}, {f_to_str(self.top)})>"
-
-    @property
-    def right(self):
-        return self.left + self.tile.width
-
-    @property
-    def bottom(self):
-        return self.top - self.tile.height
-
-    def at(self, corner, delta_X=0, delta_Y=0):
-        r'''Returns point at corner.
-        '''
-        if corner == 'ul':
-            return self.left + delta_X, self.top + delta_Y
-        if corner == 'ur':
-            return self.right + delta_X, self.top + delta_Y
-        if corner == 'll':
-            return self.left + delta_X, self.bottom + delta_Y
-        if corner == 'lr':
-            return self.right + delta_X, self.bottom + delta_Y
-        raise ValueError(f"Invalid corner: {corner!r}")
+    def place_at(self, offset, plan):
+        return plan.create_polygon(self.points, offset, self.color)
 

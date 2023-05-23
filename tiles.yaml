@@ -1,0 +1,58 @@
+# tiles.yaml
+
+---
+
+8" square white:
+    shape: square
+    width: 8
+    color: white
+
+12" square:
+    shape: square
+    width: 12
+    color: white
+
+16" square:
+    shape: square
+    width: 16
+    color: white
+
+18" square:
+    shape: square
+    width: 18
+    color: white
+
+20" square:
+    shape: square
+    width: 20
+    color: white
+
+6x12:
+    shape: rectangle
+    height: 6
+    width: 12
+    color: white
+
+8x12:
+    shape: rectangle
+    height: 8
+    width: 12
+    color: white
+
+8x20:
+    shape: rectangle
+    height: 8
+    width: 20
+    color: white
+
+12x24:
+    shape: rectangle
+    height: 11.39/64
+    width: 23.13/32
+    color: white
+
+floor:
+    shape: rectangle
+    height: 11.13/16
+    width: 23.1/2
+    color: "#c4b4ae"

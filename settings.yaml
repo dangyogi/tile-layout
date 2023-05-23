@@ -1,0 +1,30 @@
+# settings.yaml
+
+---
+
+default_wall: Shower Right
+
+wall_settings:
+    Sink:
+        plans: {}
+    Stove:
+        plans: {}
+    Dining:
+        plans: {}
+    Shower Back:
+        plans: {}
+    Shower Left:
+        plans: {}
+    Shower Right:
+        default_plan: test_plan
+        plans:
+            test_plan:
+                grout_gap: 1/4
+                grout_color: orange
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stacked
+                    tile: 6x12

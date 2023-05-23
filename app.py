@@ -78,7 +78,7 @@ class MyCanvas(Canvas):
         #print(f"create_my_polygon({caller=}, points={f_to_str(points)})")
         start_x = max(0, points[0][0])
         end_x = min(myapp.bg_width, points[1][0])
-        print(f"row {points[0][1]}: length of next tile in row {end_x - start_x}")
+        #print(f"row {points[0][1]}: length of next tile in row {end_x - start_x}")
         return self.create_polygon(*(self.math_coord(pt) for pt in points),
                                    width=0, fill=color, tags=tags + ("math",))
 
