@@ -18,6 +18,7 @@ wall_settings:
                     type: stepped
                     tile: hex
                     percent_offset: 1/2
+
             picket:
                 grout_gap: 1/8
                 grout_color: acorn
@@ -29,6 +30,19 @@ wall_settings:
                     type: stepped
                     tile: picket
                     percent_offset: 1/2
+
+            picket_tilt:
+                grout_gap: 1/8
+                grout_color: acorn
+                alignment:
+                    angle: 16.9
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: picket
+                    percent_offset: 1/2
+
             star_X:
                 grout_gap: 1/4
                 grout_color: acorn
@@ -70,6 +84,18 @@ wall_settings:
                 grout_color: acorn
                 alignment:
                     angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: picket
+                    percent_offset: 1/2
+
+            picket_tilt:
+                grout_gap: 1/8
+                grout_color: acorn
+                alignment:
+                    angle: 16.9
                     x_offset: 0
                     y_offset: 0
                 layout:

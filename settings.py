@@ -1,6 +1,6 @@
 # settings.py
 
-from utils import read_yaml, write_yaml
+from utils import read_yaml, write_yaml, backup_file
 from plan import Plan
 
 
@@ -18,6 +18,10 @@ def init_settings(settings):
 def dump(settings):
     return {name: ([plan.dump() for plan in value] if name == 'plans' else value)
             for name, value in settings.items()}
+
+def save_settings(filename=Settings_filename):
+    backup_file(filename)
+    write_yaml(dump(app.Settings), filename)
 
 
 

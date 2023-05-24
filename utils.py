@@ -1,6 +1,7 @@
 # utils.py
 
 import re
+import os
 import os.path
 from fractions import Fraction
 from math import sqrt
@@ -200,6 +201,11 @@ def write_yaml(data, filename):
         print("#", filename, file=yaml_file)
         print(file=yaml_file)
         dump(data, yaml_file, explicit_start=True, width=90, indent=4)
+
+
+def backup_file(filename, backup_suffix='.bck'):
+    full_path = os.path.join(Data_dir, filename)
+    os.replace(full_path, full_path + backup_suffix)
 
 
 def read_csv(filename, ignore_header=True):

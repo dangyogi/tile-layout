@@ -74,7 +74,7 @@ hex:
     height: 8.15/32
     color: "#EEE"
 
-picket:
+picket:  # opens at a 16.9 degree angle
     shape: picket
     length: 7.13/16
     width: 3.7/8

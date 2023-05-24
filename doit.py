@@ -16,7 +16,7 @@ from shapes import read_shapes
 from tiles import read_tiles
 from layouts import read_layouts
 from walls import read_walls
-from settings import read_settings
+from settings import read_settings, save_settings
 
 
 def tile_arg(s):
@@ -107,6 +107,7 @@ def tile_entry(master):
 
 
 def run_plan(name):
+    app.Plan_name = name
     app.Plan = app.Plans[name]
     app.Plan.create()
 
@@ -240,10 +241,6 @@ def run_step():
                   ("angle", angle_entry)))
 
 
-Grout_color_defaults = [
-    "joyful orange",       # color
-]
-
 def run_set_grout_color():
     def do_grout_color(dialog):
         print("Setting grout color")
@@ -252,8 +249,59 @@ def run_set_grout_color():
         print(f"do_grout_color {color=}")
         app.Plan.set_grout_color(color)
 
-    run_dialog("Grout Color", do_grout_color, Grout_color_defaults, (
+    run_dialog("Grout Color", do_grout_color, [app.Plan.grout_color], (
                   ("color", str_entry),))
+
+
+def run_set_grout_gap():
+    def do_grout_gap(dialog):
+        print("Setting grout gap")
+        values = tuple(map(attrgetter('value'), dialog.entry_widgets))
+        gap = values[0]
+        print(f"do_grout_gap {gap=}")
+        app.Plan.grout_gap = gap
+        app.Plan.create()
+
+    run_dialog("Grout Gap", do_grout_gap, [app.Plan.grout_gap], (
+                  ("gap", fraction_entry),))
+
+
+def run_set_angle():
+    def do_angle(dialog):
+        print("Setting angle")
+        values = tuple(map(attrgetter('value'), dialog.entry_widgets))
+        angle = values[0]
+        print(f"do_grout_color {angle=}")
+        app.Plan.alignment.angle = angle
+        app.Plan.create()
+
+    run_dialog("Angle", do_angle, [app.Plan.alignment.angle], (
+                  ("angle", angle_entry),))
+
+
+def run_set_x_offset():
+    def do_x_offset(dialog):
+        print("Setting x_offset")
+        values = tuple(map(attrgetter('value'), dialog.entry_widgets))
+        x_offset = values[0]
+        print(f"do_x_offset {x_offset=}")
+        app.Plan.alignment.x_offset = x_offset
+        app.Plan.create()
+
+    run_dialog("X_offset", do_x_offset, [app.Plan.alignment.x_offset], (
+                  ("x_offset", fraction_entry),))
+
+def run_set_y_offset():
+    def do_y_offset(dialog):
+        print("Setting y_offset")
+        values = tuple(map(attrgetter('value'), dialog.entry_widgets))
+        y_offset = values[0]
+        print(f"do_y_offset {y_offset=}")
+        app.Plan.alignment.y_offset = y_offset
+        app.Plan.create()
+
+    run_dialog("Y_offset", do_y_offset, [app.Plan.alignment.y_offset], (
+                  ("y_offset", fraction_entry),))
 
 
 def init():
@@ -270,8 +318,25 @@ def init():
     for name in sorted(app.Walls.keys()):
         wall.add_command(label=name, command=partial(create_wall, name))
 
-    #if 'default_wall' in app.Settings:
-    #    create_wall(app.Settings['default_wall'])
+    app.Wall_name = None
+    app.Wall = None
+    app.Plan_name = None
+    app.Plan = None
+
+
+def reload():
+    wall_name = app.Wall_name
+    plan_name = app.Plan_name
+    init()
+    if wall_name is None and 'default_wall' in app.settings:
+        wall_name = app.settings['default_wall']
+        plan_name = None
+    if wall_name is not None:
+        create_wall(wall_name, plan_name)
+
+
+def save_settings():
+    app.Settings
 
 
 
@@ -289,7 +354,8 @@ if __name__ == "__main__":
     def choose_color():
         print(f"choose_color -> {colorchooser.askcolor()}")
 
-    def create_wall(name):
+    def create_wall(name, plan_name=None):
+        app.Wall_name = name
         app.Wall = app.Walls[name]
         app.Wall_settings = app.Settings['wall_settings'][name]
         app.Plans = app.Wall_settings['plans']
@@ -299,20 +365,29 @@ if __name__ == "__main__":
         plans.delete(0, 'end')
         for name, plan in app.Plans.items():
             plans.add_command(label=name, command=partial(run_plan, name))
-        if 'default_plan' in app.Wall_settings:
-            run_plan(app.Wall_settings['default_plan'])
+        if plan_name is None and 'default_plan' in app.Wall_settings:
+            plan_name = app.Wall_settings['default_plan']
+        if plan_name is not None:
+            run_plan(app.Wall_settings[plan_name])
 
     def quit():
         app.root.destroy()
 
     app.init((("Quit", quit),
               ("Spew", app.spew),
-              ("Reload", init),
+              ("Reload", reload),
              #("Dialog Test", run_dialog),
               ("Choose Color", choose_color),
               ("Wall",),
-              ("Set Grout Color", run_set_grout_color),
               ("Plans",),
+              ("Plan Settings", (
+                 ("Set Grout Color", run_set_grout_color),
+                 ("Set Grout Gap", run_set_grout_gap),
+                 ("Set Angle", run_set_angle),
+                 ("Set X_offset", run_set_x_offset),
+                 ("Set Y_offset", run_set_y_offset),
+              )),
+              ("Save Settings", save_settings),
             ))
 
     init()
