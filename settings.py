@@ -1,5 +1,6 @@
 # settings.py
 
+import app
 from utils import read_yaml, write_yaml, backup_file
 from plan import Plan
 
@@ -16,10 +17,23 @@ def init_settings(settings):
     return settings
 
 def dump(settings):
-    return {name: ([plan.dump() for plan in value] if name == 'plans' else value)
+    def unpack_data(value):
+        if isinstance(value, (tuple, list)):
+            return [unpack_data(x) for x in value]
+        if isinstance(value, dict):
+            return {name: unpack(name, value) for name, value in value.items()}
+        return value
+    def unpack(name, value):
+        if name == 'plans':
+            #print("unpack plans")
+            return {plan_name: plan.dump() for plan_name, plan in value.items()}
+        #print("unpack data")
+        return unpack_data(value)
+    return {name: unpack(name, value)
             for name, value in settings.items()}
 
 def save_settings(filename=Settings_filename):
+    print("save_settings")
     backup_file(filename)
     write_yaml(dump(app.Settings), filename)
 

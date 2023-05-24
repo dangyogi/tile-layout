@@ -7,7 +7,7 @@ from fractions import Fraction
 from math import sqrt
 import csv
 
-from yaml import safe_load
+from yaml import safe_load, dump
 
 
 Code_dir = os.path.dirname(__file__)

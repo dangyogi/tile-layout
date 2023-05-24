@@ -328,15 +328,11 @@ def reload():
     wall_name = app.Wall_name
     plan_name = app.Plan_name
     init()
-    if wall_name is None and 'default_wall' in app.settings:
-        wall_name = app.settings['default_wall']
+    if wall_name is None and 'default_wall' in app.Settings:
+        wall_name = app.Settings['default_wall']
         plan_name = None
     if wall_name is not None:
         create_wall(wall_name, plan_name)
-
-
-def save_settings():
-    app.Settings
 
 
 
@@ -368,7 +364,7 @@ if __name__ == "__main__":
         if plan_name is None and 'default_plan' in app.Wall_settings:
             plan_name = app.Wall_settings['default_plan']
         if plan_name is not None:
-            run_plan(app.Wall_settings[plan_name])
+            run_plan(plan_name)
 
     def quit():
         app.root.destroy()
