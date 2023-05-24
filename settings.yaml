@@ -6,9 +6,99 @@ default_wall: Shower Right
 
 wall_settings:
     Sink:
-        plans: {}
+        plans:
+            hex:
+                grout_gap: 1/8
+                grout_color: acorn
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: hex
+                    percent_offset: 1/2
+            picket:
+                grout_gap: 1/8
+                grout_color: acorn
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: picket
+                    percent_offset: 1/2
+            star_X:
+                grout_gap: 1/4
+                grout_color: acorn
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: checkerboard
+                    tile_a: cross
+                    tile_b: star
+            star_+:
+                grout_gap: 1/4
+                grout_color: acorn
+                alignment:
+                    angle: 45
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: checkerboard
+                    tile_a: cross
+                    tile_b: star
+
     Stove:
-        plans: {}
+        plans:
+            hex:
+                grout_gap: 1/8
+                grout_color: acorn
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: hex
+                    percent_offset: 1/2
+            picket:
+                grout_gap: 1/8
+                grout_color: acorn
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: stepped
+                    tile: picket
+                    percent_offset: 1/2
+            star_X:
+                grout_gap: 1/4
+                grout_color: acorn
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: checkerboard
+                    tile_a: cross
+                    tile_b: star
+            star_+:
+                grout_gap: 1/4
+                grout_color: acorn
+                alignment:
+                    angle: 45
+                    x_offset: 0
+                    y_offset: 0
+                layout:
+                    type: checkerboard
+                    tile_a: cross
+                    tile_b: star
+
     Dining:
         plans: {}
     Shower Back:
@@ -20,7 +110,7 @@ wall_settings:
         plans:
             stacked:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -30,7 +120,7 @@ wall_settings:
                     tile: 6x12
             stepped:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -41,7 +131,7 @@ wall_settings:
                     percent_offset: 1/3
             stepped_rev:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -52,7 +142,7 @@ wall_settings:
                     percent_offset: -1/3
             hopscotch_right:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -64,7 +154,7 @@ wall_settings:
                     right: true
             hopscotch_left:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -76,7 +166,7 @@ wall_settings:
                     right: false
             herringbone_right:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -87,7 +177,7 @@ wall_settings:
                     right: true
             herringbone_left:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -98,7 +188,7 @@ wall_settings:
                     right: false
             hex:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -109,7 +199,7 @@ wall_settings:
                     percent_offset: 1/2
             picket:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -121,7 +211,7 @@ wall_settings:
 
             star_cross:
                 grout_gap: 1/4
-                grout_color: orange
+                grout_color: acorn
                 alignment:
                     angle: 0
                     x_offset: 0

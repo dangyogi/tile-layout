@@ -18,6 +18,22 @@ Sink:
         pos: [32.7/16, 9.3/8]
         size: [29.3/4, 26.1/2]
         color: "#CCC"
+    outlet1:
+        pos: [12.1/8, 8.3/8]
+        size: [3, 4.7/8]
+        color: outlet
+    outlet2:
+        pos: [26.1/8, 8.3/8]
+        size: [3, 4.7/8]
+        color: outlet
+    outlet3:
+        pos: [65.7/16, 8.3/8]
+        size: [3, 4.7/8]
+        color: outlet
+    outlet4:
+        pos: [80.1/4, 8.3/8]
+        size: [3, 4.7/8]
+        color: outlet
 
 Stove:
     grout: [96, 17.1/2]
@@ -47,6 +63,22 @@ Stove:
         pos: [lt_cab_width, 0]
         size: [30, 10]
         color: white
+    outlet1:
+        pos: [9.3/8, 8.5/16]
+        size: [3, 4.7/8]
+        color: outlet
+    outlet2:
+        pos: [60.3/4, 8.5/16]
+        size: [3, 4.7/8]
+        color: outlet
+    outlet3:
+        pos: [80.5/8, 8.3/16]
+        size: [3, 4.7/8]
+        color: outlet
+    outlet4:
+        pos: [89.3/16, 8.1/8]
+        size: [3, 4.7/8]
+        color: outlet
 
 Dining:
     grout: [90.1/16, 17.1/2]

@@ -85,12 +85,14 @@ class Plan:
             print(f"{self.name}.repeat({step=})")
         visible = False
         x_inc, y_inc = increment
+        ax_inc, ay_inc = self.alignment.align_pt(increment)
         x, y = offset = start
         check_visibility = False
         while times is None or times:
             if not check_visibility:
-                if     (x_inc == 0 or x_inc > 0 and x >= 0 or x_inc < 0 and x < self.wall.max_x) \
-                   and (y_inc == 0 or y_inc > 0 and y >= 0 or y_inc < 0 and y < self.wall.max_y):
+                ax, ay = self.alignment.align_pt((x, y))
+                if     (ax_inc == 0 or ax_inc > 0 and ax >= 0 or ax_inc < 0 and ax < self.wall.max_x) \
+                   and (ay_inc == 0 or ay_inc > 0 and ay >= 0 or ay_inc < 0 and ay < self.wall.max_y):
                     check_visibility = True
             if self.do_step(step, offset, constants, trace=trace):
                 visible = True
