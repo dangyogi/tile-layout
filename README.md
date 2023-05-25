@@ -5,22 +5,22 @@ This directly supports fractional numbers to make measurements in inches easier.
 
 ## Expression Syntax:
 
+Spaces are required on either side of all binary operators so they don't get confused with
+unary operators or fractions.
+
+Parenthesis are currently unsupported.
+
 fraction
 : `-? <integer> | -? <integer>.<integer>/<integer> | -? <integer>/<integer>`
-
 num
 : `-? <constant_name> | -? !<integer> | <fraction>`
 
   No spaces are allowed in numbers.  The ! operator is square-root.
 
 term
-: `num ((' * '|' / ') num)*`
-  Spaces are required on either side of * and / so they don't get confused with fractions.
-  Notice, there are no parenthesis to group + or - within * or /.
-
+: `num ([*/] num)*`
 exp
 : `term ([-+] term)*`
-
 pair
 : `exp (, exp)?`
 
@@ -34,14 +34,13 @@ Reader: colors.read_colors(filename='colors.csv') -> \{name: value\}
 
 ### shapes.yaml
 
-|
-name:
-    type: polygon
-    parameters: name (, name)*
-    constants:
-        name: exp
-    points:
-        - pair
+    name:
+        type: polygon
+        parameters: name (, name)*
+        constants:
+            name: exp
+        points:
+            - pair
 
 ### tiles.yaml
 

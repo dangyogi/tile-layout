@@ -136,7 +136,7 @@ def my_eval(s, constants, trace=False):
     op = None
     start = 0
     s = s.strip()
-    for match in re.finditer(r'[-+]', s):
+    for match in re.finditer(r' \- | \+ ', s):
         #print(f"got op={match.group()!r}, {start=}, {match.start()=}, {match.end()}")
         if match.start() == 0:
             # skip unary minus
@@ -144,16 +144,16 @@ def my_eval(s, constants, trace=False):
         a = eval_term(s[start:match.start()], constants, trace=trace)
         if trace:
             print(f"my_eval: {ans=}, {op=}, {a=}")
-        if op == '+': ans += a
-        elif op == '-': ans -= a
+        if op == ' + ': ans += a
+        elif op == ' - ': ans -= a
         else: ans = a
         op = match.group()
         start = match.end()
     a = eval_term(s[start:], constants, trace=trace)
     if trace:
         print(f"my_eval: final {ans=}, {op=}, {a=}")
-    if op == '+': return ans + a
-    if op == '-': return ans - a
+    if op == ' + ': return ans + a
+    if op == ' - ': return ans - a
     return a
 
 
