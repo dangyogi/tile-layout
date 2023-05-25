@@ -11,7 +11,7 @@ Sink:
         size: [31.1/4, 37]
         color: cabinet
     right_cab:
-        pos: [bg_width-cab_width, 17.1/2]
+        pos: [bg_width - cab_width, 17.1/2]
         size: [cab_width, 36.1/2]
         color: cabinet
     window:
@@ -48,7 +48,7 @@ Stove:
         size: [lt_cab_width, 36.7/8]
         color: cabinet
     right_cab:
-        pos: [bg_width-rt_cab_width, 17.1/2]
+        pos: [bg_width - rt_cab_width, 17.1/2]
         size: [rt_cab_width, rt_cab_height]
         color: cabinet
     uWave:

@@ -1,7 +1,7 @@
 # tile.py
 
 from math import sin, cos
-from Pillow import Image
+from PIL import Image, ImageTk
 
 import app
 from utils import my_eval, eval_pair, eval_color
@@ -20,9 +20,9 @@ def generate_tile(name, shape, args, tile, colors, rotation=0):
         return eval_fn(shape[name], constants)
     if 'color' in tile:
         return Tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
-                    color=eval_color(tile['color], colors))
+                    eval_color(tile['color'], colors))
     return Image_tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
-                      image=tile['image'], rotation=rotation)
+                      tile['image'], rotation)
 
 def eval_points(points, constants):
     return tuple(eval_pair(p, constants) for p in points)
@@ -31,7 +31,6 @@ def gen_tile(name, tile, shapes, colors):
     #print(f"Generating Tile {name!r}")
     if shapes is None:
         shapes = app.Shapes
-    color = eval_color(tile['color'], colors)
     shape = shapes[tile['shape']]
     assert shape['type'] == 'polygon', f"expected type 'polygon', got '{shape['type']}'"
     args = {param: tile[param] for param in shape['parameters']}
@@ -82,7 +81,7 @@ class Image_tile(Base_tile):
             self.image = self.image.rotate(rotation, expand=True)
 
         # offset from SW corner of image to first point in self.points
-        self.sw_offset = -min(p[0] for p in self.points), -min(p[1] for p in self.points)
+        self.sw_offset = self.get_sw_offset(self.points)
 
         # width and height in inches, based on self.points
         self.in_width = max(p[0] for p in self.points) + self.sw_offset[0]
@@ -95,7 +94,10 @@ class Image_tile(Base_tile):
         # to place the image, and recalc as necessary.
         self.scale = None
 
-    def get_image(self, plan):
+    def get_sw_offset(self, points):
+        return points[0][0] - min(p[0] for p in points), points[0][1] - min(p[1] for p in points)
+
+    def get_image(self, plan, new_points):
         r'''Returns sw_offset, image.
 
         The `sw_offset` is the offset from the SW corner of the image to the first
@@ -103,44 +105,36 @@ class Image_tile(Base_tile):
 
         Checks self.scale and recalcs self.scaled_image as necessary.  Also manages
         the cache of rotated images in self.cache, which is key-ed by the rotation
-        angle and stores the rotated (sw_offset, image).
+        angle and stores the rotated (sw_offset, imageTk).
         '''
         # first, get self.scaled_image scaled to current app scale.
         if app.canvas.my_scale != self.scale:
+            print(f"Image_tile({self.name}).get_image creating scaled image")
             self.scale = app.canvas.my_scale
-            self.scaled_image = self.image.resize((app.canvas.in_to_px(self.in_width),
-                                                   app.canvas.in_to_px(self.in_height)))
+            self.scaled_image = self.image.resize((int(round(app.canvas.in_to_px(self.in_width))),
+                                                   int(round(app.canvas.in_to_px(self.in_height)))))
             self.cache = {}
 
         # then get rotated image
         angle = plan.alignment.angle
         if angle not in self.cache:
+            print(f"Image_tile({self.name}).get_image creating rotated image for angle {angle}")
             if angle == 0:
                 rotated_image = self.scaled_image
                 sw_offset = self.sw_offset
             else:
                 rotated_image = self.scaled_image.rotate(angle, expand=True)
-
-                # Calculate sw_offset:
-                old_size = self.scaled_image.size
-                old_center = old_size[0] / 2, old_size[1] / 2
-                new_size = rotated_image.size
-                new_center = new_size[0] / 2, new_size[1] / 2
-                # adjust the old offset from the center of the image for the rotation
-                old_offset_from_center = (self.sw_offset[0] - old_center[0],
-                                          self.sw_offset[1] - old_center[1])
-                new_offset = plan.alignment.rotate(old_offset_from_center)
-                # translate new_offset to offset from SW corner
-                sw_offset = (new_offset[0] + new_center[0],
-                             new_offset[1] + new_center[1]))
-            self.cache[angle] = sw_offset, rotated_image
+                sw_offset = self.get_sw_offset(new_points)
+            print(f"get_image: sw_offset=({sw_offset[0]:.2f}, {sw_offset[1]:.2f})")
+            self.cache[angle] = sw_offset, ImageTk.PhotoImage(rotated_image)
 
         # return rotated image
         return self.cache[angle]
 
     def place_at(self, offset, plan):
-        if plan.align(self.points, offset) is None:
+        new_points = plan.align(self.points, offset)
+        if new_points is None:
             return False
-        sw_offset, image = self.get_image(plan)
-        plan.create_image(image, sw_offset, offset)
+        sw_offset, image = self.get_image(plan, new_points)
+        plan.create_image(image, sw_offset, new_points[0])
         return True

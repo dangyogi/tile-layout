@@ -10,7 +10,7 @@ wall_settings:
     Shower Left:
         plans: {}
     Shower Right:
-        default_plan: stacked
+        default_plan: stepped
         plans:
             herringbone_left:
                 alignment:
@@ -88,8 +88,19 @@ wall_settings:
                 grout_color: acorn
                 grout_gap: 1/4
                 layout:
-                    tile: 6x12
+                    tile: 8" square white
                     type: stacked
+            stacked_image:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    tile: test_image
+                    type: stacked
+
             star_cross:
                 alignment:
                     angle: 0

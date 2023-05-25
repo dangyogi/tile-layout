@@ -2,6 +2,11 @@
 
 ---
 
+test_image:
+    shape: square
+    width: 6
+    image: test.webp
+
 8" square white:
     shape: square
     width: 8
