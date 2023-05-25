@@ -8,21 +8,21 @@ This directly supports fractional numbers to make measurements in inches easier.
 Spaces are required on either side of all binary operators so they don't get confused with
 unary operators or fractions.
 
+Spaces are prohibited following unary operators.
+
 Parenthesis are currently unsupported.
 
-fraction
-: `-? <integer> | -? <integer>.<integer>/<integer> | -? <integer>/<integer>`
-num
-: `-? <constant_name> | -? !<integer> | <fraction>`
+fraction: `-? <integer> | -? <integer>.<integer>/<integer> | -? <integer>/<integer>`
+
+num: `-? <constant_name> | -? !<integer> | <fraction> | -? <name> (\. <name>)*`
 
   No spaces are allowed in numbers.  The ! operator is square-root.
 
-term
-: `num ([*/] num)*`
-exp
-: `term ([-+] term)*`
-pair
-: `exp (, exp)?`
+term: `num ([*/] num)*`
+
+exp: `term ([-+] term)*`
+
+pair: `exp (, exp)?`
 
 ## Files:
 
