@@ -90,6 +90,13 @@ class MyCanvas(Canvas):
         return self.create_oval(x - r, y - r, x + r, y + r,
                                 width=0, fill=color, tags=tags + ("math",))
 
+    def create_my_image(self, caller, image, sw_offset, pos, tags=()):
+        #print(f"create_my_image({caller=}, pos={f_to_str(pos)}, "
+        #      f"diameter={f_to_str(diameter)})")
+        x, y = self.math_coord((pos[0] - sw_offset[0], pos[1] - sw_offset[1]))
+        return self.create_image(x, y, anchor=SW,
+                                 image=image, tags=tags + ("math",))
+
     def size(self):
         r'''Returns width, height in pixels.
         '''

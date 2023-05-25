@@ -39,6 +39,16 @@ class Plan:
         self.display_grout_color()
         self.do_step(self.layout)
 
+    def align(self, points, offset):
+        r'''Returns aligned points after applying offset.
+
+        If the aligned points are not visible, returns None.
+        '''
+        aligned_points = self.alignment.align((x + offset[0], y + offset[1]) for x, y in points)
+        if self.wall.visible(aligned_points):
+            return aligned_points
+        return None
+
     def create_polygon(self, points, offset, color):
         r'''Does nothing if the points are not visible.
 
@@ -47,12 +57,16 @@ class Plan:
         The `offset` is added to each point, and then the points are aligned before checking for
         visibility.
         '''
-        aligned_points = self.alignment.align((x + offset[0], y + offset[1]) for x, y in points)
-        if not self.wall.visible(aligned_points):
+        aligned_points = self.align(points, offset)
+        if aligned_points is None:
             return False
-        item = app.canvas.create_my_polygon("tile placement", color, *aligned_points, tags=('tile',))
+        item = app.canvas.create_my_polygon("plan", color, *aligned_points, tags=('tile',))
         app.canvas.tag_lower(item, "topmost")
         return True
+
+    def create_image(self, image, sw_offset, pos):
+        item = app.canvas.create_my_image("plan", image, sw_offset, pos, tags=('tile',))
+        app.canvas.tag_lower(item, "topmost")
 
     def place(self, offset, tile, trace=False):
         r'''Returns True if displayed, False if not visible.

@@ -20,6 +20,10 @@ class Alignment:
     def dump(self):
         return {attr: getattr(self, attr) for attr in self.attrs}
 
+    def set_angle(self, angle):
+        self.angle = angle
+        self.radians = radians(angle)
+
     def rotate(self, pt):
         s, c = sin(self.radians), cos(self.radians)
         x, y = pt

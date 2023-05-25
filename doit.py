@@ -271,8 +271,8 @@ def run_set_angle():
         print("Setting angle")
         values = tuple(map(attrgetter('value'), dialog.entry_widgets))
         angle = values[0]
-        print(f"do_grout_color {angle=}")
-        app.Plan.alignment.angle = angle
+        print(f"do_angle {angle=}")
+        app.Plan.alignment.set_angle(angle)
         app.Plan.create()
 
     run_dialog("Angle", do_angle, [app.Plan.alignment.angle], (
