@@ -152,13 +152,19 @@ flower:
     steps:
         - type: place
           tile: tile
-          angle: -90
+          angle: 90
+          save:
+              next_x: next_x
+              next_y: next_y
         - type: place
           tile: tile
           angle: 180
+          offset: [next_x, 0]
         - type: place
           tile: tile
           angle: 0
+          offset: [0, next_y]
         - type: place
           tile: tile
-          angle: 90
+          angle: -90
+          offset: [next_x, next_y]

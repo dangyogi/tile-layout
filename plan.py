@@ -1,5 +1,7 @@
 # plan.py
 
+from collections import ChainMap
+
 import app
 from utils import my_eval, eval_color, eval_tile, format
 from tile import erase_tiles
@@ -88,23 +90,33 @@ class Plan:
 
     def sequence(self, constants, *steps, trace=False):
         r'''Returns True if any step is displayed, False if nothing is visible.
+
+        If visible, returns the greatest next_x, next_y in constants.
         '''
         if trace:
             print(f"{self.name}.sequence({steps=})")
         visible = False
         next_x = next_y = -1000
         start_x, start_y = constants['offset']
+        my_constants = ChainMap({}, constants)
         for step in steps:
+            step_constants = my_constants.new_child()
+            if 'use' in step:
+                for key, value in step['use'].items():
+                    step_constants[key] = my_eval(value, step_constants)
             if 'offset' in step:
-                x, y = my_eval(step['offset'], constants)
-                constants['offset'] = start_x + x, start_y + y
+                x, y = my_eval(step['offset'], step_constants)
+                step_constants['offset'] = start_x + x, start_y + y
             else:
-                constants['offset'] = start_x, start_y
-            if self.do_step(step, constants, trace=trace):
-                if constants['next_x'] > next_x:
-                    next_x = constants['next_x']
-                if constants['next_y'] > next_y:
-                    next_y = constants['next_y']
+                step_constants['offset'] = start_x, start_y
+            if self.do_step(step, step_constants, trace=trace):
+                if 'save' in step:
+                    for key, value in step['save'].items():
+                        my_constants[key] = my_eval(value, step_constants)
+                if step_constants['next_x'] > next_x:
+                    next_x = step_constants['next_x']
+                if step_constants['next_y'] > next_y:
+                    next_y = step_constants['next_y']
                 visible = True
         if visible:
             constants['next_x'] = next_x
@@ -119,6 +131,8 @@ class Plan:
         `do_reverse` is only for use by repeat itself.  Outside callers must let this default.
 
         Returns True if any repetition is visible, False if nothing is visible.
+
+        If visible, returns the greatest next_x, next_y in constants.
         '''
         if trace:
             print(f"{self.name}.repeat({step=})")
