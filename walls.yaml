@@ -179,3 +179,78 @@ Guest Bath:
         pos: [11.1/2, left_len + 13.1/2]
         size: 6.1/2
         color: black
+
+Master Left:
+    constants:
+        width: 33.5/8
+        bar_x: width - 5.5/8
+        bar_y: 43.3/16
+    grout: [width, 88]
+    valve:
+        pos: [width - 15.15/16, bar_y]
+        size: 7
+        color: silver
+    bar_bottom:
+        pos: [bar_x, bar_y]
+        size: 2.1/2
+        color: silver
+    bar_top:
+        pos: [bar_x, bar_y + 31.1/4]
+        size: 2.1/2
+        color: silver
+    bar:
+        pos: [bar_x - 1/2, bar_y]
+        size: [1, 31.1/4]
+        color: silver
+    nipple:
+        pos: [width - 9.1/2, bar_y]
+        size: 1.7/8
+        color: silver
+
+Master Right:
+    constants:
+        width: 33.13/16
+        niche_width: 21.11/16 - 9.5/8
+        niche_center_x: 9.5/8 + niche_width / 2
+        niche_height: 61.1/8 - 44.7/8
+        niche_center_y: 44.7/8 + niche_height / 2
+        back_width: 11
+        back_height: 15.1/4
+        border_width: 16
+        border_height: 20
+        sill_width: 18
+        sill_height: 2.1/2
+    grout: [width, 87.15/16]
+    niche_border:
+        pos: [niche_center_x - border_width / 2, niche_center_y - border_height / 2]
+        size: [border_width, border_height]
+        color: "#888"
+    niche_sill:
+        pos: [niche_center_x - sill_width / 2, niche_center_y - border_height / 2]
+        size: [sill_width, sill_height]
+        color: "#888"
+    niche_back:
+        pos: [niche_center_x - back_width / 2, niche_center_y - back_height / 2]
+        size: [back_width, back_height]
+        color: "#DDD"
+
+Master Back:
+    constants:
+        width: 46.3/4
+        center: width / 2
+        pic_tile_size: 6.1/8
+        pic_width: pic_tile_size * 4
+        pic_height: pic_tile_size * 3
+    grout: [width, 88.7/8]
+    picture:
+        pos: [center - pic_width / 2, 70 - pic_height]
+        size: [pic_width, pic_height]
+        image: mural.jpg
+    grab_bar_left:
+        pos: [12, 38.5/8]
+        size: 3
+        color: silver
+    grab_bar_right:
+        pos: [width - 12, 30.3/4]
+        size: 3
+        color: silver

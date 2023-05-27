@@ -1,7 +1,7 @@
 # plan.py
 
 import app
-from utils import my_eval, eval_color, eval_tile
+from utils import my_eval, eval_color, eval_tile, format
 from tile import erase_tiles
 from alignment import Alignment
 
@@ -14,7 +14,7 @@ class Plan:
         for attr in self.attrs:
             value = plan[attr]
             if attr == 'alignment':
-                value = Alignment(value)
+                value = Alignment(value, {})
             setattr(self, attr, value)
         self.wall_name = wall_name
         self.wall = app.Walls[wall_name]
@@ -23,7 +23,9 @@ class Plan:
         return f"<Plan: {self.name}>"
 
     def dump(self):
-        return {attr: (getattr(self, attr) if attr != 'alignment' else getattr(self, attr).dump())
+        return {attr: (format(getattr(self, attr)) 
+                       if attr != 'alignment'
+                       else getattr(self, attr).dump())
                 for attr in self.attrs}
 
     def set_grout_color(self, color):
@@ -86,7 +88,8 @@ class Plan:
                 visible = True
         return visible
 
-    def repeat(self, start, constants, step, increment, times=None, do_reverse=True, trace=False):
+    def repeat(self, start, constants, step, increment,
+               times=None, do_reverse=True, trace=False):
         r'''Repeat step `times` times (infinite in both directions if times is None).
 
         `increment` is added to the offset (starting at `start`) after each repetition.
@@ -99,14 +102,18 @@ class Plan:
             print(f"{self.name}.repeat({step=})")
         visible = False
         x_inc, y_inc = increment
-        ax_inc, ay_inc = self.alignment.align_pt(increment)
+        ax_inc, ay_inc = self.alignment.rotate(increment)
         x, y = offset = start
         check_visibility = False
         while times is None or times:
             if not check_visibility:
                 ax, ay = self.alignment.align_pt((x, y))
-                if     (ax_inc == 0 or ax_inc > 0 and ax >= 0 or ax_inc < 0 and ax < self.wall.max_x) \
-                   and (ay_inc == 0 or ay_inc > 0 and ay >= 0 or ay_inc < 0 and ay < self.wall.max_y):
+                if     (   ax_inc == 0
+                        or ax_inc > 0 and ax >= 0 
+                        or ax_inc < 0 and ax < self.wall.max_x) \
+                   and (   ay_inc == 0
+                        or ay_inc > 0 and ay >= 0
+                        or ay_inc < 0 and ay < self.wall.max_y):
                     check_visibility = True
             if self.do_step(step, offset, constants, trace=trace):
                 visible = True
@@ -116,8 +123,8 @@ class Plan:
             if times is not None:
                 times -= 1
         if times is None and do_reverse:
-            if self.repeat((start[0] - x_inc, start[1] - y_inc), constants, step, (-x_inc, -y_inc),
-                           do_reverse=False, trace=trace):
+            if self.repeat((start[0] - x_inc, start[1] - y_inc), constants, step,
+                           (-x_inc, -y_inc), do_reverse=False, trace=trace):
                 return True
         return visible
 
@@ -148,7 +155,8 @@ class Plan:
             if arg in step:
                 if arg == 'tile' or arg.startswith('tile_'):
                     if trace:
-                        print(f"{self.name}.lookup({arg}) in step -- type! -- value is {step[arg]}")
+                        print(f"{self.name}.lookup({arg}) in step -- tile! "
+                              f"-- value is {step[arg]}")
                     ans = eval_tile(step[arg], constants)
                 else:
                     if trace:
@@ -156,7 +164,8 @@ class Plan:
                     ans = my_eval(step[arg], constants)
             elif arg in constants:
                 if trace:
-                    print(f"{self.name}.lookup({arg}) in constants -- value is {constants[arg]}")
+                    print(f"{self.name}.lookup({arg}) in constants "
+                          f"-- value is {constants[arg]}")
                 ans = constants[arg]
             else:
                 ans = None

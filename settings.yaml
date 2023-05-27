@@ -1,7 +1,7 @@
 # settings.yaml
 
 ---
-default_wall: Shower Right
+default_wall: Master Back
 wall_settings:
     Dining:
         plans: {}
@@ -109,8 +109,8 @@ wall_settings:
                 grout_color: acorn
                 grout_gap: 1/4
                 layout:
-                    tile_a: cross
-                    tile_b: star
+                    tile_a: cross-white
+                    tile_b: star-white
                     type: checkerboard
             stepped:
                 alignment:
@@ -177,8 +177,8 @@ wall_settings:
                 grout_color: acorn
                 grout_gap: 1/4
                 layout:
-                    tile_a: cross
-                    tile_b: star
+                    tile_a: cross-white
+                    tile_b: star-white
                     type: checkerboard
             star_X:
                 alignment:
@@ -188,8 +188,8 @@ wall_settings:
                 grout_color: acorn
                 grout_gap: 1/4
                 layout:
-                    tile_a: cross
-                    tile_b: star
+                    tile_a: cross-white
+                    tile_b: star-white
                     type: checkerboard
     Stove:
         plans:
@@ -234,8 +234,8 @@ wall_settings:
                 grout_color: acorn
                 grout_gap: 1/4
                 layout:
-                    tile_a: cross
-                    tile_b: star
+                    tile_a: cross-white
+                    tile_b: star-white
                     type: checkerboard
             star_X:
                 alignment:
@@ -245,6 +245,322 @@ wall_settings:
                 grout_color: acorn
                 grout_gap: 1/4
                 layout:
-                    tile_a: cross
-                    tile_b: star
+                    tile_a: cross-white
+                    tile_b: star-white
                     type: checkerboard
+    Master Left:
+        default_plan: star_X
+        plans:
+            hex:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    percent_offset: 1/2
+                    tile: hex
+                    type: stepped
+            picket:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    percent_offset: 1/2
+                    tile: picket
+                    type: stepped
+            picket_tilt:
+                alignment:
+                    angle: 16.9
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    percent_offset: 1/2
+                    tile: picket
+                    type: stepped
+            star_+:
+                alignment:
+                    angle: 45
+                    x_offset: 2.3/4
+                    y_offset: -1.3/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    tile_a: cross-white
+                    tile_b: star-white
+                    type: checkerboard
+            star_X:
+                alignment:
+                    angle: 0
+                    x_offset: 2.3/4
+                    y_offset: -1.3/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    tile_a: cross-white
+                    tile_b: star-white
+                    type: checkerboard
+    Master Right:
+        default_plan: star_X
+        plans:
+            hex:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    percent_offset: 1/2
+                    tile: hex
+                    type: stepped
+            picket:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    percent_offset: 1/2
+                    tile: picket
+                    type: stepped
+            picket_tilt:
+                alignment:
+                    angle: 16.9
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    percent_offset: 1/2
+                    tile: picket
+                    type: stepped
+            star_+:
+                alignment:
+                    angle: 45
+                    x_offset: 3/4
+                    y_offset: 5
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    tile_a: cross-white
+                    tile_b: star-white
+                    type: checkerboard
+            star_X:
+                alignment:
+                    angle: 0
+                    x_offset: 3/4
+                    y_offset: 5
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    tile_a: cross-white
+                    tile_b: star-white
+                    type: checkerboard
+    Master Back:
+        default_plan: star_X
+        plans:
+            hex:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    percent_offset: 1/2
+                    tile: hex
+                    type: stepped
+            picket:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    percent_offset: 1/2
+                    tile: picket
+                    type: stepped
+            picket_tilt:
+                alignment:
+                    angle: 16.9
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    percent_offset: 1/2
+                    tile: picket
+                    type: stepped
+            star_+:
+                alignment:
+                    angle: 45
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    tile_a: cross-white
+                    tile_b: star-white
+                    type: checkerboard
+
+            star_X:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    tile_a: cross-white
+                    tile_b: star-white
+
+            star_X-taupe:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: darkorange
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    tile_a: cross-taupe
+                    tile_b: star-taupe
+
+            star_X-cotto:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: darkorange
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    tile_a: cross-cotto
+                    tile_b: star-cotto
+
+            star_X-Morocco-6:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          tile_a: cross-white
+                          tile_b: star-white
+                        - type: box
+                          tile: Morocco-6
+                          num_x: 6
+                          num_y: 5
+                          start: [8.1/4, 45.1/4]
+
+            star_X-Nube Verde-6:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          tile_a: cross-white
+                          tile_b: star-white
+                        - type: box
+                          tile: Nube Verde-6
+                          num_x: 6
+                          num_y: 5
+                          start: [8.1/4, 45.1/4]
+
+            star_X-Nube Verde-4:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          tile_a: cross-white
+                          tile_b: star-white
+                        - type: box
+                          tile: Nube Verde-4
+                          num_x: 8
+                          num_y: 6
+                          start: [9.3/4, 48.1/4]
+
+            star_X-Estrella de Fuego-6:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          tile_a: cross-white
+                          tile_b: star-white
+                        - type: box
+                          tile: Estrella de Fuego-6
+                          num_x: 6
+                          num_y: 5
+                          start: [8.1/4, 45.1/4]
+
+            star_X-Arabesque Azul-6-close:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          tile_a: cross-white
+                          tile_b: star-white
+                        - type: border
+                          tile: Arabesque Azul-6
+                          num_x: 6
+                          num_y: 5
+                          start_x: 8.1/4
+                          start_y: 45.1/4
+
+            star_X-Arabesque Azul-6-gap:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          tile_a: cross-white
+                          tile_b: star-white
+                        - type: border
+                          tile: Arabesque Azul-6
+                          num_x: 7
+                          num_y: 6
+                          start_x: 5.1/4
+                          start_y: 42.1/4
+

@@ -1,6 +1,7 @@
 # tile.py
 
 from math import sin, cos
+import os.path
 from PIL import Image, ImageTk
 
 import app
@@ -74,7 +75,7 @@ class Image_tile(Base_tile):
     def __init__(self, name, points, skip_x, skip_y, image_file, rotation):
         super().__init__(name, points, skip_x, skip_y)
         self.image_file = image_file
-        self.image = Image.open(image_file)
+        self.image = Image.open(os.path.join('images', image_file))
         if 'A' not in self.image.getbands():
             self.image.putalpha(255)
         if rotation:

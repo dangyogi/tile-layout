@@ -2,6 +2,8 @@
 
 from math import sin, cos, radians
 
+from utils import format, eval_num
+
 
 class Alignment:
     r'''Applies a rotation and translation to a point.
@@ -12,13 +14,13 @@ class Alignment:
     '''
     attrs = 'angle,x_offset,y_offset'.split(',')
 
-    def __init__(self, alignment):
+    def __init__(self, alignment, constants):
         for attr in self.attrs:
-            setattr(self, attr, alignment[attr])
+            setattr(self, attr, eval_num(alignment[attr], constants))
         self.radians = radians(self.angle)
 
     def dump(self):
-        return {attr: getattr(self, attr) for attr in self.attrs}
+        return {attr: format(getattr(self, attr)) for attr in self.attrs}
 
     def set_angle(self, angle):
         self.angle = angle

@@ -262,7 +262,7 @@ def run_set_grout_gap():
         app.Plan.grout_gap = gap
         app.Plan.create()
 
-    run_dialog("Grout Gap", do_grout_gap, [app.Plan.grout_gap], (
+    run_dialog("Grout Gap", do_grout_gap, [f_to_str(app.Plan.grout_gap)], (
                   ("gap", fraction_entry),))
 
 
@@ -288,7 +288,7 @@ def run_set_x_offset():
         app.Plan.alignment.x_offset = x_offset
         app.Plan.create()
 
-    run_dialog("X_offset", do_x_offset, [app.Plan.alignment.x_offset], (
+    run_dialog("X_offset", do_x_offset, [f_to_str(app.Plan.alignment.x_offset)], (
                   ("x_offset", fraction_entry),))
 
 def run_set_y_offset():
@@ -300,7 +300,7 @@ def run_set_y_offset():
         app.Plan.alignment.y_offset = y_offset
         app.Plan.create()
 
-    run_dialog("Y_offset", do_y_offset, [app.Plan.alignment.y_offset], (
+    run_dialog("Y_offset", do_y_offset, [f_to_str(app.Plan.alignment.y_offset)], (
                   ("y_offset", fraction_entry),))
 
 

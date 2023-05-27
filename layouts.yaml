@@ -95,3 +95,54 @@ checkerboard:
               start: [skip_x / 2, 0]
           increment: [skip_x / 2, tile_b.skip_y + plan.grout_gap]
 
+box:
+    parameters: [tile, num_x, num_y, start]
+    type: repeat
+    step:
+        type: repeat
+        step:
+            type: place
+            tile: tile
+        increment: [tile.skip_x + plan.grout_gap, 0]
+        times: num_x
+    increment: [0, tile.skip_y + plan.grout_gap]
+    times: num_y
+    start: start
+
+border:
+    parameters: [tile, num_x, num_y, start_x, start_y]
+    constants:
+        num_x_1: num_x - 1
+        num_y_1: num_y - 1
+    type: sequence
+    steps:
+        - type: repeat  # bottom
+          step:
+              type: place
+              tile: tile
+          increment: [tile.skip_x + plan.grout_gap, 0]
+          start: [start_x, start_y]
+          times: num_x
+        - type: repeat  # top
+          step:
+              type: place
+              tile: tile
+          increment: [tile.skip_x + plan.grout_gap, 0]
+          start: [start_x, start_y + tile.skip_y * num_y_1 + plan.grout_gap * num_y_1]
+          times: num_x
+        - type: repeat  # left
+          step:
+              type: place
+              tile: tile
+          increment: [0, tile.skip_y + plan.grout_gap]
+          start: [start_x, start_y + tile.skip_y + plan.grout_gap]
+          times: num_y - 2
+        - type: repeat  # right
+          step:
+              type: place
+              tile: tile
+          increment: [0, tile.skip_y + plan.grout_gap]
+          start: [start_x + tile.skip_x * num_x_1 + plan.grout_gap * num_x_1,
+                  start_y + tile.skip_y + plan.grout_gap]
+          times: num_y - 2
+

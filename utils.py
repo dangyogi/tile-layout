@@ -64,6 +64,14 @@ def f_to_str(f):
     return f"{n // d}.{n % d}/{d}"
 
 
+def format(x):
+    if isinstance(x, Fraction):
+        return f_to_str(x)
+    if isinstance(x, (tuple, list)):
+        return [format(y) for y in x]
+    return x
+
+
 def eval_num(s, constants):
     if not isinstance(s, str):
         return s

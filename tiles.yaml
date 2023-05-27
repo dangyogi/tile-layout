@@ -2,11 +2,6 @@
 
 ---
 
-test_image:
-    shape: square
-    width: 6
-    image: test.webp
-
 8" square white:
     shape: square
     width: 8
@@ -62,17 +57,41 @@ floor:
     width: 23.1/2
     color: "#c4b4ae"
 
-star:
+star-white:
     shape: star_cross
     width: 5.25/32
     point_direction: 1
     color: white
 
-cross:
+cross-white:
     shape: star_cross
     width: 5.25/32
     point_direction: -1
     color: white
+
+star-taupe:
+    shape: star_cross
+    width: 5.25/32
+    point_direction: 1
+    color: taupe
+
+cross-taupe:
+    shape: star_cross
+    width: 5.25/32
+    point_direction: -1
+    color: taupe
+
+star-cotto:
+    shape: star_cross
+    width: 5.25/32
+    point_direction: 1
+    color: cotto
+
+cross-cotto:
+    shape: star_cross
+    width: 5.25/32
+    point_direction: -1
+    color: cotto
 
 hex:
     shape: hex
@@ -85,3 +104,151 @@ picket:  # opens at a 16.9 degree angle
     width: 3.7/8
     side_height: 1.1/2
     color: white
+
+# Image tiles:
+
+test_image:
+    shape: square
+    width: 6
+    image: test.webp
+
+Anillo de Flores-4:
+    shape: square
+    width: 4
+    image: Anillo de Flores-4.25-6.25.jpg
+
+Anillo de Flores-6:
+    shape: square
+    width: 6
+    image: Anillo de Flores-4.25-6.25.jpg
+
+Arabesque Azul-4:
+    shape: square
+    width: 4
+    image: Arabesque Azul-4.25-6.25.jpg
+
+Arabesque Azul-6:
+    shape: square
+    width: 6
+    image: Arabesque Azul-4.25-6.25.jpg
+
+Candela Cielo-4:
+    shape: square
+    width: 4
+    image: Candela Cielo-4.25.jpg
+
+Candela Verde-6:
+    shape: square
+    width: 6
+    image: Candela Verde-6.25.jpg
+
+Diamante Michoacana-4:
+    shape: square
+    width: 4
+    image: Diamante Michoacana-4.25-6.25.jpg
+
+Diamante Michoacana-6:
+    shape: square
+    width: 6
+    image: Diamante Michoacana-4.25-6.25.jpg
+
+Escamilla Amarillo-4:
+    shape: square
+    width: 4
+    image: Escamilla Amarillo-4.25-6.25.jpg
+
+Escamilla Amarillo-6:
+    shape: square
+    width: 6
+    image: Escamilla Amarillo-4.25-6.25.jpg
+
+Escamilla Rojo-4:
+    shape: square
+    width: 4
+    image: Escamilla Rojo-4.25-6.25.jpg
+
+Escamilla Rojo-6:
+    shape: square
+    width: 6
+    image: Escamilla Rojo-4.25-6.25.jpg
+
+Estrella de Fuego-4:
+    shape: square
+    width: 4
+    image: Estrella de Fuego-4.25-6.25.jpg
+
+Estrella de Fuego-6:
+    shape: square
+    width: 6
+    image: Estrella de Fuego-4.25-6.25.jpg
+
+Flor de Amapola-4:
+    shape: square
+    width: 4
+    image: Flor de Amapola-4.25-6.25.jpg
+
+Flor de Amapola-6:
+    shape: square
+    width: 6
+    image: Flor de Amapola-4.25-6.25.jpg
+
+Flor de Corazones-4:
+    shape: square
+    width: 4
+    image: Flor de Corazones-4.25-6.25.jpg
+
+Flor de Corazones-6:
+    shape: square
+    width: 6
+    image: Flor de Corazones-4.25-6.25.jpg
+
+Lace Azul-4:
+    shape: square
+    width: 4
+    image: Lace Azul-4.25-6.25.jpg
+
+Lace Azul-6:
+    shape: square
+    width: 6
+    image: Lace Azul-4.25-6.25.jpg
+
+Morocco-4:
+    shape: square
+    width: 4
+    image: Morocco-4.25-6.25.jpg
+
+Morocco-6:
+    shape: square
+    width: 6
+    image: Morocco-4.25-6.25.jpg
+
+Nube Verde-4:
+    shape: square
+    width: 4
+    image: Nube Verde-4.25-6.25.jpg
+
+Nube Verde-6:
+    shape: square
+    width: 6
+    image: Nube Verde-4.25-6.25.jpg
+
+Royal-4:
+    shape: square
+    width: 4
+    image: Royal-4.25-6.25.jpg
+
+Royal-6:
+    shape: square
+    width: 6
+    image: Royal-4.25-6.25.jpg
+
+Taxco Real-4:
+    shape: square
+    width: 4
+    image: Taxco Real-4.25-6.25.jpg
+
+Taxco Real-6:
+    shape: square
+    width: 6
+    image: Taxco Real-4.25-6.25.jpg
+

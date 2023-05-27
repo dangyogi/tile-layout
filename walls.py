@@ -1,5 +1,8 @@
 # walls.py
 
+import os.path
+from PIL import Image, ImageTk
+
 import app
 from utils import read_yaml, my_eval, eval_pair, eval_color, f_to_str
 
@@ -26,6 +29,8 @@ class Wall:
         def create_panel(name, panel):
             pos = eval_pair(panel['pos'], constants)
             size = eval_pair(panel['size'], constants, relaxed=True)
+            if 'image' in panel:
+                return Image_panel(name, pos, size, panel['image'])
             color = eval_color(panel['color'], colors)
             if isinstance(size, tuple):
                 return Rect_panel(name, pos, size, color)
@@ -81,16 +86,16 @@ class Wall:
 class Panel:
     tags = "background", "topmost"
 
-    def __init__(self, name, pos, color):
+    def __init__(self, name, pos):
         self.name = name
         self.pos = pos
-        self.color = color
 
 
 class Rect_panel(Panel):
     def __init__(self, name, pos, size, color):
-        super().__init__(name, pos, color)
+        super().__init__(name, pos)
         self.size = size
+        self.color = color
 
     def __str__(self):
         return f"<Rect_panel({self.name}), pos: {f_to_str(self.pos)}, " \
@@ -105,8 +110,9 @@ class Rect_panel(Panel):
 
 class Circle_panel(Panel):
     def __init__(self, name, pos, diameter, color):
-        super().__init__(name, pos, color)
+        super().__init__(name, pos)
         self.diameter = diameter
+        self.color = color
 
     def __str__(self):
         return f"<Circle_panel({self.name}), pos: {f_to_str(self.pos)}, " \
@@ -114,6 +120,29 @@ class Circle_panel(Panel):
 
     def create(self):
         app.canvas.create_my_circle("wall", self.color, self.pos, self.diameter, self.tags)
+
+
+class Image_panel(Panel):
+    def __init__(self, name, pos, size, image):
+        super().__init__(name, pos)
+        self.size = size
+        self.image_file = image
+        self.image = Image.open(os.path.join('images', self.image_file))
+        self.scale = None
+
+    def __str__(self):
+        return f"<Image_panel({self.name}), pos: {f_to_str(self.pos)}, " \
+               f"size: {f_to_str(self.size)}, image: {self.image_file}>"
+
+    def create(self):
+        if app.canvas.my_scale != self.scale:
+            px_width = app.canvas.in_to_px(self.size[0])
+            px_height = app.canvas.in_to_px(self.size[1])
+            self.scaled_image = ImageTk.PhotoImage(
+                                  self.image.resize((int(round(px_width)),
+                                                     int(round(px_height)))))
+            self.scale = app.canvas.my_scale
+        app.canvas.create_my_image("wall", self.scaled_image, (0, 0), self.pos, self.tags)
 
 
 
