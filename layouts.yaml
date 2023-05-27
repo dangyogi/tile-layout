@@ -146,3 +146,19 @@ border:
                   start_y + tile.skip_y + plan.grout_gap]
           times: num_y - 2
 
+flower:
+    parameters: [tile]
+    type: sequence
+    steps:
+        - type: place
+          tile: tile
+          angle: -90
+        - type: place
+          tile: tile
+          angle: 180
+        - type: place
+          tile: tile
+          angle: 0
+        - type: place
+          tile: tile
+          angle: 90

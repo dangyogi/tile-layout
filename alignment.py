@@ -50,13 +50,13 @@ class Alignment:
 
 
 if __name__ == "__main__":
-    a = Alignment(dict(angle=20, x_offset=2, y_offset=4))
+    a = Alignment(dict(angle=20, x_offset=2, y_offset=4), {})
     for pt in (0, 0), (10, 3), (-10, 3), (10, -3), (-10, -3):
         apt = a.align_pt(pt)
         pt2 = a.unalign_pt(apt)
         print(f"First pass: {pt=} -> apt=({apt[0]:.3f}, {apt[1]:.3f}) -> pt2=({pt2[0]:.3f}, {pt2[1]:.3f})")
 
-    a = Alignment(dict(angle=0, x_offset=0, y_offset=0))
+    a = Alignment(dict(angle=0, x_offset=0, y_offset=0), {})
     for pt in (0, 0), (10, 3), (-10, 3), (10, -3), (-10, -3):
         apt = a.align_pt(pt)
         pt2 = a.unalign_pt(apt)

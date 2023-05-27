@@ -67,7 +67,9 @@ class Tile(Base_tile):
         super().__init__(name, points, skip_x, skip_y)
         self.color = color
 
-    def place_at(self, offset, plan):
+    def place_at(self, offset, angle, plan):
+        r'''The `angle` is ignored here.  Only used for Image_tiles.
+        '''
         return plan.create_polygon(self.points, offset, self.color)
 
 
@@ -96,9 +98,10 @@ class Image_tile(Base_tile):
         self.scale = None
 
     def get_sw_offset(self, points):
-        return points[0][0] - min(p[0] for p in points), points[0][1] - min(p[1] for p in points)
+        return (points[0][0] - min(p[0] for p in points),
+                points[0][1] - min(p[1] for p in points))
 
-    def get_image(self, plan, new_points):
+    def get_image(self, plan, angle, new_points):
         r'''Returns sw_offset, image.
 
         The `sw_offset` is the offset from the SW corner of the image to the first
@@ -112,30 +115,32 @@ class Image_tile(Base_tile):
         if app.canvas.my_scale != self.scale:
             print(f"Image_tile({self.name}).get_image creating scaled image")
             self.scale = app.canvas.my_scale
-            self.scaled_image = self.image.resize((int(round(app.canvas.in_to_px(self.in_width))),
-                                                   int(round(app.canvas.in_to_px(self.in_height)))))
+            self.scaled_image = \
+              self.image.resize((int(round(app.canvas.in_to_px(self.in_width))),
+                                 int(round(app.canvas.in_to_px(self.in_height)))))
             self.cache = {}
 
         # then get rotated image
-        angle = plan.alignment.angle
-        if angle not in self.cache:
-            print(f"Image_tile({self.name}).get_image creating rotated image for angle {angle}")
-            if angle == 0:
+        target_angle = angle + plan.alignment.angle
+        if target_angle not in self.cache:
+            print(f"Image_tile({self.name}).get_image creating rotated image "
+                  f"for angle {target_angle}")
+            if target_angle == 0:
                 rotated_image = self.scaled_image
                 sw_offset = self.sw_offset
             else:
-                rotated_image = self.scaled_image.rotate(angle, expand=True)
+                rotated_image = self.scaled_image.rotate(target_angle, expand=True)
                 sw_offset = self.get_sw_offset(new_points)
             print(f"get_image: sw_offset=({sw_offset[0]:.2f}, {sw_offset[1]:.2f})")
-            self.cache[angle] = sw_offset, ImageTk.PhotoImage(rotated_image)
+            self.cache[target_angle] = sw_offset, ImageTk.PhotoImage(rotated_image)
 
         # return rotated image
-        return self.cache[angle]
+        return self.cache[target_angle]
 
-    def place_at(self, offset, plan):
+    def place_at(self, offset, angle, plan):
         new_points = plan.align(self.points, offset)
         if new_points is None:
             return False
-        sw_offset, image = self.get_image(plan, new_points)
+        sw_offset, image = self.get_image(plan, angle, new_points)
         plan.create_image(image, sw_offset, new_points[0])
         return True

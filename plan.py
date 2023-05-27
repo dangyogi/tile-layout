@@ -9,13 +9,16 @@ from alignment import Alignment
 class Plan:
     attrs = 'grout_gap,grout_color,alignment,layout'.split(',')
 
-    def __init__(self, name, plan, wall_name):
+    def __init__(self, name, plan, wall_name, constants):
         self.name = name
         for attr in self.attrs:
             value = plan[attr]
             if attr == 'alignment':
-                value = Alignment(value, {})
-            setattr(self, attr, value)
+                value = Alignment(value, constants)
+            if attr == 'grout_gap':
+                setattr(self, attr, my_eval(value, constants))
+            else:
+                setattr(self, attr, value)
         self.wall_name = wall_name
         self.wall = app.Walls[wall_name]
 
@@ -70,29 +73,48 @@ class Plan:
         item = app.canvas.create_my_image("plan", image, sw_offset, pos, tags=('tile',))
         app.canvas.tag_lower(item, "topmost")
 
-    def place(self, offset, tile, trace=False):
+    def place(self, tile, angle, constants, trace=False):
         r'''Returns True if displayed, False if not visible.
+
+        If visible, updates `next_x` and `next_y` in `constants` (including grout_gap).
         '''
         if trace:
-            print(f"{self.name}.place({offset=}, {tile=})")
-        return tile.place_at(offset, self)
+            print(f"{self.name}.place({tile=}, {angle=}, offset={constants['offset']})")
+        if tile.place_at(constants['offset'], angle, self):
+            constants['next_x'] = tile.skip_x + self.grout_gap
+            constants['next_y'] = tile.skip_y + self.grout_gap
+            return True
+        return False
 
-    def sequence(self, offset, constants, *steps, trace=False):
+    def sequence(self, constants, *steps, trace=False):
         r'''Returns True if any step is displayed, False if nothing is visible.
         '''
         if trace:
             print(f"{self.name}.sequence({steps=})")
         visible = False
+        next_x = next_y = -1000
+        start_x, start_y = constants['offset']
         for step in steps:
-            if self.do_step(step, offset, constants, trace=trace):
+            if 'offset' in step:
+                x, y = my_eval(step['offset'], constants)
+                constants['offset'] = start_x + x, start_y + y
+            else:
+                constants['offset'] = start_x, start_y
+            if self.do_step(step, constants, trace=trace):
+                if constants['next_x'] > next_x:
+                    next_x = constants['next_x']
+                if constants['next_y'] > next_y:
+                    next_y = constants['next_y']
                 visible = True
+        if visible:
+            constants['next_x'] = next_x
+            constants['next_y'] = next_y
         return visible
 
-    def repeat(self, start, constants, step, increment,
-               times=None, do_reverse=True, trace=False):
+    def repeat(self, constants, step, increment, times=None, do_reverse=True, trace=False):
         r'''Repeat step `times` times (infinite in both directions if times is None).
 
-        `increment` is added to the offset (starting at `start`) after each repetition.
+        `increment` is added to the offset after each repetition.
 
         `do_reverse` is only for use by repeat itself.  Outside callers must let this default.
 
@@ -101,9 +123,10 @@ class Plan:
         if trace:
             print(f"{self.name}.repeat({step=})")
         visible = False
+        next_x = next_y = -1000
         x_inc, y_inc = increment
         ax_inc, ay_inc = self.alignment.rotate(increment)
-        x, y = offset = start
+        x, y = offset = start = constants['offset']
         check_visibility = False
         while times is None or times:
             if not check_visibility:
@@ -115,7 +138,12 @@ class Plan:
                         or ay_inc > 0 and ay >= 0
                         or ay_inc < 0 and ay < self.wall.max_y):
                     check_visibility = True
-            if self.do_step(step, offset, constants, trace=trace):
+            constants['offset'] = offset
+            if self.do_step(step, constants, trace=trace):
+                if constants['next_x'] > next_x:
+                    next_x = constants['next_x']
+                if constants['next_y'] > next_y:
+                    next_y = constants['next_y']
                 visible = True
             elif check_visibility:
                 break
@@ -123,28 +151,42 @@ class Plan:
             if times is not None:
                 times -= 1
         if times is None and do_reverse:
-            if self.repeat((start[0] - x_inc, start[1] - y_inc), constants, step,
-                           (-x_inc, -y_inc), do_reverse=False, trace=trace):
-                return True
+            constants['offset'] = start[0] - x_inc, start[1] - y_inc
+            if self.repeat(constants, step, (-x_inc, -y_inc), do_reverse=False, trace=trace):
+                if constants['next_x'] > next_x:
+                    next_x = constants['next_x']
+                if constants['next_y'] > next_y:
+                    next_y = constants['next_y']
+                visible = True
+        if visible:
+            constants['next_x'] = next_x
+            constants['next_y'] = next_y
         return visible
 
-    def do_step(self, step, offset=(0, 0), constants=None, trace=False):
+    def do_step(self, step, constants=None, trace=False):
         r'''Returns True if the step is visible, False otherwise.
         '''
         if trace:
             print(f"{self.name}.do_step({step=})")
         if constants is None:
             constants = {}
-        constants['offset'] = offset
-        constants['plan'] = self
+            constants['plan'] = self
+            constants['offset'] = 0, 0
+        if 'next_x' in constants:
+            del constants['next_x']
+        if 'next_y' in constants:
+            del constants['next_y']
         if step['type'] == 'place':
-            return self.place(offset, eval_tile(step['tile'], constants), trace=trace)
+            return self.place(eval_tile(step['tile'], constants),
+                              (my_eval(step['angle'], constants) if 'angle' in step else 0),
+                              constants, trace=trace)
         if step['type'] == 'sequence':
-            return self.sequence(offset, constants, *step['steps'], trace=trace)
+            return self.sequence(constants, *step['steps'], trace=trace)
         if step['type'] == 'repeat':
             x, y = my_eval(step.get('start', (0, 0)), constants)
-            x_off, y_off = offset
-            return self.repeat((x_off + x, y_off + y), constants, step['step'],
+            x_off, y_off = constants['offset']
+            constants['offset'] = x_off + x, y_off + y
+            return self.repeat(constants, step['step'],
                                my_eval(step['increment'], constants),
                                my_eval(step.get('times', None), constants),
                                trace=trace)
@@ -174,8 +216,8 @@ class Plan:
             return ans
         new_constants = {param: lookup(param)
                          for param in new_step.get('parameters', ())}
-        new_constants['offset'] = offset
         new_constants['plan'] = self
+        new_constants['offset'] = constants['offset']
         if 'constants' in new_step:
             def add_constants(constants):
                 for name, value in constants.items():
@@ -193,5 +235,9 @@ class Plan:
                     else:
                         new_constants[name] = my_eval(value, new_constants)
             add_constants(new_step['constants'])
-        return self.do_step(new_step, offset, new_constants, trace=trace)
+        visible = self.do_step(new_step, new_constants, trace=trace)
+        if visible:
+            constants['next_x'] = new_constants['next_x']
+            constants['next_y'] = new_constants['next_y']
+        return visible
 
