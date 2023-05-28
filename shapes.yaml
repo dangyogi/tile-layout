@@ -31,7 +31,7 @@ hex:
     type: polygon
     parameters: [height]
     constants:
-        side: height / !3
+        side: height / sqrt(3)
         point_height: side / 2
     points:
         - [0, 0]
@@ -78,12 +78,11 @@ star_cross:
         - width  # of square
         - point_direction  # 1 for out (star), -1 for in (cross)
     constants:
-        # width / 2 == side + side / !2 == side * (1 + 1/!2)
-        # side == width / (2 * (1 + 1/!2))
-        # side == width / (2 + !2)
-        side_to_width: 2 + !2
-        side: width / side_to_width
-        half_base: side / !2
+        # width / 2 == side + side / sqrt(2) == side * (1 + 1/sqrt(2))
+        # side == width / (2 * (1 + 1/sqrt(2)))
+        # side == width / (2 + sqrt(2))
+        side: width / (2 + sqrt(2))
+        half_base: side / sqrt(2)
         base: 2 * half_base
         height: point_direction * half_base
     points:

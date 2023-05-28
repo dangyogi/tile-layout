@@ -15,18 +15,18 @@ def generate_tile(name, shape, args, tile, colors, rotation=0):
     constants = args.copy()
     if 'constants' in shape:
         for name, exp in shape['constants'].items():
-            constants[name] = my_eval(exp, constants)
+            constants[name] = my_eval(exp, constants, f"<generate_tile({name})>")
     def get(name, eval_fn=my_eval):
         #print(f"get({name!r})")
-        return eval_fn(shape[name], constants)
+        return eval_fn(shape[name], constants, f"<generate_tile({name})>")
     if 'color' in tile:
         return Tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
                     eval_color(tile['color'], colors))
     return Image_tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
                       tile['image'], rotation)
 
-def eval_points(points, constants):
-    return tuple(eval_pair(p, constants) for p in points)
+def eval_points(points, constants, location):
+    return tuple(eval_pair(p, constants, location) for p in points)
 
 def gen_tile(name, tile, shapes, colors):
     #print(f"Generating Tile {name!r}")
@@ -34,7 +34,8 @@ def gen_tile(name, tile, shapes, colors):
         shapes = app.Shapes
     shape = shapes[tile['shape']]
     assert shape['type'] == 'polygon', f"expected type 'polygon', got '{shape['type']}'"
-    args = {param: tile[param] for param in shape['parameters']}
+    args = {param: my_eval(tile[param], {}, f"<gen_tile({name}) {param}>")
+            for param in shape['parameters']}
     tile_1 = generate_tile(name, shape, args, tile, colors)
     yield name, tile_1
     if 'flipped' in shape:

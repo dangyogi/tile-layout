@@ -60,15 +60,18 @@ class MyCanvas(Canvas):
 
     def set_scale(self):
         width, height = self.size()
-        self.my_scale = min(width / float(myapp.bg_width), height / float(myapp.bg_height))
-        print(f"new size in inches: {self.px_to_in(width)} W x {self.px_to_in(height)} H")
+        self.my_scale = min(width / float(myapp.bg_width),
+                            height / float(myapp.bg_height))
+        print(f"new size in inches: "
+              f"{self.px_to_in(width):.3f} W x {self.px_to_in(height):.3f} H")
 
-    def create_my_rectangle(self, caller, left_x, bottom_y, width, height, color, tags=()):
+    def create_my_rectangle(self, caller, left_x, bottom_y, width, height, color,
+                            tags=()):
         #print(f"create_my_rectangle({caller=}, left_x={f_to_str(left_x)}, "
         #      f"bottom_y={f_to_str(bottom_y)}, width={f_to_str(width)}, "
         #      f"height={f_to_str(height)})")
         #print(f"create_rectangle({f_to_str(self.math_coord((left_x, bottom_y)))}, "
-        #              f"{f_to_str(self.math_coord((left_x + width, bottom_y + height)))}")
+        #      f"{f_to_str(self.math_coord((left_x + width, bottom_y + height)))}")
         return self.create_rectangle(
                       self.math_coord((left_x, bottom_y)),
                       self.math_coord((left_x + width, bottom_y + height)),

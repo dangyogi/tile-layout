@@ -1,7 +1,5 @@
 # doit.py
 
-from math import radians
-from fractions import Fraction
 from operator import attrgetter
 from itertools import zip_longest
 from functools import partial
@@ -9,19 +7,14 @@ import tkinter as tk
 from tkinter import simpledialog, ttk
 
 import app
-from tile import Tile, erase_tiles
 from utils import fraction, f_to_str, eval_color
 from colors import read_colors
 from shapes import read_shapes
 from tiles import read_tiles
 from layouts import read_layouts
 from walls import read_walls
-from settings import read_settings, save_settings
+from settings import read_settings
 
-
-def tile_arg(s):
-    name, width, height, color = s.split(',')
-    return Tile.create(name, fraction(width), fraction(height), color)
 
 
 class Dialog(simpledialog.Dialog):
@@ -110,135 +103,6 @@ def run_plan(name):
     app.Plan_name = name
     app.Plan = app.Plans[name]
     app.Plan.create()
-
-
-Hop_defaults = [
-    "12x24",              # tile_a
-    "3x6",   # tile_b
-    "1/8",                       # grout_gap
-    "0",                         # angle
-]
-
-def run_hop():
-    def do_hop(dialog):
-        print("Adding hopscotch tiles")
-        values = tuple(map(attrgetter('value'), dialog.entry_widgets))
-        tile_a = values[0]
-        tile_b = values[1]
-        grout_gap = values[2]
-        print(f"do_hop {grout_gap=}")
-        angle = values[3]
-        print(f"do_hop {angle=}")
-        erase_tiles()
-        hopscotch(tile_a, tile_b, grout_gap, angle, app.myapp.bg_width, app.myapp.bg_height)
-
-    run_dialog("Hopscotch", do_hop, Hop_defaults, (
-                  ("tile_a", tile_entry),
-                  ("tile_b", tile_entry),
-                  ("grout_gap", fraction_entry),
-                  ("angle", angle_entry)))
-
-
-Herr_defaults = [
-    "12x24",       # tile
-    "1/8",         # grout_gap
-    "-45",         # angle
-]
-
-def run_herr():
-    def do_herr(dialog):
-        print("Adding herringbone tiles")
-        values = tuple(map(attrgetter('value'), dialog.entry_widgets))
-        tile_a = values[0]
-        tile_b = tile_a.flipped
-        grout_gap = values[1]
-        print(f"do_herr {grout_gap=}")
-        angle = values[2]
-        print(f"do_herr {angle=}")
-        erase_tiles()
-        hopscotch(tile_a, tile_b, grout_gap, angle, app.myapp.bg_width, app.myapp.bg_height)
-
-    run_dialog("Herringbone", do_herr, Herr_defaults, (
-                  ("tile", tile_entry),
-                  ("grout_gap", fraction_entry),
-                  ("angle", angle_entry)))
-
-
-Step_defaults = [
-    "12x24",        # tile
-    "0",            # offset    stacked
-    "-8.1/4",       # x_offset  -8.3/8 on shower right wall
-    "-5/8",         # y_offset
-    "1/8",          # grout_gap  or 3/16
-    "0",            # angle
-]
-
-# tile len w/o grout: 23.40625 == 23.13/32
-# 1/3 step: 7.84375 == 7.27/32
-# 1/2 of a 1/3 step: 3.921875 == 3.59/64
-
-Step_defaults = [
-    "12x24",        # tile
-    "1/3",          # offset   1/2 doesn't work, 1/4 doesn't work (too busy)
-    "-8.1/16",      # x_offset for back:
-                    # -3.15/16 grout line at center of openings, slivers at walls and niche
-                    # -4.15/16 grout line at center of wall, openings not centered
-                    # 0 centered halfway, but on wrong row
-                    # -7.7/8 centered halfway, has large sliver at window
-                    # -9.1/2 "centered" halfway, no window sliver, looks centered on wall
-  # "-8.3/16",      # x_offset for left: (checked)
-  #                 # -8.3/16 grout line centerd on wall
-  #                 # -4.17/64 full tile centered on wall
-  # "-16.1/16",     # x_offset for right: (checked)
-  #                 # -16.1/16 grout line on center of slide, lines up with back wall
-  #                 # -12.9/64 center between grout lines centered on slide, lines up with
-  #                 #          back wall
-    "-3/4",         # y_offset
-    "1/8",          # grout_gap
-    "0",            # angle
-]
-
-Step_defaults = [
-    "floor",        # tile
-    "1/2",          # offset    stacked
-    "0",            # x_offset  -1.1/2 grout line in center of entrance,
-                    #           5.7/8 center on shower
-    "-3.5/8",       # y_offset
-    "1/8",          # grout_gap  or 3/16
-    "0",            # angle
-]
-
-def run_step():
-    def do_step(dialog):
-        print("Adding stepped tiles")
-        values = tuple(map(attrgetter('value'), dialog.entry_widgets))
-        print(f"{values=}")
-        tile = values[0]
-        x_offset = values[2]
-        y_offset = values[3]
-        grout_gap = values[4]
-        print(f"do_step {grout_gap=}")
-        angle = values[5]
-        print(f"do_step {angle=}")
-        erase_tiles()
-        if ',' in values[1]:
-            offsets = tuple(map(fraction, values[1].split(',')))
-            print(f"do_step {offsets=}")
-            stepped2(tile, offsets, grout_gap, angle, x_offset, y_offset,
-                     app.myapp.bg_width, app.myapp.bg_height)
-        else:
-            offset = fraction(values[1])
-            print(f"do_step {offset=}")
-            stepped(tile, offset, grout_gap, angle, x_offset, y_offset,
-                    app.myapp.bg_width, app.myapp.bg_height)
-
-    run_dialog("Stepped", do_step, Step_defaults, (
-                  ("tile", tile_entry),
-                  ("offset", str_entry),
-                  ("x_offset", fraction_entry),
-                  ("y_offset", fraction_entry),
-                  ("grout_gap", fraction_entry),
-                  ("angle", angle_entry)))
 
 
 def run_set_grout_color():
@@ -341,8 +205,6 @@ if __name__ == "__main__":
     from tkinter import colorchooser
 
     parser = argparse.ArgumentParser()
-    #parser.add_argument("tile_a", type=tile_arg, help="name,width,height,color")
-    #parser.add_argument("tile_b", type=tile_arg, help="name,width,height,color")
     #parser.add_argument("grout_gap", type=fraction, help="I or I.N/D or N/D")
 
     args = parser.parse_args()
@@ -383,7 +245,6 @@ if __name__ == "__main__":
                  ("Set X_offset", run_set_x_offset),
                  ("Set Y_offset", run_set_y_offset),
               )),
-              ("Save Settings", save_settings),
             ))
 
     init()

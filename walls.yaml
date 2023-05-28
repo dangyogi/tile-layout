@@ -2,6 +2,9 @@
 
 ---
 
+Test Wall:
+    grout: [60, 60]
+
 Sink:
     grout: [96.1/16, 17.1/2]
     constants:
@@ -92,69 +95,6 @@ Dining:
         pos: [bg_width - rt_cab_width, 17.1/2]
         size: [rt_cab_width, 36.11/16]
         color: cabinet
-
-Shower Back:
-    grout: [52.1/2, 88.1/2]
-    constants:
-        laser_line: 3.1/8
-        tile_thickness: 1/2
-        expansion_gap: 3/16
-    window:
-        pos: [9.5/8 - expansion_gap, 74.1/2 + laser_line]    # bg_height - 8 - 3.5/8
-        size: [35.3/4, 7.3/4]
-        color: "#AAA"
-    niche:
-        pos: [13.3/8 - expansion_gap, 49.1/8 + laser_line]   # bg_height - 12 - 24.5/16
-        size: [27.15/16, 12]
-        color: "#AAA"
-    right_GB_end:
-        pos: [bg_width - 11.7/16 - expansion_gap, 39]
-        size: 3.1/2
-        color: silver
-    left_GB_end:
-        pos: [bg_width - 34.1/8 - expansion_gap, 31.1/4]
-        size: 3.1/2
-        color: silver
-    #GB:
-    #    pos: [bg_width - 11.7/16, 39]
-    #    size: 1.1/4
-    #    color: silver
-
-Shower Left:
-    constants:
-        laser_line: 3.1/8
-        tile_thickness: 1/2
-        expansion_gap: 1/8
-    grout: [31.1/16 - tile_thickness - expansion_gap, 88.1/2]
-
-Shower Right:
-    constants:
-        laser_line: 3.1/8
-        tile_thickness: 1/2
-        expansion_gap: 1/8
-        bar_x: 8.5/8 + 7.1/8 - tile_thickness - expansion_gap  # 15.125
-        bar_y: 41.1/4 + laser_line
-    grout: [30.7/8 - tile_thickness - expansion_gap, 88.1/2]   # 30.1/4, 88.1/2
-    valve:
-        pos: [8.5/8 - tile_thickness - expansion_gap, bar_y]
-        size: 7
-        color: silver
-    bar_bottom:
-        pos: [bar_x, bar_y]
-        size: 2.1/2
-        color: silver
-    bar_top:
-        pos: [bar_x, bar_y + 31.1/4]
-        size: 2.1/2
-        color: silver
-    bar:
-        pos: [bar_x - 1/2, bar_y]
-        size: [1, 31.1/4]
-        color: silver
-    nipple:
-        pos: [20 - tile_thickness - expansion_gap, bar_y]
-        size: 1.7/8
-        color: silver
 
 Guest Bath:
     constants:

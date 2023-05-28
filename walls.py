@@ -1,5 +1,6 @@
 # walls.py
 
+from math import hypot
 import os.path
 from PIL import Image, ImageTk
 
@@ -18,17 +19,22 @@ class Wall:
         constants = {}
         if 'constants' in specs:
             for name, exp in specs['constants'].items():
-                constants[name] = my_eval(exp, constants)
+                constants[name] = my_eval(exp, constants, f"<Wall({self.name}): {name}>")
             del specs['constants']
-        self.grout = eval_pair(specs['grout'], constants)
+        self.grout = eval_pair(specs['grout'], constants, f"<Wall({self.name})>")
         del specs['grout']
         constants['bg_width'], constants['bg_height'] = self.grout
-        self.max_x = self.grout[0]
-        self.max_y = self.grout[1]
+        self.max_x = max_x = self.grout[0]
+        self.max_y = max_y = self.grout[1]
+        self.diagonal = hypot(max_x, max_y)
+        self.boundary = (0, 0), (max_x, 0), (max_x, max_y), (0, max_y)
+        if self.name == "Master Back":
+            print(f"Wall({self.name}) boundary={f_to_str(self.boundary)}")
 
         def create_panel(name, panel):
-            pos = eval_pair(panel['pos'], constants)
-            size = eval_pair(panel['size'], constants, relaxed=True)
+            location = f"<Wall({self.name}) create_panel({name})>"
+            pos = eval_pair(panel['pos'], constants, location)
+            size = eval_pair(panel['size'], constants, location, relaxed=True)
             if 'image' in panel:
                 return Image_panel(name, pos, size, panel['image'])
             color = eval_color(panel['color'], colors)

@@ -8,7 +8,7 @@ row_infinite:
     step:
         type: place
         tile: tile
-    increment: [tile.skip_x + plan.grout_gap, 0]
+    increment: ["multi_getattr(tile, 'skip_x') + plan.grout_gap", 0]
 
 row_n:
     parameters: [tile, count]
@@ -16,18 +16,20 @@ row_n:
     step:
         type: place
         tile: tile
-    increment: [tile.skip_x + plan.grout_gap, 0]
+    increment: ["multi_getattr(tile, 'skip_x') + plan.grout_gap", 0]
     times: count
 
 stepped:
     parameters: [tile, percent_offset]
     constants:
-        x: tile.skip_x + plan.grout_gap
+        x: multi_getattr(tile, 'skip_x') + plan.grout_gap
+        y: multi_getattr(tile, 'skip_y') + plan.grout_gap
+        percent_left: 1 - percent_offset
     type: repeat
     step:
         type: row_infinite
         tile: tile
-    increment: [x * percent_offset, tile.skip_y + plan.grout_gap]
+    increment: [-x * percent_left, y]
 
 stacked:
     parameters: [tile]
@@ -38,16 +40,22 @@ stacked:
 hopscotch:
     parameters: [tile_a, tile_b, right]
     constants:
+        ax: multi_getattr(tile_a, 'skip_x') + plan.grout_gap
+        a_skip_y: multi_getattr(tile_a, 'skip_y')
+        ay: a_skip_y + plan.grout_gap
+        bx: multi_getattr(tile_b, 'skip_x') + plan.grout_gap
+        b_skip_y: multi_getattr(tile_b, 'skip_y')
+        by: b_skip_y + plan.grout_gap
         conditionals:
             - test: right
               true:
-                  inc: [tile_a.skip_x + plan.grout_gap, -tile_b.skip_y - plan.grout_gap]
-                  b_placement: [0, tile_a.skip_y + plan.grout_gap]
-                  outer_inc: [tile_b.skip_x + plan.grout_gap, tile_a.skip_y + plan.grout_gap]
+                  inc: [ax, -by]
+                  b_placement: [0, ay]
+                  outer_inc: [bx, ay]
               false:
-                  inc: [tile_a.skip_x + plan.grout_gap, tile_b.skip_y + plan.grout_gap]
-                  b_placement: [-tile_b.skip_x - plan.grout_gap, tile_a.skip_y - tile_b.skip_y]
-                  outer_inc: [-tile_b.skip_x - plan.grout_gap, tile_a.skip_y + plan.grout_gap]
+                  inc: [ax, by]
+                  b_placement: [-bx, a_skip_y - b_skip_y]
+                  outer_inc: [-bx, ay]
     type: repeat
     step:
         type: sequence
@@ -74,7 +82,10 @@ herringbone:
 checkerboard:
     parameters: [tile_a, tile_b]
     constants:
-        skip_x: tile_a.skip_x + tile_b.skip_x + 2 * plan.grout_gap
+        ay: multi_getattr(tile_a, 'skip_y') + plan.grout_gap
+        by: multi_getattr(tile_b, 'skip_y') + plan.grout_gap
+        skip_x: multi_getattr(tile_a, 'skip_x') + multi_getattr(tile_b, 'skip_x') +
+                  2 * plan.grout_gap
     type: sequence
     steps:
         - type: repeat
@@ -84,7 +95,7 @@ checkerboard:
                   type: place
                   tile: tile_a
               increment: [skip_x, 0]
-          increment: [skip_x / 2, tile_a.skip_y + plan.grout_gap]
+          increment: [-skip_x / 2, ay]
         - type: repeat
           step:
               type: repeat
@@ -93,7 +104,7 @@ checkerboard:
                   tile: tile_b
               increment: [skip_x, 0]
               start: [skip_x / 2, 0]
-          increment: [skip_x / 2, tile_b.skip_y + plan.grout_gap]
+          increment: [-skip_x / 2, by]
 
 box:
     parameters: [tile, num_x, num_y, start]
@@ -103,47 +114,47 @@ box:
         step:
             type: place
             tile: tile
-        increment: [tile.skip_x + plan.grout_gap, 0]
+        increment: ["multi_getattr(tile, 'skip_x') + plan.grout_gap", 0]
         times: num_x
-    increment: [0, tile.skip_y + plan.grout_gap]
+    increment: [0, "multi_getattr(tile, 'skip_y') + plan.grout_gap"]
     times: num_y
     start: start
 
 border:
     parameters: [tile, num_x, num_y, start_x, start_y]
     constants:
-        num_x_1: num_x - 1
-        num_y_1: num_y - 1
+        x: multi_getattr(tile, 'skip_x') + plan.grout_gap
+        y: multi_getattr(tile, 'skip_y') + plan.grout_gap
     type: sequence
     steps:
         - type: repeat  # bottom
           step:
               type: place
               tile: tile
-          increment: [tile.skip_x + plan.grout_gap, 0]
+          increment: [x, 0]
           start: [start_x, start_y]
           times: num_x
         - type: repeat  # top
           step:
               type: place
               tile: tile
-          increment: [tile.skip_x + plan.grout_gap, 0]
-          start: [start_x, start_y + tile.skip_y * num_y_1 + plan.grout_gap * num_y_1]
+          increment: [x, 0]
+          start: [start_x,
+                  start_y + y * (num_y - 1)]
           times: num_x
         - type: repeat  # left
           step:
               type: place
               tile: tile
-          increment: [0, tile.skip_y + plan.grout_gap]
-          start: [start_x, start_y + tile.skip_y + plan.grout_gap]
+          increment: [0, y]
+          start: [start_x, start_y + y]
           times: num_y - 2
         - type: repeat  # right
           step:
               type: place
               tile: tile
-          increment: [0, tile.skip_y + plan.grout_gap]
-          start: [start_x + tile.skip_x * num_x_1 + plan.grout_gap * num_x_1,
-                  start_y + tile.skip_y + plan.grout_gap]
+          increment: [0, y]
+          start: [start_x + x * (num_x - 1), start_y + y]
           times: num_y - 2
 
 flower:
@@ -153,18 +164,22 @@ flower:
         - type: place
           tile: tile
           angle: 90
+          index: 3
           save:
               next_x: next_x
               next_y: next_y
         - type: place
           tile: tile
           angle: 180
+          index: 2
           offset: [next_x, 0]
         - type: place
           tile: tile
           angle: 0
+          index: 0
           offset: [0, next_y]
         - type: place
           tile: tile
           angle: -90
+          index: 1
           offset: [next_x, next_y]

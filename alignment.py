@@ -2,7 +2,7 @@
 
 from math import sin, cos, radians
 
-from utils import format, eval_num
+from utils import format, my_eval
 
 
 class Alignment:
@@ -16,7 +16,7 @@ class Alignment:
 
     def __init__(self, alignment, constants):
         for attr in self.attrs:
-            setattr(self, attr, eval_num(alignment[attr], constants))
+            setattr(self, attr, my_eval(alignment[attr], constants, f"<Alignment {attr}>"))
         self.radians = radians(self.angle)
 
     def dump(self):
@@ -46,6 +46,9 @@ class Alignment:
     def unalign_pt(self, pt):
         pt2 = pt[0] - self.x_offset, pt[1] - self.y_offset
         return self.unrotate(pt2)
+
+    def unalign(self, pts):
+        return [self.unalign_pt(p) for p in pts]
 
 
 

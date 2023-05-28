@@ -42,17 +42,19 @@ def fraction(s):
 
 
 def f_to_str(f):
-    if isinstance(f, tuple):
-        segments = ['(']
+    if isinstance(f, (tuple, list)):
+        segments = ['('] if isinstance(f, tuple) else ['[']
         for i, n in enumerate(f):
             if i:
                 segments.append(f", {f_to_str(n)}")
             else:
                 segments.append(f_to_str(n))
-        segments.append(')')
+        segments.append(')' if isinstance(f, tuple) else ']')
         return ''.join(segments)
     if isinstance(f, float):
-        return str(f)
+        return f"{f:.3f}"
+    if f is None:
+        return "None"
     n, d = f.numerator, f.denominator  # this works for int's too!
     if d == 1:
         return str(n)
@@ -70,6 +72,35 @@ def format(x):
     if isinstance(x, (tuple, list)):
         return [format(y) for y in x]
     return x
+
+
+Exp_cache = {}
+
+def compile_exp(exp_source, location):
+    exp_source = str(exp_source)
+    if exp_source not in Exp_cache:
+        Exp_cache[exp_source] = compile(convert_exp(exp_source), location, 'eval')
+    return Exp_cache[exp_source]
+
+
+def convert_exp(exp_source):
+    r'''convert all fractions in exp_source to "Fraction(n, d)"
+    '''
+    segments = []
+    start = 0
+    for match in re.finditer(r'(?:([0-9]*)\.)?([0-9]+)/([0-9]+)', exp_source):
+        segments.append(exp_source[start: match.start()])
+        i, n, d = match.group(1, 2, 3)
+        n = int(n)
+        d = int(d)
+        if i is None:
+            i = 0
+        else:
+            i = int(i)
+        segments.append(f"Fraction({i * d + n}, {d})")
+        start = match.end()
+    segments.append(exp_source[start:])
+    return ''.join(segments)
 
 
 def eval_num(s, constants):
@@ -99,75 +130,20 @@ def eval_num(s, constants):
     return ans
 
 
-def eval_term(s, constants, trace=False):
-    ans = 1
-    op = None
-    start = 0
-
-    def eval_op(op, a, b):
-        if op == ' * ':
-            return a * b
-        if op == ' / ':
-            if trace:
-                print("/ got", a, b)
-            if isinstance(a, int) and isinstance(b, int):
-                ans = Fraction(a, b)
-                if ans.denominator == 1:
-                    ans = ans.numerator
-                if trace:
-                    print("creating Fraction", ans)
-            else:
-                ans = a / b
-                if trace:
-                    print("ans", ans)
-            return ans
-        return b
-
-    for match in re.finditer(r' \* | / ', s):
-        #print(f"got op={match.group()!r}, {start=}, {match.start()=}, {match.end()}")
-        a = eval_num(s[start:match.start()], constants)
-        ans = eval_op(op, ans, a)
-        op = match.group()
-        start = match.end()
-    a = eval_num(s[start:], constants)
-    return eval_op(op, ans, a)
-
-
-def my_eval(s, constants, trace=False):
-    if isinstance(s, tuple):
-        return tuple(my_eval(x, constants, trace=trace) for x in s)
-    if isinstance(s, list):
-        return [my_eval(x, constants, trace=trace) for x in s]
+def my_eval(s, constants, location):
     if not isinstance(s, str):
         return s
-    ans = 0
-    op = None
-    start = 0
-    s = s.strip()
-    for match in re.finditer(r' \- | \+ ', s):
-        #print(f"got op={match.group()!r}, {start=}, {match.start()=}, {match.end()}")
-        a = eval_term(s[start:match.start()], constants, trace=trace)
-        if trace:
-            print(f"my_eval: {ans=}, {op=}, {a=}")
-        if op == ' + ': ans += a
-        elif op == ' - ': ans -= a
-        else: ans = a
-        op = match.group()
-        start = match.end()
-    a = eval_term(s[start:], constants, trace=trace)
-    if trace:
-        print(f"my_eval: final {ans=}, {op=}, {a=}")
-    if op == ' + ': return ans + a
-    if op == ' - ': return ans - a
-    return a
+    ans = eval(compile_exp(s, location), globals(), constants)
+    print(f"my_eval({s=}, {location=}) -> {ans}")
+    return ans
 
 
-def eval_pair(s, constants, relaxed=False):
+def eval_pair(s, constants, location, relaxed=False):
     if relaxed and not isinstance(s, (tuple, list)):
-        return my_eval(s, constants)
+        return my_eval(s, constants, location)
     assert isinstance(s, (tuple, list)) and len(s) == 2, \
            f"eval_pair expected list of 2 exps, got {s!r}"
-    return tuple(my_eval(x, constants) for x in s)
+    return tuple(my_eval(x, constants, location) for x in s)
 
 
 def eval_color(s, colors=None):
@@ -182,6 +158,8 @@ def eval_color(s, colors=None):
 
 
 def eval_tile(s, constants):
+    if isinstance(s, (tuple, list)):
+        return [eval_tile(x, constants) for x in s]
     if '.' in s:
         attrs = s.split('.')
         ans = constants[attrs[0]]
@@ -193,6 +171,15 @@ def eval_tile(s, constants):
         ans = s
     if isinstance(ans, str):
         ans = app.Tiles[ans]
+    return ans
+
+
+def multi_getattr(value, attr):
+    if not isinstance(value, (tuple, list)):
+        return getattr(value, attr)
+    ans = getattr(value[0], attr)
+    if any(getattr(v, attr) != ans for v in value):
+        return None
     return ans
 
 
@@ -239,10 +226,8 @@ if __name__ == "__main__":
             print(line)
     elif sys.argv[1] == 'eval_num':
         print(f_to_str(eval_num(sys.argv[2], dict(a=1, b=2))))
-    elif sys.argv[1] == 'eval_term':
-        print(f_to_str(eval_term(sys.argv[2], dict(a=1, b=2))))
     elif sys.argv[1] == 'my_eval':
-        print(f_to_str(my_eval(sys.argv[2], dict(a=1, b=2))))
+        print(f_to_str(my_eval(sys.argv[2], dict(a=1, b=2), f"<test>")))
     elif sys.argv[1] == 'eval_pair':
         print(eval_pair(sys.argv[2], dict(a=1, b=2)))
     elif sys.argv[1] == 'help':

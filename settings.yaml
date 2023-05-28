@@ -5,11 +5,7 @@ default_wall: Master Back
 wall_settings:
     Dining:
         plans: {}
-    Shower Back:
-        plans: {}
-    Shower Left:
-        plans: {}
-    Shower Right:
+    Test Wall:
         default_plan: stepped
         plans:
             herringbone_left:
@@ -365,7 +361,8 @@ wall_settings:
                     tile_b: star-white
                     type: checkerboard
     Master Back:
-        default_plan: star_X
+        default_plan: star_+
+        #default_plan: star_X
         plans:
             hex:
                 alignment:
@@ -408,9 +405,9 @@ wall_settings:
                 grout_color: acorn
                 grout_gap: 1/4
                 layout:
+                    type: checkerboard
                     tile_a: cross-white
                     tile_b: star-white
-                    type: checkerboard
 
             star_X:
                 alignment:
