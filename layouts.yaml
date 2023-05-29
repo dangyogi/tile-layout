@@ -24,12 +24,17 @@ stepped:
     constants:
         x: multi_getattr(tile, 'skip_x') + plan.grout_gap
         y: multi_getattr(tile, 'skip_y') + plan.grout_gap
-        percent_left: 1 - percent_offset
+        conditionals:
+            - test: percent_offset == 0
+              true:
+                x_inc: 0
+              false:
+                x_inc: x * percent_offset - x
     type: repeat
     step:
         type: row_infinite
         tile: tile
-    increment: [-x * percent_left, y]
+    increment: [x_inc, y]
 
 stacked:
     parameters: [tile]

@@ -204,13 +204,16 @@ class Plan:
         next_x = next_y = None
         x_inc, y_inc = increment
         x, y = offset = constants['offset']
-        print(f"repeat plan={self.name}, offset={f_to_str(offset)}, "
+        print(f"repeat plan={self.name}, offset={f_to_str(offset)}, {times=}, "
               f"x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
         for index in (range(times) if times is not None else count(0)):
             print(f"repeat {index=}, offset={f_to_str(offset)}")
             if times is None:
-                if    x_inc > 0 and x > max_x or x_inc < 0 and x < min_x \
-                   or y_inc > 0 and y > max_y or y_inc < 0 and y < min_y:
+                keep_going = x_inc > 0 and x <= max_x or \
+                             x_inc < 0 and x >= min_x or \
+                             y_inc > 0 and y <= max_y or \
+                             y_inc < 0 and y >= min_y
+                if not keep_going:
                     break
             constants['offset'] = offset
             constants['index'] = index
@@ -247,17 +250,21 @@ class Plan:
             x, y = my_eval(step.get('start', (0, 0)), constants,
                            f"<Plan({self.name}).do_step: repeat start>")
             x_off, y_off = constants['offset']
+            print(f"do_step: repeat in plan({self.name}) "
+                  f"x={f_to_str(x)}, y={f_to_str(y)}, "
+                  f"x_off={f_to_str(x_off)}, y_off={f_to_str(y_off)}")
             constants['offset'] = x_off + x, y_off + y
             return self.repeat(constants, pick(step['step'], constants),
-                               eval_pair(step['increment'], constants,
-                                         f"<Plan({self.name}).do_step: repeat increment>"),
+                               my_eval(step['increment'], constants,
+                                 f"<Plan({self.name}).do_step: repeat increment>"),
                                my_eval(step.get('times', None), constants,
-                                       f"<Plan({self.name}).do_step: repeat times>"),
+                                 f"<Plan({self.name}).do_step: repeat times>"),
                                my_eval(step.get('step_width_limit', 24), constants,
-                                       f"<Plan({self.name}).do_step: repeat step_width_limit>"),
+                                 f"<Plan({self.name}).do_step: repeat "
+                                 "step_width_limit>"),
                                my_eval(step.get('step_height_limit', 24), constants,
-                                       f"<Plan({self.name}).do_step: repeat "
-                                       f"step_height_limit>"),
+                                 f"<Plan({self.name}).do_step: repeat "
+                                 "step_height_limit>"),
                                trace=trace)
 
         # else it's a call to a layout
@@ -274,7 +281,8 @@ class Plan:
                         print(f"{self.name}.lookup({arg}) in step -- "
                               f"value is {step[arg]}")
                     ans = my_eval(step[arg], constants,
-                                  f"<Plan({self.name}).do_step: layout {step['type']} {arg}>")
+                                  f"<Plan({self.name}).do_step: layout {step['type']} "
+                                  f"{arg}>")
             elif arg in constants:
                 if trace:
                     print(f"{self.name}.lookup({arg}) in constants "
@@ -292,7 +300,7 @@ class Plan:
         if 'constants' in new_step:
             def add_constants(constants):
                 for name, value in constants.items():
-                    if trace:
+                    if trace or True:
                         print(f"{self.name}: add_constants adding {name=}, {value=}")
                     if name == 'conditionals':
                         for conditional in value:
@@ -336,7 +344,7 @@ class Plan:
 def pick(value, constants):
     if not isinstance(value, (tuple, list)):
         value = [value]
-    return value[constants.get('index', 0)]
+    return value[constants.get('index', 0) % len(value)]
 
 
 def get(value, attr=None):

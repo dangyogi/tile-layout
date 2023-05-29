@@ -53,6 +53,8 @@ def f_to_str(f):
         return ''.join(segments)
     if isinstance(f, float):
         return f"{f:.3f}"
+    if isinstance(f, str):
+        return repr(f)
     if f is None:
         return "None"
     n, d = f.numerator, f.denominator  # this works for int's too!
@@ -131,9 +133,14 @@ def eval_num(s, constants):
 
 
 def my_eval(s, constants, location):
-    if not isinstance(s, str):
-        return s
-    ans = eval(compile_exp(s, location), globals(), constants)
+    if isinstance(s, tuple):
+        ans = tuple(my_eval(x, constants, location) for x in s)
+    elif isinstance(s, list):
+        ans = [my_eval(x, constants, location) for x in s]
+    elif not isinstance(s, str):
+        ans = s
+    else:
+        ans = eval(compile_exp(s, location), globals(), constants)
     print(f"my_eval({s=}, {location=}) -> {ans}")
     return ans
 
