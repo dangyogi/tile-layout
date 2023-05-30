@@ -191,7 +191,6 @@ class Plan:
         if trace:
             print(f"{self.name}.repeat({step=}, increment={f_to_str(increment)}, "
                   f"{times=}, {step_width_limit=}, {step_height_limit=})")
-        visible = False
         if True:
             unaligned_boundary = self.alignment.unalign(self.wall.boundary)
             print(f"Plan({self.wall_name}, {self.name}): "
@@ -206,9 +205,10 @@ class Plan:
         print(f"Plan({self.wall_name}, {self.name}): "
               f"min_x={min_x:.2f}, max_x={max_x:.2f}, "
               f"min_y={min_y:.2f}, max_y={max_y:.2f}")
+        visible = False
         next_x = next_y = None
         x_inc, y_inc = increment
-        x, y = offset = constants['offset']
+        x, y = offset = starting_offset = constants['offset']
         print(f"repeat plan={self.name}, offset={f_to_str(offset)}, {times=}, "
               f"x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
         print(f"  min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}, "
@@ -216,22 +216,47 @@ class Plan:
         for index in (range(index_start, index_start + times) if times is not None
                                                               else count(index_start)):
             #print(f"repeat {index=}, offset={f_to_str(offset)}")
-            if times is None:
-                keep_going = x_inc > 0 and x <= max_x or \
-                             x_inc < 0 and x >= min_x or \
-                             y_inc > 0 and y <= max_y or \
-                             y_inc < 0 and y >= min_y
-                if not keep_going:
-                    break
             constants['offset'] = offset
             constants['index'] = index
-            if self.do_step(step, constants, trace=trace):
+            step_visible = self.do_step(step, constants, trace=trace)
+            if step_visible:
                 if next_x is None or constants['next_x'] > next_x:
                     next_x = constants['next_x']
                 if next_y is None or constants['next_y'] > next_y:
                     next_y = constants['next_y']
                 visible = True
+            if times is None:
+                keep_going = step_visible or \
+                             x_inc > 0 and x <= max_x or \
+                             x_inc < 0 and x >= min_x or \
+                             y_inc > 0 and y <= max_y or \
+                             y_inc < 0 and y >= min_y
+                if not keep_going:
+                    break
             x, y = offset = x + x_inc, y + y_inc
+        if times is None:
+            # go backwards
+            x_inc, y_inc = -x_inc, -y_inc
+            x, y = offset = starting_offset[0] + x_inc, starting_offset[1] + y_inc
+            for index in count(-index_start, -1):
+                #print(f"repeat {index=}, offset={f_to_str(offset)}")
+                constants['offset'] = offset
+                constants['index'] = index
+                step_visible = self.do_step(step, constants, trace=trace)
+                if step_visible:
+                    if next_x is None or constants['next_x'] > next_x:
+                        next_x = constants['next_x']
+                    if next_y is None or constants['next_y'] > next_y:
+                        next_y = constants['next_y']
+                    visible = True
+                keep_going = step_visible or \
+                             x_inc > 0 and x <= max_x or \
+                             x_inc < 0 and x >= min_x or \
+                             y_inc > 0 and y <= max_y or \
+                             y_inc < 0 and y >= min_y
+                if not keep_going:
+                    break
+                x, y = offset = x + x_inc, y + y_inc
         if visible:
             constants['next_x'] = next_x
             constants['next_y'] = next_y
