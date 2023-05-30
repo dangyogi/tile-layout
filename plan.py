@@ -7,6 +7,7 @@ import app
 from utils import my_eval, eval_pair, eval_color, eval_tile, format, f_to_str
 from tile import erase_tiles
 from alignment import Alignment
+from place_trace import pt_init, place
 
 
 class Plan:
@@ -28,20 +29,6 @@ class Plan:
             print(f"Plan({wall_name}, {name}): angle={self.alignment.angle}, "
                   f"x_offset={f_to_str(self.alignment.x_offset)}, "
                   f"y_offset={f_to_str(self.alignment.y_offset)}")
-        unaligned_boundary = self.alignment.unalign(self.wall.boundary)
-        if wall_name == "Master Back" and name == 'star_+':
-            print(f"Plan({wall_name}, {name}): ",
-                  "unaligned_boundary=",
-                  [f"({p[0]:.2f}, {p[1]:.2f})" for p in unaligned_boundary],
-                  sep='')
-        self.min_x = min(p[0] for p in unaligned_boundary)
-        self.max_x = max(p[0] for p in unaligned_boundary)
-        self.min_y = min(p[1] for p in unaligned_boundary)
-        self.max_y = max(p[1] for p in unaligned_boundary)
-        if wall_name == "Master Back" and name == 'star_+':
-            print(f"Plan({wall_name}, {name}): "
-                  f"min_x={self.min_x:.2f}, max_x={self.max_x:.2f}, "
-                  f"min_y={self.min_y:.2f}, max_y={self.max_y:.2f}")
 
     def __repr__(self):
         return f"<Plan: {self.name}>"
@@ -63,8 +50,10 @@ class Plan:
     def create(self):
         erase_tiles()
         self.display_grout_color()
+        pt_init()
         self.do_step(self.layout,
-                     dict(plan=self, offset=(-self.wall.diagonal, -self.wall.diagonal)))
+                     #dict(plan=self, offset=(-self.wall.diagonal, -self.wall.diagonal)))
+                     dict(plan=self, offset=(0, 0)))
 
     def align(self, points, offset):
         r'''Returns aligned points after applying offset.
@@ -106,7 +95,9 @@ class Plan:
             print(f"{self.plan.name}.place(tile={tile}, angle={angle}, "
                   f"offset={constants['offset']})")
         the_tile = pick(tile, constants)
-        if the_tile.place_at(constants['offset'], angle, self):
+        visible = the_tile.place_at(constants['offset'], pick(angle, constants), self)
+        place(constants['offset'], visible)
+        if visible:
             constants['next_x'] = the_tile.skip_x + self.grout_gap
             constants['next_y'] = the_tile.skip_y + self.grout_gap
             return True
@@ -134,13 +125,15 @@ class Plan:
         next_x = next_y = None
         start_x, start_y = constants['offset']
         my_constants = ChainMap({}, constants)
-        for step in steps:
+        for i, step in enumerate(steps, 1):
+            print(f"sequence in Plan({self.name}): step {i}, {step=}, {constants=}")
             step = pick(step, constants)
             step_constants = my_constants.new_child()
             if 'use' in step:
                 for key, value in step['use'].items():
-                    step_constants[key] = my_eval(value, step_constants,
-                                                  f"<Plan({self.name}).sequence: use {key}>")
+                    step_constants[key] = \
+                      my_eval(value, step_constants,
+                              f"<Plan({self.name}).sequence: use {key}>")
             if 'offset' in step:
                 x, y = my_eval(step['offset'], step_constants,
                                f"<Plan({self.name}).sequence: offset>")
@@ -149,9 +142,11 @@ class Plan:
                 step_constants['offset'] = start_x, start_y
             if self.do_step(step, step_constants, trace=trace):
                 if 'save' in step:
+                    print(f"sequence in Plan({self.name}): save {step_constants}")
                     for key, value in step['save'].items():
-                        my_constants[key] = my_eval(value, step_constants,
-                                                    f"<Plan({self.name}).sequence: save {key}>")
+                        my_constants[key] = \
+                          my_eval(value, step_constants,
+                                  f"<Plan({self.name}).sequence: save {key}>")
                 if next_x is None or step_constants['next_x'] > next_x:
                     next_x = step_constants['next_x']
                 if next_y is None or step_constants['next_y'] > next_y:
@@ -184,7 +179,7 @@ class Plan:
                     pass
 
     def repeat(self, constants, step, increment, times,
-               step_width_limit, step_height_limit, trace=False):
+               step_width_limit, step_height_limit, index_start, trace=False):
         r'''Repeat step `times` times (infinite in both directions if times is None).
 
         `increment` is added to the offset after each repetition.
@@ -197,17 +192,30 @@ class Plan:
             print(f"{self.name}.repeat({step=}, increment={f_to_str(increment)}, "
                   f"{times=}, {step_width_limit=}, {step_height_limit=})")
         visible = False
-        min_x = self.min_x - 2 * step_width_limit
-        max_x = self.max_x + step_width_limit
-        min_y = self.min_y - 2 * step_width_limit
-        max_y = self.max_y + step_width_limit
+        if True:
+            unaligned_boundary = self.alignment.unalign(self.wall.boundary)
+            print(f"Plan({self.wall_name}, {self.name}): "
+                  f"unaligned_boundary={f_to_str(unaligned_boundary)}")
+            min_x = min(p[0] for p in unaligned_boundary) - 2 * step_width_limit
+            max_x = max(p[0] for p in unaligned_boundary)
+            min_y = min(p[1] for p in unaligned_boundary) - 2 * step_width_limit
+            max_y = max(p[1] for p in unaligned_boundary)
+        else:
+            min_x = min_y = -self.wall.diagonal - 2 * step_width_limit
+            max_x = max_y = self.wall.diagonal + step_width_limit
+        print(f"Plan({self.wall_name}, {self.name}): "
+              f"min_x={min_x:.2f}, max_x={max_x:.2f}, "
+              f"min_y={min_y:.2f}, max_y={max_y:.2f}")
         next_x = next_y = None
         x_inc, y_inc = increment
         x, y = offset = constants['offset']
         print(f"repeat plan={self.name}, offset={f_to_str(offset)}, {times=}, "
               f"x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
-        for index in (range(times) if times is not None else count(0)):
-            print(f"repeat {index=}, offset={f_to_str(offset)}")
+        print(f"  min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}, "
+              f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
+        for index in (range(index_start, index_start + times) if times is not None
+                                                              else count(index_start)):
+            #print(f"repeat {index=}, offset={f_to_str(offset)}")
             if times is None:
                 keep_going = x_inc > 0 and x <= max_x or \
                              x_inc < 0 and x >= min_x or \
@@ -236,9 +244,9 @@ class Plan:
         if trace:
             print(f"{self.name}.do_step({step=})")
         if 'next_x' in constants:
-            del constants['next_x']
+            constants['next_x'] = None
         if 'next_y' in constants:
-            del constants['next_y']
+            constants['next_y'] = None
         if step['type'] == 'place':
             return self.place(eval_tile(step['tile'], constants),
                               my_eval(step.get('angle', 0), constants,
@@ -265,11 +273,13 @@ class Plan:
                                my_eval(step.get('step_height_limit', 24), constants,
                                  f"<Plan({self.name}).do_step: repeat "
                                  "step_height_limit>"),
+                               my_eval(step.get('index_start', 0), constants,
+                                 f"<Plan({self.name}).do_step: repeat index_start>"),
                                trace=trace)
 
         # else it's a call to a layout
         new_step = app.Layouts[step['type']]
-        def lookup(arg):
+        def lookup(arg, defaults):
             if arg in step:
                 if arg == 'tile' or arg.startswith('tile_'):
                     if trace:
@@ -283,18 +293,28 @@ class Plan:
                     ans = my_eval(step[arg], constants,
                                   f"<Plan({self.name}).do_step: layout {step['type']} "
                                   f"{arg}>")
-            elif arg in constants:
-                if trace:
-                    print(f"{self.name}.lookup({arg}) in constants "
-                          f"-- value is {constants[arg]}")
-                ans = constants[arg]
+            #elif arg in constants:
+            #    if trace:
+            #        print(f"{self.name}.lookup({arg}) in constants "
+            #              f"-- value is {constants[arg]}")
+            #    ans = constants[arg]
+            elif arg in defaults:
+                ans = my_eval(defaults[arg], new_constants,
+                              f"<Plan({self.name}).do_step: layout {step['type']} "
+                              f"defaults {arg}>")
             else:
                 ans = None
             if trace:
                 print(f"setting parameter {arg} to {ans}")
             return ans
-        new_constants = {param: lookup(param)
-                         for param in new_step.get('parameters', ())}
+        if 'defaults' in new_step:
+            defaults = new_step['defaults']
+        else:
+            defaults = {}
+        print(f"Plan({self.name}): layout {step['type']} {defaults=}")
+        new_constants = {}
+        for param in new_step.get('parameters', ()):
+            new_constants[param] = lookup(param, defaults)
         new_constants['plan'] = self
         new_constants['offset'] = constants['offset']
         if 'constants' in new_step:
@@ -310,7 +330,10 @@ class Plan:
                             if trace:
                                 print(f"{self.name}: add_constants got "
                                       f"conditional {test=!r}, {conditional=}")
-                            add_constants(conditional[test])
+                            if test in conditional:
+                                add_constants(conditional[test])
+                            else:
+                                add_constants(conditional['else'])
                     elif name == 'tile':
                         new_constants[name] = eval_tile(value, new_constants)
                     else:

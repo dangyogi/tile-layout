@@ -3,7 +3,7 @@
 ---
 
 Test Wall:
-    grout: [60, 60]
+    grout: [48, 88]
 
 Sink:
     grout: [96.1/16, 17.1/2]

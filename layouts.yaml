@@ -2,16 +2,13 @@
 
 ---
 
-row_infinite:
-    parameters: [tile]
-    type: repeat
-    step:
-        type: place
-        tile: tile
-    increment: ["multi_getattr(tile, 'skip_x') + plan.grout_gap", 0]
-
-row_n:
+row_tile:
+    description: >
+      Lays one row of tile.  If count is provided, that many tiles are layed.  Otherwise,
+      the row will extend to the right edge of the wall.
     parameters: [tile, count]
+    defaults:
+        count: None
     type: repeat
     step:
         type: place
@@ -20,7 +17,15 @@ row_n:
     times: count
 
 stepped:
+    description: >
+      A stepped pattern with each row starting at an offset from the prior row.
+
+      The offset is percent_offset * the width of the tile (including the grout_gap).
+      
+      The percent_offset defaults to 0 (for a stacked pattern).
     parameters: [tile, percent_offset]
+    defaults:
+        percent_offset: 0
     constants:
         x: multi_getattr(tile, 'skip_x') + plan.grout_gap
         y: multi_getattr(tile, 'skip_y') + plan.grout_gap
@@ -32,18 +37,23 @@ stepped:
                 x_inc: x * percent_offset - x
     type: repeat
     step:
-        type: row_infinite
+        type: row_tile
         tile: tile
     increment: [x_inc, y]
 
-stacked:
-    parameters: [tile]
-    type: stepped
-    tile: tile
-    percent_offset: 0
-
 hopscotch:
+    description: >
+      A hopscotch pattern.
+
+      If right is true tile_b is placed to right (clockwise) of each corner of tile_a.
+
+      If right is false tile_b is placed to left (counter-clockwise) of each corner of
+      tile_a.
+
+      Note that reversing the order of the tiles also reverses right/left.
     parameters: [tile_a, tile_b, right]
+    defaults:
+        right: false
     constants:
         ax: multi_getattr(tile_a, 'skip_x') + plan.grout_gap
         a_skip_y: multi_getattr(tile_a, 'skip_y')
@@ -55,11 +65,11 @@ hopscotch:
             - test: right
               true:
                   inc: [ax, -by]
-                  b_placement: [0, ay]
-                  outer_inc: [bx, ay]
+                  b_placement: [-bx, 0]
+                  outer_inc: [-(ax - bx), ay + by]
               false:
-                  inc: [ax, by]
-                  b_placement: [-bx, a_skip_y - b_skip_y]
+                  inc: [ax + bx, -(ay - by)]
+                  b_placement: [0, -by]
                   outer_inc: [-bx, ay]
     type: repeat
     step:
@@ -79,12 +89,25 @@ hopscotch:
     increment: outer_inc
 
 herringbone:
+    description: >
+      A herringbone pattern.
+
+      If right is true the flipped tile is placed to right (clockwise) from each corner
+      of the original tile.
+
+      If right is false the flipped tile is placed to left (counter-clockwise) from each
+      corner of the original tile.
     parameters: [tile, right]
+    defaults:
+        right: true
     type: hopscotch
     tile_a: tile
     tile_b: tile.flipped
+    right: right
 
 checkerboard:
+    description: >
+      A rectangle filled with two tiles alternating both horizontally and vertically.
     parameters: [tile_a, tile_b]
     constants:
         ay: multi_getattr(tile_a, 'skip_y') + plan.grout_gap
@@ -112,7 +135,11 @@ checkerboard:
           increment: [-skip_x / 2, by]
 
 box:
+    description: >
+      A solid rectangle of tiles num_x tiles wide, and num_y tiles high.
     parameters: [tile, num_x, num_y, start]
+    defaults:
+        start: [0, 0]
     type: repeat
     step:
         type: repeat
@@ -126,7 +153,12 @@ box:
     start: start
 
 border:
+    description: >
+      A border of single tiles num_x tiles wide, and num_y tiles high.
     parameters: [tile, num_x, num_y, start_x, start_y]
+    defaults:
+        start_x: 0
+        start_y: 0
     constants:
         x: multi_getattr(tile, 'skip_x') + plan.grout_gap
         y: multi_getattr(tile, 'skip_y') + plan.grout_gap
@@ -163,6 +195,9 @@ border:
           times: num_y - 2
 
 flower:
+    description: >
+      Four tiles in a square (2x2 tiles) all sharing the lower-right corner of the
+      original tile.
     parameters: [tile]
     type: sequence
     steps:

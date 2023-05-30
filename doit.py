@@ -14,6 +14,7 @@ from tiles import read_tiles
 from layouts import read_layouts
 from walls import read_walls
 from settings import read_settings
+from place_trace import dump_stats
 
 
 
@@ -102,6 +103,7 @@ def tile_entry(master):
 def run_plan(name):
     app.Plan_name = name
     app.Plan = app.Plans[name]
+    app.root.title(f"{app.Wall_name}: {name}")
     app.Plan.create()
 
 
@@ -227,9 +229,12 @@ if __name__ == "__main__":
             plan_name = app.Wall_settings['default_plan']
         if plan_name is not None:
             run_plan(plan_name)
+        else:
+            app.root.title(name)
 
     def quit():
         app.root.destroy()
+        dump_stats()
 
     app.init((("Quit", quit),
               ("Spew", app.spew),
@@ -245,6 +250,7 @@ if __name__ == "__main__":
                  ("Set X_offset", run_set_x_offset),
                  ("Set Y_offset", run_set_y_offset),
               )),
+              ("Dump Stats", dump_stats),
             ))
 
     init()

@@ -141,7 +141,7 @@ def my_eval(s, constants, location):
         ans = s
     else:
         ans = eval(compile_exp(s, location), globals(), constants)
-    print(f"my_eval({s=}, {location=}) -> {ans}")
+    #print(f"my_eval({s=}, {location=}) -> {ans}")
     return ans
 
 

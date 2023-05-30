@@ -27,6 +27,12 @@
     width: 20
     color: white
 
+4x12:
+    shape: rectangle
+    height: 4
+    width: 12
+    color: white
+
 6x12:
     shape: rectangle
     height: 6
