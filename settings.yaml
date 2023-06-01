@@ -608,25 +608,25 @@ wall_settings:
                           tiles: [cross-white, star-white]
                           num_y: 7
                           save:
-                              next_y1: next_y
+                              inc_y1: inc_y
                         - type: repeat
                           step:
                               type: place
                               tile: [Estrella de Fuego-4, Arabesque Azul-4]
                           use:
                               offset_x: 3.9/16 + plan.grout_gap
-                              offset_y: next_y1
+                              offset_y: inc_y1
                           #start: [3.3/4, 84.1/2]
                           increment: [4 + plan.grout_gap, 0]
                           save:
-                              next_y2: next_y1 + next_y
+                              inc_y2: inc_y1 + inc_y
                         - type: repeat
                           step:
                               type: place
                               tile: 3x6 yellow
                           use:
                               offset_x: 3.9/16 + plan.grout_gap
-                              offset_y: next_y2
+                              offset_y: inc_y2
                           increment: [0, 3 + plan.grout_gap]
                           times: 9
                         - type: repeat
@@ -635,16 +635,16 @@ wall_settings:
                               tile: 3x6 yellow
                           use:
                               offset_x: 48 - 3.9/16
-                              offset_y: next_y2
+                              offset_y: inc_y2
                           increment: [0, 3 + plan.grout_gap]
                           times: 9
                           save:
-                              next_y3: next_y2 + next_y
+                              inc_y3: inc_y2 + inc_y
                         - type: herringbone
                           tile: 3x6 orange
                           use:
                               offset_x: 3.9/16 + plan.grout_gap
-                              offset_y: next_y3
+                              offset_y: inc_y3
                         #- type: repeat
                         #  step:
                         #      type: place

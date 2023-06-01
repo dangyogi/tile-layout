@@ -89,7 +89,7 @@ class Plan:
     def place(self, tile, angle, constants, trace=False):
         r'''Returns True if displayed, False if not visible.
 
-        If visible, updates `next_x` and `next_y` in `constants` (including grout_gap).
+        If visible, updates `inc_x` and `inc_y` in `constants` (including grout_gap).
         '''
         if trace:
             print(f"{self.plan.name}.place(tile={tile}, angle={angle}, "
@@ -98,13 +98,13 @@ class Plan:
         visible = the_tile.place_at(constants['offset'], pick(angle, constants), self)
         place(constants['offset'], visible)
         if visible:
-            constants['next_x'] = the_tile.skip_x + self.grout_gap
-            constants['next_y'] = the_tile.skip_y + self.grout_gap
+            constants['inc_x'] = the_tile.skip_x + self.grout_gap
+            constants['inc_y'] = the_tile.skip_y + self.grout_gap
             return True
         return False
 
     def place_next(self, tile):
-        r'''Returns next_x, next_y
+        r'''Returns inc_x, inc_y
         '''
         skip_x = get(tile, 'skip_x')
         if skip_x is not None:
@@ -117,7 +117,7 @@ class Plan:
     def sequence(self, constants, *steps, trace=False):
         r'''Returns True if any step is displayed, False if nothing is visible.
 
-        If visible, returns the greatest next_x, next_y in constants.
+        If visible, returns the greatest inc_x, inc_y in constants.
 
         The sequence executes with it's own constants that are discarded when it's done.
         Additionally, each step executes with it's own disposable constants.
@@ -141,7 +141,7 @@ class Plan:
         if trace:
             print(f"{self.name}.sequence({steps=})")
         visible = False
-        next_x = next_y = None
+        inc_x = inc_y = None
         initial_x, initial_y = constants['offset']
         my_constants = ChainMap({}, constants)
         my_constants['initial_x'] = initial_x
@@ -173,33 +173,33 @@ class Plan:
                           my_eval(value, step_constants,
                                   f"<Plan({self.name}).sequence: save {key}>")
                         print(f"sequence save {key} set to {f_to_str(my_constants[key])}")
-                if next_x is None or step_constants['next_x'] > next_x:
-                    next_x = step_constants['next_x']
-                if next_y is None or step_constants['next_y'] > next_y:
-                    next_y = step_constants['next_y']
+                if inc_x is None or step_constants['inc_x'] > inc_x:
+                    inc_x = step_constants['inc_x']
+                if inc_y is None or step_constants['inc_y'] > inc_y:
+                    inc_y = step_constants['inc_y']
                 visible = True
         if visible:
-            constants['next_x'] = next_x
-            constants['next_y'] = next_y
+            constants['inc_x'] = inc_x
+            constants['inc_y'] = inc_y
         return visible
 
     def sequence_next(self, steps):
-        next_x_to_beat = next_y_to_beat = None
-        next_x = next_y = -1000
+        inc_x_to_beat = inc_y_to_beat = None
+        inc_x = inc_y = -1000
         for step in steps:
             if not isinstance(step, (tuple, list)):
                 step = [step]
-            istep_next_x = istep_next_y = None
+            istep_inc_x = istep_inc_y = None
             istep_next = [self.get_step_next(istep) for istep in step]
-            if next_x is not None:
+            if inc_x is not None:
                 if any(p[0] is None for p in istep_next):
-                    next_x = None
+                    inc_x = None
                 else:
                     # FIX
                     pass
-            if next_y is not None:
+            if inc_y is not None:
                 if any(p[1] is None for p in istep_next):
-                    next_y = None
+                    inc_y = None
                 else:
                     # FIX
                     pass
@@ -212,7 +212,7 @@ class Plan:
 
         Returns True if any repetition is visible, False if nothing is visible.
 
-        If visible, returns the greatest next_x, next_y in constants.
+        If visible, returns the greatest inc_x, inc_y in constants.
         '''
         if trace:
             print(f"{self.name}.repeat({step=}, increment={f_to_str(increment)}, "
@@ -232,7 +232,7 @@ class Plan:
               f"min_x={min_x:.2f}, max_x={max_x:.2f}, "
               f"min_y={min_y:.2f}, max_y={max_y:.2f}")
         visible = False
-        next_x = next_y = None
+        inc_x = inc_y = None
         x_inc, y_inc = increment
         x, y = offset = starting_offset = constants['offset']
         print(f"repeat plan={self.name}, offset={f_to_str(offset)}, {times=}, "
@@ -245,12 +245,12 @@ class Plan:
             constants['index'] = index + index_start
             step_visible = self.do_step(step, constants, trace=trace)
             if step_visible:
-                step_next_x = constants['next_x'] + index * x_inc
-                step_next_y = constants['next_y'] + index * y_inc
-                if next_x is None or step_next_x > next_x:
-                    next_x = step_next_x
-                if next_y is None or step_next_y > next_y:
-                    next_y = step_next_y
+                step_inc_x = constants['inc_x'] + index * x_inc
+                step_inc_y = constants['inc_y'] + index * y_inc
+                if inc_x is None or step_inc_x > inc_x:
+                    inc_x = step_inc_x
+                if inc_y is None or step_inc_y > inc_y:
+                    inc_y = step_inc_y
                 visible = True
             if times is None:
                 keep_going = step_visible or \
@@ -271,12 +271,12 @@ class Plan:
                 constants['index'] = index + index_start
                 step_visible = self.do_step(step, constants, trace=trace)
                 if step_visible:
-                    step_next_x = constants['next_x'] + index * x_inc
-                    step_next_y = constants['next_y'] + index * y_inc
-                    if next_x is None or step_next_x > next_x:
-                        next_x = step_next_x
-                    if next_y is None or step_next_y > next_y:
-                        next_y = step_next_y
+                    step_inc_x = constants['inc_x'] + index * x_inc
+                    step_inc_y = constants['inc_y'] + index * y_inc
+                    if inc_x is None or step_inc_x > inc_x:
+                        inc_x = step_inc_x
+                    if inc_y is None or step_inc_y > inc_y:
+                        inc_y = step_inc_y
                     visible = True
                 keep_going = step_visible or \
                              x_inc > 0 and x <= max_x or \
@@ -287,9 +287,9 @@ class Plan:
                     break
                 x, y = offset = x + x_inc, y + y_inc
         if visible:
-            constants['next_x'] = next_x
-            constants['next_y'] = next_y
-        print(f"repeat {visible=}, next_x={f_to_str(next_x)}, next_y={f_to_str(next_y)}")
+            constants['inc_x'] = inc_x
+            constants['inc_y'] = inc_y
+        print(f"repeat {visible=}, inc_x={f_to_str(inc_x)}, inc_y={f_to_str(inc_y)}")
         return visible
 
     def do_step(self, step, constants, trace=False):
@@ -297,10 +297,10 @@ class Plan:
         '''
         if trace:
             print(f"{self.name}.do_step({step=})")
-        if 'next_x' in constants:
-            constants['next_x'] = None
-        if 'next_y' in constants:
-            constants['next_y'] = None
+        if 'inc_x' in constants:
+            constants['inc_x'] = None
+        if 'inc_y' in constants:
+            constants['inc_y'] = None
         if step['type'] == 'place':
             return self.place(eval_tile(step['tile'], constants),
                               my_eval(step.get('angle', 0), constants,
@@ -397,14 +397,14 @@ class Plan:
             add_constants(new_step['constants'])
         visible = self.do_step(new_step, new_constants, trace=trace)
         if visible:
-            constants['next_x'] = new_constants['next_x']
-            constants['next_y'] = new_constants['next_y']
+            constants['inc_x'] = new_constants['inc_x']
+            constants['inc_y'] = new_constants['inc_y']
         return visible
 
     def get_step_next(self, step):
-        r'''Returns next_x, next_y
+        r'''Returns inc_x, inc_y
 
-        If next_x or next_y is ambiguous, None is returned.
+        If inc_x or inc_y is ambiguous, None is returned.
         '''
         if not isinstance(step, (tuple, list)):
             step = [step]
