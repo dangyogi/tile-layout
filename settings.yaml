@@ -71,7 +71,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
 
             star_cross_white_cross:
                 alignment:
@@ -82,7 +86,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-cotto]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-cotto
 
             star_cross_white_star:
                 alignment:
@@ -93,7 +101,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-cotto, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-cotto
+                        - type: place
+                          tile: star-white
 
             hopscotch_left:
                 alignment:
@@ -152,7 +164,9 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: box
-                    tile: 8" square white
+                    step:
+                        type: place
+                        tile: 8" square white
                     num_x: 4
                     num_y: 3
                     start: [5, 15]
@@ -166,7 +180,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [8" square white, 8" square black]
+                    steps:
+                        - type: place
+                          tile: 8" square white
+                        - type: place
+                          tile: 8" square black
                     num_x: 4
                     num_y: 5
                     start: [5, 15]
@@ -180,7 +198,9 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: border
-                    tile: 8" square white
+                    step:
+                        type: place
+                        tile: 8" square white
                     num_x: 5
                     num_y: 4
                     start_x: 5
@@ -275,7 +295,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
             star_X:
                 alignment:
                     angle: 0
@@ -285,7 +309,10 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                          tile: star-white
     Stove:
         plans:
             hex:
@@ -336,7 +363,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
             star_X:
                 alignment:
                     angle: 0
@@ -346,7 +377,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
     Guest Bath:
         plans: {}
     Master Left:
@@ -400,7 +435,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
             star_X:
                 alignment:
                     angle: 0
@@ -410,7 +449,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
     Master Right:
         default_plan: star_X
         plans:
@@ -462,7 +505,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
             star_X:
                 alignment:
                     angle: 0
@@ -472,7 +519,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
     Master Back:
         default_plan: star_X-p1
         plans:
@@ -524,7 +575,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
 
             star_X:
                 alignment:
@@ -535,7 +590,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-white, star-white]
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
 
             star_X-taupe:
                 alignment:
@@ -546,7 +605,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-taupe, star-taupe]
+                    steps:
+                        - type: place
+                          tile: cross-taupe
+                        - type: place
+                          tile: star-taupe
 
             star_X-cotto:
                 alignment:
@@ -557,7 +620,11 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tiles: [cross-cotto, star-cotto]
+                    steps:
+                        - type: place
+                          tile: cross-cotto
+                        - type: place
+                          tile: star-cotto
 
             star_X-tv1:
                 alignment:
@@ -570,7 +637,11 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tiles: [cross-white, star-white]
+                          steps:
+                              - type: place
+                                tile: cross-white
+                              - type: place
+                                tile: star-white
                         #- type: repeat
                         #  step:
                         #      type: place
@@ -620,7 +691,11 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tiles: [cross-white, star-white]
+                          steps:
+                              - type: place
+                                tile: cross-white
+                              - type: place
+                                tile: star-white
                         - type: repeat
                           step:
                               type: place
@@ -647,7 +722,11 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tiles: [cross-white, star-white]
+                          steps:
+                              - type: place
+                                tile: cross-white
+                              - type: place
+                                tile: star-white
                           num_y: 7
                           save:
                               inc_y1: inc_y
@@ -1032,9 +1111,15 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tiles: [cross-white, star-white]
+                          steps:
+                              - type: place
+                                tile: cross-white
+                              - type: place
+                                tile: star-white
                         - type: box
-                          tile: Morocco-6
+                          step:
+                              type: place
+                              tile: Morocco-6
                           num_x: 6
                           num_y: 5
                           start: [8.1/4, 45.1/4]
@@ -1050,9 +1135,15 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tiles: [cross-white, star-white]
+                          steps:
+                              - type: place
+                                tile: cross-white
+                              - type: place
+                                tile: star-white
                         - type: box
-                          tile: Nube Verde-6
+                          step:
+                              type: place
+                              tile: Nube Verde-6
                           num_x: 6
                           num_y: 5
                           start: [8.1/4, 45.1/4]
@@ -1068,9 +1159,15 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tiles: [cross-white, star-white]
+                          steps:
+                              - type: place
+                                tile: cross-white
+                              - type: place
+                                tile: star-white
                         - type: box
-                          tile: Nube Verde-4
+                          step:
+                              type: place
+                              tile: Nube Verde-4
                           num_x: 8
                           num_y: 6
                           start: [9.3/4, 48.1/4]
@@ -1086,9 +1183,15 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tiles: [cross-white, star-white]
+                          steps:
+                              - type: place
+                                tile: cross-white
+                              - type: place
+                                tile: star-white
                         - type: box
-                          tile: Estrella de Fuego-6
+                          step:
+                              type: place
+                              tile: Estrella de Fuego-6
                           num_x: 6
                           num_y: 5
                           start: [8.1/4, 45.1/4]
@@ -1104,9 +1207,15 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tiles: [cross-white, star-white]
+                          steps:
+                              - type: place
+                                tile: cross-white
+                              - type: place
+                                tile: star-white
                         - type: border
-                          tile: Arabesque Azul-6
+                          step:
+                              type: place
+                              tile: Arabesque Azul-6
                           num_x: 6
                           num_y: 5
                           start_x: 8.1/4
@@ -1123,9 +1232,15 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tiles: [cross-white, star-white]
+                          steps:
+                              - type: place
+                                tile: cross-white
+                              - type: place
+                                tile: star-white
                         - type: border
-                          tile: Arabesque Azul-6
+                          step:
+                              type: place
+                              tile: Arabesque Azul-6
                           num_x: 7
                           num_y: 6
                           start_x: 5.1/4

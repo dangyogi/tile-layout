@@ -55,14 +55,30 @@ class Plan:
                      #dict(plan=self, offset=(-self.wall.diagonal, -self.wall.diagonal)))
                      dict(plan=self, offset=(0, 0)))
 
-    def get_inc_xy(self, step, constants):
+    def get_inc_xy(self, steps, constants):
         temp_constants = ChainMap(dict(plan=self, offset=(0, 0), skip=True), constants)
-        self.do_step("get_inc_xy", step, temp_constants)
-        print(f"get_inc_xy: {step=}")
+        if not isinstance(steps, (tuple, list)):
+            steps = [steps]
+        inc_x = inc_y = None
+        x_dead = y_dead = False
+        for step in steps:
+            ans_constants = temp_constants.new_child()
+            assert self.do_step("get_inc_xy", step, ans_constants), \
+                   f"get_inc_xy: {step=} not visible"
+            if inc_x is None and not x_dead:
+                inc_x = ans_constants['inc_x']
+            elif inc_x != ans_constants['inc_x']:
+                inc_x = None
+                x_dead = True
+            if inc_y is None and not y_dead:
+                inc_y = ans_constants['inc_y']
+            elif inc_y != ans_constants['inc_y']:
+                inc_x = None
+                y_dead = True
+        print(f"get_inc_xy: {steps=}")
         print(f"  {constants=}")
-        print(f"  inc_x={f_to_str(temp_constants['inc_x'])}, "
-              f"inc_y={f_to_str(temp_constants['inc_y'])}")
-        return temp_constants['inc_x'], temp_constants['inc_y']
+        print(f"  inc_x={f_to_str(inc_x)}, inc_y={f_to_str(inc_y)}")
+        return inc_x, inc_y
 
     def align(self, points, offset):
         r'''Returns aligned points after applying offset.
@@ -198,7 +214,7 @@ class Plan:
         if trace or True:
             print(f"{step_name}.repeat({step=}, "
                   f"increment={f_to_str(increment)}, {times=}, "
-                  f"{step_width_limit=}, {step_height_limit=})")
+                  f"{step_width_limit=}, {step_height_limit=}, {index_start=})")
         if True:
             unaligned_boundary = self.alignment.unalign(self.wall.boundary)
             print(f"{step_name}.repeat: "
@@ -225,7 +241,8 @@ class Plan:
             #print(f"{step_name}.repeat {index=}, offset={f_to_str(offset)}")
             constants['offset'] = offset
             constants['index'] = index + index_start
-            step_visible = self.do_step(f"{step_name}.repeat", step, constants, trace=trace)
+            step_visible = self.do_step(f"{step_name}.repeat", pick(step, constants),
+                                        constants, trace=trace)
             if step_visible:
                 step_inc_x = constants['inc_x'] + index * x_inc
                 step_inc_y = constants['inc_y'] + index * y_inc
@@ -251,8 +268,8 @@ class Plan:
                 #print(f"{step_name}.repeat {index=}, offset={f_to_str(offset)}")
                 constants['offset'] = offset
                 constants['index'] = index + index_start
-                step_visible = self.do_step(f"{step_name}.repeat backwards", step,
-                                            constants, trace=trace)
+                step_visible = self.do_step(f"{step_name}.repeat backwards",
+                                            pick(step, constants), constants, trace=trace)
                 if step_visible:
                     step_inc_x = constants['inc_x'] + index * x_inc
                     step_inc_y = constants['inc_y'] + index * y_inc
@@ -301,9 +318,8 @@ class Plan:
                   f"x_off={f_to_str(x_off)}, y_off={f_to_str(y_off)}")
             constants['offset'] = x_off + x, y_off + y
             return self.repeat(step_name, constants,
-                               pick(my_eval(step['step'], constants,
-                                            f"{step_name} repeat step"),
-                                    constants),
+                               my_eval(step['step'], constants,
+                                 f"{step_name} repeat step"),
                                my_eval(step['increment'], constants,
                                  f"<{step_name}.do_step: repeat increment>"),
                                my_eval(step.get('times', None), constants,
@@ -312,8 +328,7 @@ class Plan:
                                  f"<{step_name}.do_step: repeat "
                                  "step_width_limit>"),
                                my_eval(step.get('step_height_limit', 24), constants,
-                                 f"<{step_name}.do_step: repeat "
-                                 "step_height_limit>"),
+                                 f"<{step_name}.do_step: repeat step_height_limit>"),
                                my_eval(step.get('index_start', 0), constants,
                                  f"<{step_name}.do_step: repeat index_start>"),
                                trace=trace)

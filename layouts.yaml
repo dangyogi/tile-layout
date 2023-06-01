@@ -4,8 +4,8 @@
 
 lay_row:
     description: >
-      Lays one row of tile.  If count is provided, that many tiles are layed.  Otherwise,
-      the row will extend to the right edge of the wall.
+      Lays one row of the `step` pattern.  If count is provided, that many tiles are layed.
+      Otherwise, the row will extend to the left and right edges of the wall.
     parameters: [step, num_x]
     defaults:
         num_x: null
@@ -20,7 +20,7 @@ stepped:
     description: >
       A stepped pattern with each row starting at an offset from the prior row.
 
-      The offset is percent_offset * the width of the tile (including the grout_gap).
+      The offset is percent_offset * the width of the `step` (including the grout_gap).
       
       The percent_offset defaults to 0 (for a stacked pattern).
     parameters: [step, percent_offset, num_x, num_y]
@@ -112,83 +112,80 @@ herringbone:
 
 box:
     description: >
-      A solid rectangle of tiles num_x tiles wide, and num_y tiles high.
-    parameters: [tile, num_x, num_y, start]
+      A solid rectangle of `step`s num_x steps wide, and num_y steps high.
+    parameters: [step, num_x, num_y, start]
     defaults:
         num_x: null
         num_y: null
         start: [0, 0]
+    constants:
+        increment_xy: plan.get_inc_xy(step, constants)
+        x: increment_xy[0]
+        y: increment_xy[1]
     type: repeat
     step:
         type: repeat
-        step:
-            type: place
-            tile: tile
-        increment: ["multi_getattr(tile, 'skip_x') + plan.grout_gap", 0]
+        step: step
+        increment: [x, 0]
         times: num_x
-    increment: [0, "multi_getattr(tile, 'skip_y') + plan.grout_gap"]
+    increment: [0, y]
     times: num_y
     start: start
 
 checkerboard:
     description: >
-      A rectangle filled with tiles cycling both horizontally and vertically.
-    parameters: [tiles, num_x, num_y, start]
+      A rectangle filled with steps cycling both horizontally and vertically.
+    parameters: [steps, num_x, num_y, start]
     defaults:
         num_x: null
         num_y: null
         start: [0, 0]
+    constants:
+        increment_xy: plan.get_inc_xy(steps, constants)
+        x: increment_xy[0]
+        y: increment_xy[1]
     type: repeat
     step:
         type: repeat
-        step:
-            type: place
-            tile: tiles
-        increment: ["multi_getattr(tiles, 'skip_x') + plan.grout_gap", 0]
+        step: steps
+        increment: [x, 0]
         times: num_x
         index_start: index
-    increment: [0, "multi_getattr(tiles, 'skip_y') + plan.grout_gap"]
+    increment: [0, y]
     times: num_y
     start: start
 
 border:
     description: >
-      A border of single tiles num_x tiles wide, and num_y tiles high.
-    parameters: [tile, num_x, num_y, start_x, start_y]
+      A border of single steps num_x steps wide, and num_y steps high.
+    parameters: [step, num_x, num_y, start_x, start_y]
     defaults:
         start_x: 0
         start_y: 0
     constants:
-        x: multi_getattr(tile, 'skip_x') + plan.grout_gap
-        y: multi_getattr(tile, 'skip_y') + plan.grout_gap
+        increment_xy: plan.get_inc_xy(step, constants)
+        x: increment_xy[0]
+        y: increment_xy[1]
     type: sequence
     steps:
         - type: repeat  # bottom
-          step:
-              type: place
-              tile: tile
+          step: step
           increment: [x, 0]
           start: [start_x, start_y]
           times: num_x
         - type: repeat  # top
-          step:
-              type: place
-              tile: tile
+          step: step
           increment: [x, 0]
           start: [start_x,
                   start_y + y * (num_y - 1)]
           times: num_x
         - type: repeat  # left
-          step:
-              type: place
-              tile: tile
+          step: step
           increment: [0, y]
           start: [start_x, start_y + y]
           times: num_y - 2
         - type: repeat  # right
-          step:
-              type: place
-              tile: tile
+          step: step
           increment: [0, y]
           start: [start_x + x * (num_x - 1), start_y + y]
           times: num_y - 2
