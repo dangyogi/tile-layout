@@ -68,10 +68,10 @@ class Tile(Base_tile):
         super().__init__(name, points, skip_x, skip_y)
         self.color = color
 
-    def place_at(self, offset, angle, plan):
+    def place_at(self, offset, angle, plan, skip):
         r'''The `angle` is ignored here.  Only used for Image_tiles.
         '''
-        return plan.create_polygon(self.points, offset, self.color)
+        return plan.create_polygon(self.points, offset, self.color, skip)
 
 
 class Image_tile(Base_tile):
@@ -138,10 +138,11 @@ class Image_tile(Base_tile):
         # return rotated image
         return self.cache[target_angle]
 
-    def place_at(self, offset, angle, plan):
+    def place_at(self, offset, angle, plan, skip):
         new_points = plan.align(self.points, offset)
         if new_points is None:
             return False
-        sw_offset, image = self.get_image(plan, angle, new_points)
-        plan.create_image(image, sw_offset, new_points[0])
+        if not skip:
+            sw_offset, image = self.get_image(plan, angle, new_points)
+            plan.create_image(image, sw_offset, new_points[0])
         return True

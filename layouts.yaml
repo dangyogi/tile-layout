@@ -2,18 +2,18 @@
 
 ---
 
-row_tile:
+lay_row:
     description: >
       Lays one row of tile.  If count is provided, that many tiles are layed.  Otherwise,
       the row will extend to the right edge of the wall.
-    parameters: [tile, num_x]
+    parameters: [step, num_x]
     defaults:
         num_x: null
+    constants:
+        increment_x: plan.get_inc_xy(step, constants)[0]
     type: repeat
-    step:
-        type: place
-        tile: tile
-    increment: ["multi_getattr(tile, 'skip_x') + plan.grout_gap", 0]
+    step: step
+    increment: [increment_x, 0]
     times: num_x
 
 stepped:
@@ -39,8 +39,10 @@ stepped:
                 x_inc: x * percent_offset - x
     type: repeat
     step:
-        type: row_tile
-        tile: tile
+        type: lay_row
+        step:
+            type: place
+            tile: tile
         times: num_x
     increment: [x_inc, y]
     times: num_y

@@ -1,13 +1,13 @@
 # settings.yaml
 
 ---
-#default_wall: Test Wall
-default_wall: Master Back
+default_wall: Test Wall
+#default_wall: Master Back
 wall_settings:
     Dining:
         plans: {}
     Test Wall:
-        default_plan: hopscotch_right
+        default_plan: stacked
         plans:
 
             stacked:
