@@ -23,14 +23,15 @@ stepped:
       The offset is percent_offset * the width of the tile (including the grout_gap).
       
       The percent_offset defaults to 0 (for a stacked pattern).
-    parameters: [tile, percent_offset, num_x, num_y]
+    parameters: [step, percent_offset, num_x, num_y]
     defaults:
         percent_offset: 0
         num_x: null
         num_y: null
     constants:
-        x: multi_getattr(tile, 'skip_x') + plan.grout_gap
-        y: multi_getattr(tile, 'skip_y') + plan.grout_gap
+        increment_xy: plan.get_inc_xy(step, constants)
+        x: increment_xy[0]
+        y: increment_xy[1]
         conditionals:
             - test: percent_offset == 0
               true:
@@ -40,9 +41,7 @@ stepped:
     type: repeat
     step:
         type: lay_row
-        step:
-            type: place
-            tile: tile
+        step: step
         times: num_x
     increment: [x_inc, y]
     times: num_y
