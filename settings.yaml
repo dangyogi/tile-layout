@@ -116,8 +116,12 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: hopscotch
-                    tile_a: 4x12
-                    tile_b: 8" square white
+                    step_a:
+                        type: place
+                        tile: 4x12
+                    step_b:
+                        type: place
+                        tile: 8" square white
                     right: false
             hopscotch_right:
                 alignment:
@@ -128,8 +132,12 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: hopscotch
-                    tile_a: 4x12
-                    tile_b: 8" square white
+                    step_a:
+                        type: place
+                        tile: 4x12
+                    step_b:
+                        type: place
+                        tile: 8" square white
                     right: true
 
             herringbone_left:
@@ -912,16 +920,20 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
-                    tile_a: [3x6 white
-                           ,3x6 yellow
-                           ,3x6 orange
-                           ,3x6 black
-                           ]
-                    tile_b: [3x6 white-flipped
-                           ,3x6 yellow-flipped
-                           ,3x6 orange-flipped
-                           ,3x6 black-flipped
-                           ]
+                    step_a:
+                        type: place
+                        tile: [3x6 white
+                               ,3x6 yellow
+                               ,3x6 orange
+                               ,3x6 black
+                               ]
+                    step_b:
+                        type: place
+                        tile: [3x6 white-flipped
+                               ,3x6 yellow-flipped
+                               ,3x6 orange-flipped
+                               ,3x6 black-flipped
+                               ]
 
             stacked 3x12 caicos_blue:
                 alignment:
@@ -1084,8 +1096,12 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
-                    tile_a: 8" square white
-                    tile_b: 4x12-flipped
+                    step_a:
+                        type: place
+                        tile: 8" square white
+                    step_b:
+                        type: place
+                        tile: 4x12-flipped
 
             hopscotch 6x6 white,3x12 caicos_blue:
                 alignment:
@@ -1096,9 +1112,13 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
-                    #tile_a: 6" square white
-                    tile_a: 6" square grey
-                    tile_b: 3x12 caicos_blue-flipped
+                    step_a:
+                        type: place
+                        #tile: 6" square white
+                        tile: 6" square grey
+                    step_b:
+                        type: place
+                        tile: 3x12 caicos_blue-flipped
 
             star_X-Morocco-6:
                 alignment:

@@ -50,22 +50,22 @@ hopscotch:
     description: >
       A hopscotch pattern.
 
-      If right is true tile_b is placed to right (clockwise) of each corner of tile_a.
+      If right is true step_b is placed to right (clockwise) of each corner of step_a.
 
-      If right is false tile_b is placed to left (counter-clockwise) of each corner of
-      tile_a.
+      If right is false step_b is placed to left (counter-clockwise) of each corner of
+      step_a.
 
-      Note that reversing the order of the tiles also reverses right/left.
-    parameters: [tile_a, tile_b, right]
+      Note that reversing the order of the steps also reverses right/left.
+    parameters: [step_a, step_b, right]
     defaults:
         right: false
     constants:
-        ax: multi_getattr(tile_a, 'skip_x') + plan.grout_gap
-        a_skip_y: multi_getattr(tile_a, 'skip_y')
-        ay: a_skip_y + plan.grout_gap
-        bx: multi_getattr(tile_b, 'skip_x') + plan.grout_gap
-        b_skip_y: multi_getattr(tile_b, 'skip_y')
-        by: b_skip_y + plan.grout_gap
+        aincrement_xy: plan.get_inc_xy(step_a, constants)
+        ax: aincrement_xy[0]
+        ay: aincrement_xy[1]
+        bincrement_xy: plan.get_inc_xy(step_b, constants)
+        bx: bincrement_xy[0]
+        by: bincrement_xy[1]
         conditionals:
             - test: right
               true:
@@ -81,14 +81,10 @@ hopscotch:
         type: sequence
         steps:
             - type: repeat
-              step:
-                  type: place
-                  tile: tile_a
+              step: step_a
               increment: inc
             - type: repeat
-              step:
-                  type: place
-                  tile: tile_b
+              step: step_b
               start: b_placement
               increment: inc
     increment: outer_inc
@@ -106,8 +102,12 @@ herringbone:
     defaults:
         right: true
     type: hopscotch
-    tile_a: tile
-    tile_b: tile.flipped
+    step_a:
+        type: place
+        tile: tile
+    step_b:
+        type: place
+        tile: tile.flipped
     right: right
 
 box:
