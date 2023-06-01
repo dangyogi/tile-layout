@@ -1,8 +1,8 @@
 # settings.yaml
 
 ---
-default_wall: Test Wall
-#default_wall: Master Back
+#default_wall: Test Wall
+default_wall: Master Back
 wall_settings:
     Dining:
         plans: {}
@@ -40,7 +40,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: stepped
-                    tile: 6x12
+                    tile: 6x12 white
                     percent_offset: 1/3
             stepped_rev:
                 alignment:
@@ -51,7 +51,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: stepped
-                    tile: 6x12
+                    tile: 6x12 white
                     percent_offset: -1/3
 
             star_cross_white:
@@ -63,8 +63,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-white
+                    tiles: [cross-white, star-white]
 
             star_cross_white_cross:
                 alignment:
@@ -75,8 +74,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-cotto
+                    tiles: [cross-white, star-cotto]
 
             star_cross_white_star:
                 alignment:
@@ -87,8 +85,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-cotto
-                    tile_b: star-white
+                    tiles: [cross-cotto, star-white]
 
             hopscotch_left:
                 alignment:
@@ -124,7 +121,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: herringbone
-                    tile: 6x12
+                    tile: 6x12 white
                     right: false
             herringbone_right:
                 alignment:
@@ -135,7 +132,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: herringbone
-                    tile: 6x12
+                    tile: 6x12 white
                     right: true
 
             box:
@@ -150,6 +147,20 @@ wall_settings:
                     tile: 8" square white
                     num_x: 4
                     num_y: 3
+                    start: [5, 15]
+
+            checkerboard:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    tiles: [8" square white, 8" square black]
+                    num_x: 4
+                    num_y: 5
                     start: [5, 15]
 
             border:
@@ -246,8 +257,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-white
+                    tiles: [cross-white, star-white]
             star_X:
                 alignment:
                     angle: 0
@@ -257,8 +267,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-white
+                    tiles: [cross-white, star-white]
     Stove:
         plans:
             hex:
@@ -303,8 +312,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-white
+                    tiles: [cross-white, star-white]
             star_X:
                 alignment:
                     angle: 0
@@ -314,8 +322,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-white
+                    tiles: [cross-white, star-white]
     Guest Bath:
         plans: {}
     Master Left:
@@ -363,8 +370,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-white
+                    tiles: [cross-white, star-white]
             star_X:
                 alignment:
                     angle: 0
@@ -374,8 +380,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-white
+                    tiles: [cross-white, star-white]
     Master Right:
         default_plan: star_X
         plans:
@@ -420,9 +425,8 @@ wall_settings:
                 grout_color: acorn
                 grout_gap: 1/4
                 layout:
-                    tile_a: cross-white
-                    tile_b: star-white
                     type: checkerboard
+                    tiles: [cross-white, star-white]
             star_X:
                 alignment:
                     angle: 0
@@ -431,12 +435,10 @@ wall_settings:
                 grout_color: acorn
                 grout_gap: 1/4
                 layout:
-                    tile_a: cross-white
-                    tile_b: star-white
                     type: checkerboard
+                    tiles: [cross-white, star-white]
     Master Back:
-        default_plan: star_+
-        #default_plan: star_X
+        default_plan: star_X-p1
         plans:
             hex:
                 alignment:
@@ -480,8 +482,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-white
+                    tiles: [cross-white, star-white]
 
             star_X:
                 alignment:
@@ -492,8 +493,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-white
-                    tile_b: star-white
+                    tiles: [cross-white, star-white]
 
             star_X-taupe:
                 alignment:
@@ -504,8 +504,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-taupe
-                    tile_b: star-taupe
+                    tiles: [cross-taupe, star-taupe]
 
             star_X-cotto:
                 alignment:
@@ -516,8 +515,437 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
-                    tile_a: cross-cotto
-                    tile_b: star-cotto
+                    tiles: [cross-cotto, star-cotto]
+
+            star_X-tv1:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          tiles: [cross-white, star-white]
+                        #- type: repeat
+                        #  step:
+                        #      type: place
+                        #      tile: [Estrella de Fuego-6, Arabesque Azul-6] 
+                        #  times: 7
+                        #  start: [5.1/2, 78.1/4]
+                        #  increment: [6.25, 0]
+                        - type: repeat
+                          step:
+                              type: place
+                              tile: Estrella de Fuego-6
+                              #tile: Arabesque Azul-6
+                          times: 3
+                          start: [6, 78.1/4]
+                          increment: [18, 0]
+                        - type: place
+                          tile: Estrella de Fuego-6
+                          #tile: Arabesque Azul-6
+                          offset: [6, 30]
+                        #- type: place
+                        #  tile: Estrella de Fuego-6
+                        #  #tile: Arabesque Azul-6
+                        #  offset: [42, 30]
+                        #- type: place
+                        #  tile: Estrella de Fuego-6
+                        #  #tile: Arabesque Azul-6
+                        #  offset: [6, 6]
+                        - type: place
+                          tile: Estrella de Fuego-6
+                          #tile: Arabesque Azul-6
+                          offset: [42, 6]
+                        - type: place
+                          tile: Estrella de Fuego-6
+                          #tile: Arabesque Azul-6
+                          offset: [24, 18]
+                          #offset: [22.5/8, 16.5/8]
+                          #angle: 45
+
+            star_X-tv2:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          tiles: [cross-white, star-white]
+                        - type: repeat
+                          step:
+                              type: place
+                              tile: Estrella de Fuego-4
+                          times: 6
+                          start: [3.3/4, 84.1/2]
+                          increment: [2 * (4 + plan.grout_gap), 0]
+                        - type: repeat
+                          step:
+                              type: place
+                              tile: Arabesque Azul-6
+                          times: 4
+                          start: [5.3/4, 0]
+                          increment: [2 * (6 + plan.grout_gap), 0]
+
+            star_X-p1:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          tiles: [cross-white, star-white]
+                          num_y: 7
+                          save:
+                              next_y1: next_y
+                        - type: repeat
+                          step:
+                              type: place
+                              tile: [Estrella de Fuego-4, Arabesque Azul-4]
+                          use:
+                              offset_x: 3.9/16 + plan.grout_gap
+                              offset_y: next_y1
+                          #start: [3.3/4, 84.1/2]
+                          increment: [4 + plan.grout_gap, 0]
+                          save:
+                              next_y2: next_y1 + next_y
+                        - type: repeat
+                          step:
+                              type: place
+                              tile: 3x6 yellow
+                          use:
+                              offset_x: 3.9/16 + plan.grout_gap
+                              offset_y: next_y2
+                          increment: [0, 3 + plan.grout_gap]
+                          times: 9
+                        - type: repeat
+                          step:
+                              type: place
+                              tile: 3x6 yellow
+                          use:
+                              offset_x: 48 - 3.9/16
+                              offset_y: next_y2
+                          increment: [0, 3 + plan.grout_gap]
+                          times: 9
+                          save:
+                              next_y3: next_y2 + next_y
+                        - type: herringbone
+                          tile: 3x6 orange
+                          use:
+                              offset_x: 3.9/16 + plan.grout_gap
+                              offset_y: next_y3
+                        #- type: repeat
+                        #  step:
+                        #      type: place
+                        #      tile: Arabesque Azul-6
+                        #  times: 4
+                        #  start: [5.3/4, 0]
+                        #  increment: [2 * (6 + plan.grout_gap), 0]
+
+            stacked 6x6 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 6" square white
+
+            stacked 6x6 multi:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: [6" square black,
+                           6" square white,
+                           6" square white,
+                           6" square white]
+
+            stacked 8x8 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 8" square white
+
+            stepped 8x8 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 8" square white
+                    percent_offset: 1/2
+
+            stacked 3x6 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 3x6 white
+
+            stacked 3x6 multi:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: [3x6 white
+                           ,3x6 yellow
+                           ,3x6 orange
+                           ,3x6 black
+                           ]
+
+            stepped 3x6 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 3x6 white
+                    percent_offset: 1/2
+
+            stepped 3x6 multi:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: [3x6 white
+                           ,3x6 yellow
+                           ,3x6 orange
+                           ,3x6 black
+                           ]
+                    percent_offset: 1/2
+
+            herringbone 3x6 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: herringbone
+                    tile: 3x6 white
+
+            herringbone 3x6 multi:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: hopscotch
+                    tile_a: [3x6 white
+                           ,3x6 yellow
+                           ,3x6 orange
+                           ,3x6 black
+                           ]
+                    tile_b: [3x6 white-flipped
+                           ,3x6 yellow-flipped
+                           ,3x6 orange-flipped
+                           ,3x6 black-flipped
+                           ]
+
+            stacked 3x12 caicos_blue:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 3x12 caicos_blue
+
+            stepped 3x12 caicos_blue:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 3x12 caicos_blue
+                    percent_offset: 1/3
+
+            herringbone 3x12 caicos_blue:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: herringbone
+                    tile: 3x12 caicos_blue
+
+            stacked 4x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 4x12
+
+            stepped 4x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 4x12
+                    percent_offset: 1/3
+
+            herringbone 4x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: herringbone
+                    tile: 4x12
+
+            stacked 6x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 6x12 white
+
+            stepped 6x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 6x12 white
+                    percent_offset: 1/3
+
+            herringbone 6x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: herringbone
+                    tile: 6x12 white
+
+            stacked 8x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 8x12
+
+            stepped 8x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    tile: 8x12
+                    percent_offset: 1/3
+
+            herringbone 8x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: herringbone
+                    tile: 8x12
+
+            hopscotch 8x8 white,4x12 white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: hopscotch
+                    tile_a: 8" square white
+                    tile_b: 4x12-flipped
+
+            hopscotch 6x6 white,3x12 caicos_blue:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: hopscotch
+                    #tile_a: 6" square white
+                    tile_a: 6" square grey
+                    tile_b: 3x12 caicos_blue-flipped
 
             star_X-Morocco-6:
                 alignment:
@@ -530,8 +958,7 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tile_a: cross-white
-                          tile_b: star-white
+                          tiles: [cross-white, star-white]
                         - type: box
                           tile: Morocco-6
                           num_x: 6
@@ -549,8 +976,7 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tile_a: cross-white
-                          tile_b: star-white
+                          tiles: [cross-white, star-white]
                         - type: box
                           tile: Nube Verde-6
                           num_x: 6
@@ -568,8 +994,7 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tile_a: cross-white
-                          tile_b: star-white
+                          tiles: [cross-white, star-white]
                         - type: box
                           tile: Nube Verde-4
                           num_x: 8
@@ -587,8 +1012,7 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tile_a: cross-white
-                          tile_b: star-white
+                          tiles: [cross-white, star-white]
                         - type: box
                           tile: Estrella de Fuego-6
                           num_x: 6
@@ -606,8 +1030,7 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tile_a: cross-white
-                          tile_b: star-white
+                          tiles: [cross-white, star-white]
                         - type: border
                           tile: Arabesque Azul-6
                           num_x: 6
@@ -626,8 +1049,7 @@ wall_settings:
                     type: sequence
                     steps:
                         - type: checkerboard
-                          tile_a: cross-white
-                          tile_b: star-white
+                          tiles: [cross-white, star-white]
                         - type: border
                           tile: Arabesque Azul-6
                           num_x: 7

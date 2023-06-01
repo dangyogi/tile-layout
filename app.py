@@ -133,7 +133,12 @@ def spew():
           f'{canvas.px_to_in(canvas.size()[1]):.3f} H')
     #print(f"{dir(myapp.submenus['Wall'])=}")
     print(f"{myapp.submenus['Wall'].index('end')=}")
-    print(f"{myapp.submenus['Pattern'].index('end')=}")
+    print(f"{myapp.submenus['Plans'].index('end')=}")
+    print(f"Colors: {sorted(Colors.keys())}")
+    print(f"Shapes: {sorted(Shapes.keys())}")
+    print(f"Tiles: {sorted(Tiles.keys())}")
+    print(f"Layouts: {sorted(Layouts.keys())}")
+    print(f"Walls: {sorted(Walls.keys())}")
     print("Done Spewing!")
 
 

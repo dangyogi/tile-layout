@@ -2,10 +2,30 @@
 
 ---
 
+6" square white:
+    shape: square
+    width: 6
+    color: white
+
+6" square grey:
+    shape: square
+    width: 6
+    color: "#666"
+
+6" square black:
+    shape: square
+    width: 6
+    color: black
+
 8" square white:
     shape: square
     width: 8
     color: white
+
+8" square black:
+    shape: square
+    width: 8
+    color: black
 
 12" square:
     shape: square
@@ -27,17 +47,66 @@
     width: 20
     color: white
 
+3x6 white:
+    shape: rectangle
+    height: 3
+    width: 6
+    color: white
+
+3x6 yellow:
+    shape: rectangle
+    height: 3
+    width: 6
+    color: yellow
+
+3x6 orange:
+    shape: rectangle
+    height: 3
+    width: 6
+    color: orange
+
+3x6 black:
+    shape: rectangle
+    height: 3
+    width: 6
+    color: black
+
+3x12 white:
+    shape: rectangle
+    height: 3
+    width: 12
+    color: white
+
+3x12 caicos_blue:
+    shape: rectangle
+    height: 3
+    width: 12
+    #color: caicos_blue
+    color: yellow
+
+3x12 black:
+    shape: rectangle
+    height: 3
+    width: 12
+    color: black
+
 4x12:
     shape: rectangle
     height: 4
     width: 12
     color: white
 
-6x12:
+6x12 white:
     shape: rectangle
     height: 6
     width: 12
     color: white
+
+6x12 black:
+    shape: rectangle
+    height: 6
+    width: 12
+    color: black
 
 8x12:
     shape: rectangle
@@ -56,6 +125,12 @@
     height: 11.39/64
     width: 23.13/32
     color: white
+
+sea_foam:
+    shape: rectangle
+    height: 3.15/16
+    width: 15.11/16
+    color: sea_foam
 
 floor:
     shape: rectangle

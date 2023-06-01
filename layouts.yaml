@@ -6,15 +6,15 @@ row_tile:
     description: >
       Lays one row of tile.  If count is provided, that many tiles are layed.  Otherwise,
       the row will extend to the right edge of the wall.
-    parameters: [tile, count]
+    parameters: [tile, num_x]
     defaults:
-        count: None
+        num_x: null
     type: repeat
     step:
         type: place
         tile: tile
     increment: ["multi_getattr(tile, 'skip_x') + plan.grout_gap", 0]
-    times: count
+    times: num_x
 
 stepped:
     description: >
@@ -23,9 +23,11 @@ stepped:
       The offset is percent_offset * the width of the tile (including the grout_gap).
       
       The percent_offset defaults to 0 (for a stacked pattern).
-    parameters: [tile, percent_offset]
+    parameters: [tile, percent_offset, num_x, num_y]
     defaults:
         percent_offset: 0
+        num_x: null
+        num_y: null
     constants:
         x: multi_getattr(tile, 'skip_x') + plan.grout_gap
         y: multi_getattr(tile, 'skip_y') + plan.grout_gap
@@ -39,7 +41,9 @@ stepped:
     step:
         type: row_tile
         tile: tile
+        times: num_x
     increment: [x_inc, y]
+    times: num_y
 
 hopscotch:
     description: >
@@ -105,40 +109,13 @@ herringbone:
     tile_b: tile.flipped
     right: right
 
-checkerboard:
-    description: >
-      A rectangle filled with two tiles alternating both horizontally and vertically.
-    parameters: [tile_a, tile_b]
-    constants:
-        ay: multi_getattr(tile_a, 'skip_y') + plan.grout_gap
-        by: multi_getattr(tile_b, 'skip_y') + plan.grout_gap
-        skip_x: multi_getattr(tile_a, 'skip_x') + multi_getattr(tile_b, 'skip_x') +
-                  2 * plan.grout_gap
-    type: sequence
-    steps:
-        - type: repeat
-          step:
-              type: repeat
-              step:
-                  type: place
-                  tile: tile_a
-              increment: [skip_x, 0]
-          increment: [-skip_x / 2, ay]
-        - type: repeat
-          step:
-              type: repeat
-              step:
-                  type: place
-                  tile: tile_b
-              increment: [skip_x, 0]
-              start: [skip_x / 2, 0]
-          increment: [-skip_x / 2, by]
-
 box:
     description: >
       A solid rectangle of tiles num_x tiles wide, and num_y tiles high.
     parameters: [tile, num_x, num_y, start]
     defaults:
+        num_x: null
+        num_y: null
         start: [0, 0]
     type: repeat
     step:
@@ -149,6 +126,27 @@ box:
         increment: ["multi_getattr(tile, 'skip_x') + plan.grout_gap", 0]
         times: num_x
     increment: [0, "multi_getattr(tile, 'skip_y') + plan.grout_gap"]
+    times: num_y
+    start: start
+
+checkerboard:
+    description: >
+      A rectangle filled with tiles cycling both horizontally and vertically.
+    parameters: [tiles, num_x, num_y, start]
+    defaults:
+        num_x: null
+        num_y: null
+        start: [0, 0]
+    type: repeat
+    step:
+        type: repeat
+        step:
+            type: place
+            tile: tiles
+        increment: ["multi_getattr(tiles, 'skip_x') + plan.grout_gap", 0]
+        times: num_x
+        index_start: index
+    increment: [0, "multi_getattr(tiles, 'skip_y') + plan.grout_gap"]
     times: num_y
     start: start
 

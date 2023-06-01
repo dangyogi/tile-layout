@@ -118,17 +118,40 @@ class Plan:
         r'''Returns True if any step is displayed, False if nothing is visible.
 
         If visible, returns the greatest next_x, next_y in constants.
+
+        The sequence executes with it's own constants that are discarded when it's done.
+        Additionally, each step executes with it's own disposable constants.
+
+        Values can be copied from an individual step's constants to the sequence's
+        constants by placing 'save' on that step with a dict of sequence keys and
+        expressions.
+
+        Values can be copied from the sequence's constants to an individual step's
+        constants by placing 'use' on that step with a dict of step keys and expressions.
+
+        Thus, 'use' processing is done prior to running the step, while 'save' processing
+        is done afterwards.
+
+        The initial offset is stored as constants in 'initial_x', 'initial_y'.  By default,
+        these are used for the offset of each step.
+
+        To override this default, each step may specify an 'offset' that is added to
+        'initial_x', 'initial_y', or specify the offset directly as 'offset_x', 'offset_y'.
         '''
         if trace:
             print(f"{self.name}.sequence({steps=})")
         visible = False
         next_x = next_y = None
-        start_x, start_y = constants['offset']
+        initial_x, initial_y = constants['offset']
         my_constants = ChainMap({}, constants)
+        my_constants['initial_x'] = initial_x
+        my_constants['initial_y'] = initial_y
         for i, step in enumerate(steps, 1):
             print(f"sequence in Plan({self.name}): step {i}, {step=}, {constants=}")
             step = pick(step, constants)
             step_constants = my_constants.new_child()
+            step_constants['offset_x'] = step_constants['initial_x']
+            step_constants['offset_y'] = step_constants['initial_y']
             if 'use' in step:
                 for key, value in step['use'].items():
                     step_constants[key] = \
@@ -137,16 +160,19 @@ class Plan:
             if 'offset' in step:
                 x, y = my_eval(step['offset'], step_constants,
                                f"<Plan({self.name}).sequence: offset>")
-                step_constants['offset'] = start_x + x, start_y + y
+                step_constants['offset'] = \
+                  step_constants['initial_x'] + x, step_constants['initial_y'] + y
             else:
-                step_constants['offset'] = start_x, start_y
+                step_constants['offset'] = \
+                  step_constants['offset_x'], step_constants['offset_y']
             if self.do_step(step, step_constants, trace=trace):
                 if 'save' in step:
-                    print(f"sequence in Plan({self.name}): save {step_constants}")
+                    print(f"sequence in Plan({self.name}): save {f_to_str(step_constants)}")
                     for key, value in step['save'].items():
                         my_constants[key] = \
                           my_eval(value, step_constants,
                                   f"<Plan({self.name}).sequence: save {key}>")
+                        print(f"sequence save {key} set to {f_to_str(my_constants[key])}")
                 if next_x is None or step_constants['next_x'] > next_x:
                     next_x = step_constants['next_x']
                 if next_y is None or step_constants['next_y'] > next_y:
@@ -213,17 +239,18 @@ class Plan:
               f"x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
         print(f"  min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}, "
               f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
-        for index in (range(index_start, index_start + times) if times is not None
-                                                              else count(index_start)):
+        for index in (range(times) if times is not None else count(0)):
             #print(f"repeat {index=}, offset={f_to_str(offset)}")
             constants['offset'] = offset
-            constants['index'] = index
+            constants['index'] = index + index_start
             step_visible = self.do_step(step, constants, trace=trace)
             if step_visible:
-                if next_x is None or constants['next_x'] > next_x:
-                    next_x = constants['next_x']
-                if next_y is None or constants['next_y'] > next_y:
-                    next_y = constants['next_y']
+                step_next_x = constants['next_x'] + index * x_inc
+                step_next_y = constants['next_y'] + index * y_inc
+                if next_x is None or step_next_x > next_x:
+                    next_x = step_next_x
+                if next_y is None or step_next_y > next_y:
+                    next_y = step_next_y
                 visible = True
             if times is None:
                 keep_going = step_visible or \
@@ -238,16 +265,18 @@ class Plan:
             # go backwards
             x_inc, y_inc = -x_inc, -y_inc
             x, y = offset = starting_offset[0] + x_inc, starting_offset[1] + y_inc
-            for index in count(-index_start, -1):
+            for index in count(-1, -1):
                 #print(f"repeat {index=}, offset={f_to_str(offset)}")
                 constants['offset'] = offset
-                constants['index'] = index
+                constants['index'] = index + index_start
                 step_visible = self.do_step(step, constants, trace=trace)
                 if step_visible:
-                    if next_x is None or constants['next_x'] > next_x:
-                        next_x = constants['next_x']
-                    if next_y is None or constants['next_y'] > next_y:
-                        next_y = constants['next_y']
+                    step_next_x = constants['next_x'] + index * x_inc
+                    step_next_y = constants['next_y'] + index * y_inc
+                    if next_x is None or step_next_x > next_x:
+                        next_x = step_next_x
+                    if next_y is None or step_next_y > next_y:
+                        next_y = step_next_y
                     visible = True
                 keep_going = step_visible or \
                              x_inc > 0 and x <= max_x or \
@@ -306,7 +335,7 @@ class Plan:
         new_step = app.Layouts[step['type']]
         def lookup(arg, defaults):
             if arg in step:
-                if arg == 'tile' or arg.startswith('tile_'):
+                if arg in ('tile', 'tiles') or arg.startswith('tile_'):
                     if trace:
                         print(f"{self.name}.lookup({arg}) in step -- tile! "
                               f"-- value is {step[arg]}")
@@ -359,7 +388,7 @@ class Plan:
                                 add_constants(conditional[test])
                             else:
                                 add_constants(conditional['else'])
-                    elif name == 'tile':
+                    elif name in ('tile', 'tiles') or name.startswith('tile_'):
                         new_constants[name] = eval_tile(value, new_constants)
                     else:
                         new_constants[name] = my_eval(value, new_constants,

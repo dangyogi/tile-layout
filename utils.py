@@ -5,6 +5,7 @@ import os
 import os.path
 from fractions import Fraction
 from math import sqrt
+from collections.abc import Mapping
 import csv
 
 from yaml import safe_load, dump
@@ -51,12 +52,14 @@ def f_to_str(f):
                 segments.append(f_to_str(n))
         segments.append(')' if isinstance(f, tuple) else ']')
         return ''.join(segments)
+    if isinstance(f, Mapping):
+        return {key: f_to_str(value) for key, value in f.items()}
     if isinstance(f, float):
         return f"{f:.3f}"
     if isinstance(f, str):
         return repr(f)
-    if f is None:
-        return "None"
+    if not isinstance(f, Fraction):
+        return str(f)
     n, d = f.numerator, f.denominator  # this works for int's too!
     if d == 1:
         return str(n)

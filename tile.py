@@ -42,10 +42,10 @@ def gen_tile(name, tile, shapes, colors):
         f = shape['flipped']
         if 'shape' in f:
             shape = shapes[f['shape']]
-        args = {param: tile[arg_name]
+        args = {param: args[arg_name]
                 for param, arg_name
                  in zip(shape['parameters'], f['arguments'])}
-        name += ' - flipped'
+        name += '-flipped'
         tile_2 = generate_tile(name, shape, args, tile, colors, 90)
         yield name, tile_2
         tile_1.flipped = tile_2

@@ -181,9 +181,25 @@ Master Back:
         pic_tile_size: 6.1/8
         pic_width: pic_tile_size * 4
         pic_height: pic_tile_size * 3
+        pic_x: center - pic_width / 2
+        pic_y: 70 - pic_height
+        pic_grout_gap: 1/16
     grout: [width, 88.7/8]
+    border:
+        pos: [pic_x - 1/2 - 2 * pic_grout_gap - 3.15/16,
+              pic_y - 1/2 - 2 * pic_grout_gap - 3.15/16]
+        size: [pic_width + 1 + 4 * pic_grout_gap + 2 * 3.15/16,
+               pic_height + 1 + 4 * pic_grout_gap + 2 * 3.15/16]
+        #color: sea_foam
+        color: orange
+        #color: yellow
+        #color: caicos_blue
+    pencil:
+        pos: [pic_x - 1/2 - 2 * pic_grout_gap, pic_y - 1/2 - 2 * pic_grout_gap]
+        size: [pic_width + 1 + 4 * pic_grout_gap, pic_height + 1 + 4 * pic_grout_gap]
+        color: white
     picture:
-        pos: [center - pic_width / 2, 70 - pic_height]
+        pos: [pic_x, pic_y]
         size: [pic_width, pic_height]
         image: mural.jpg
     grab_bar_left:
