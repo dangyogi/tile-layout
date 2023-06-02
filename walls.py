@@ -42,6 +42,7 @@ class Wall:
         app.canvas.set_scale(width_in, height_in)
         app.canvas.create_my_rectangle("grout_bg", 0, 0, width_in, height_in, 'black',
                                        ("background", "grout"))
+        app.canvas.current_grout_color = 'black'
         bg_color = app.canvas.cget('background')
 
         # clip above grout background, across entire canvas

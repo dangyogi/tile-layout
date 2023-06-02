@@ -71,7 +71,7 @@ class MyCanvasBase(Canvas):
                                  image=image, tags=tags + ("math",))
 
     def create_canvas(self, caller, pos, size, tags=()):
-        new_canvas = MyNestedCanvas(self, size)
+        new_canvas = MyNestedCanvas(self, size, bd=0, bg='black')
         self.create_window(self.in_to_px(pos[0]), self.in_to_px(pos[1]), anchor=SW,
                            window=new_canvas, tags=tags)
         return new_canvas

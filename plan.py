@@ -47,6 +47,8 @@ class Plan:
     def display_grout_color(self):
         if app.Plan == self:
             app.canvas.itemconfig("grout", fill=eval_color(self.grout_color))
+            app.canvas.itemconfig("section", bg=eval_color(self.grout_color))
+            #for section in app.canvas.find_withtag('section'):
 
     def create(self, constants=None, trace=False):
         erase_tiles(self.canvas)
@@ -302,6 +304,8 @@ class Plan:
     def section(self, step_name, plan, pos, size, constants, trace=True):
         print(f"section {step_name=}")
         canvas = self.canvas.create_canvas("section", pos, size, tags=('section',))
+        if self.canvas.find_withtag("topmost"):
+            self.canvas.tag_lower(canvas, "topmost")
         plan = Plan(step_name, plan, canvas, constants)
         plan.create(constants, trace=trace)
 
