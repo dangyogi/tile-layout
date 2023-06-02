@@ -9,9 +9,10 @@ In_per_char = 8
 
 def pt_init():
     global Diag, Wall_stats
-    Diag = int((app.Wall.diagonal + 30) // In_per_char)
+    Diag = int((app.canvas.diagonal + 30) // In_per_char)
     Wall_stats = [[0] * 2 * Diag for _ in range(2 * Diag)]
-    print(f"pt_init: diagonal={app.Wall.diagonal}, {len(Wall_stats)=}, {len(Wall_stats[0])=}")
+    print(f"pt_init: diagonal={app.canvas.diagonal}, {len(Wall_stats)=}, "
+          f"{len(Wall_stats[0])=}")
 
 
 def place(offset, visible):

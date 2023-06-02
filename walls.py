@@ -1,6 +1,5 @@
 # walls.py
 
-from math import hypot
 import os.path
 from PIL import Image, ImageTk
 
@@ -24,12 +23,6 @@ class Wall:
         self.grout = eval_pair(specs['grout'], constants, f"<Wall({self.name})>")
         del specs['grout']
         constants['width_in'], constants['height_in'] = self.grout
-        self.max_x = max_x = self.grout[0]
-        self.max_y = max_y = self.grout[1]
-        self.diagonal = hypot(max_x, max_y)
-        self.boundary = (0, 0), (max_x, 0), (max_x, max_y), (0, max_y)
-        if self.name == "Master Back":
-            print(f"Wall({self.name}) boundary={f_to_str(self.boundary)}")
 
         def create_panel(name, panel):
             location = f"<Wall({self.name}) create_panel({name})>"
@@ -45,8 +38,8 @@ class Wall:
         self.panels = {name: create_panel(name, panel) for name, panel in specs.items()}
 
     def grout_bg(self):
-        width_in, height_in = app.canvas.width_in, app.canvas.height_in = self.grout
-        app.canvas.set_scale()
+        width_in, height_in = self.grout
+        app.canvas.set_scale(width_in, height_in)
         app.canvas.create_my_rectangle("grout_bg", 0, 0, width_in, height_in, 'black',
                                        ("background", "grout"))
         bg_color = app.canvas.cget('background')
@@ -71,22 +64,6 @@ class Wall:
         self.grout_bg()
         for p in self.panels.values():
             p.create()
-
-    def visible(self, points):
-        r'''True if there are points to the right of 0, left of max_x, above 0, and below max_y.
-
-        These don't have to be the same point.  For example one point might be x < 0, which counts
-        for left of max_x, but not right of 0.  Another point might be > max_x, which counts the
-        other way.
-        '''
-        to_right = to_left = to_top = to_bottom = False
-        for x, y in points:
-            if x > 0: to_right = True
-            if x < self.max_x: to_left = True
-            if y > 0: to_top = True
-            if y < self.max_y: to_bottom = True
-        return all((to_left, to_right, to_top, to_bottom))
-
 
 
 class Panel:

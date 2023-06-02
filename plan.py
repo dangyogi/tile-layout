@@ -13,8 +13,9 @@ from place_trace import pt_init, place
 class Plan:
     attrs = 'grout_gap,grout_color,alignment,layout'.split(',')
 
-    def __init__(self, name, plan, wall_name, constants):
+    def __init__(self, name, plan, canvas, constants):
         self.name = name
+        self.canvas = canvas
         for attr in self.attrs:
             value = plan[attr]
             if attr == 'alignment':
@@ -23,12 +24,6 @@ class Plan:
                 setattr(self, attr, my_eval(value, constants, f"<Plan({name}): {attr}>"))
             else:
                 setattr(self, attr, value)
-        self.wall_name = wall_name
-        self.wall = app.Walls[wall_name]
-        if wall_name == "Master Back" and name == 'star_+':
-            print(f"Plan({wall_name}, {name}): angle={self.alignment.angle}, "
-                  f"x_offset={f_to_str(self.alignment.x_offset)}, "
-                  f"y_offset={f_to_str(self.alignment.y_offset)}")
 
     def __repr__(self):
         return f"<Plan: {self.name}>"
@@ -52,7 +47,7 @@ class Plan:
         self.display_grout_color()
         pt_init()
         self.do_step(f"Plan({self.name})", self.layout,
-                     #dict(plan=self, offset=(-self.wall.diagonal, -self.wall.diagonal)))
+                     #dict(plan=self, offset=(-self.canvas.diagonal, -self.canvas.diagonal)))
                      dict(plan=self, offset=(0, 0)))
 
     def get_inc_xy(self, steps, constants):
@@ -87,7 +82,7 @@ class Plan:
         '''
         aligned_points = self.alignment.align((x + offset[0], y + offset[1])
                                               for x, y in points)
-        if self.wall.visible(aligned_points):
+        if self.canvas.visible(aligned_points):
             return aligned_points
         return None
 
@@ -216,7 +211,7 @@ class Plan:
                   f"increment={f_to_str(increment)}, {times=}, "
                   f"{step_width_limit=}, {step_height_limit=}, {index_start=})")
         if True:
-            unaligned_boundary = self.alignment.unalign(self.wall.boundary)
+            unaligned_boundary = self.alignment.unalign(self.canvas.boundary)
             print(f"{step_name}.repeat: "
                   f"unaligned_boundary={f_to_str(unaligned_boundary)}")
             min_x = min(p[0] for p in unaligned_boundary) - 2 * step_width_limit
@@ -224,8 +219,8 @@ class Plan:
             min_y = min(p[1] for p in unaligned_boundary) - 2 * step_width_limit
             max_y = max(p[1] for p in unaligned_boundary)
         else:
-            min_x = min_y = -self.wall.diagonal - 2 * step_width_limit
-            max_x = max_y = self.wall.diagonal + step_width_limit
+            min_x = min_y = -self.canvas.diagonal - 2 * step_width_limit
+            max_x = max_y = self.canvas.diagonal + step_width_limit
         print(f"{step_name}.repeat: "
               f"min_x={min_x:.2f}, max_x={max_x:.2f}, "
               f"min_y={min_y:.2f}, max_y={max_y:.2f}")

@@ -1,5 +1,6 @@
 # app.py
 
+from math import hypot
 from tkinter import *
 from tkinter.ttk import *
 
@@ -58,7 +59,11 @@ class MyCanvas(Canvas):
     def px_to_in(self, px):
         return px / self.my_scale
 
-    def set_scale(self):
+    def set_scale(self, width_in, height_in):
+        self.width_in = width_in
+        self.height_in = height_in
+        self.diagonal = hypot(width_in, height_in)
+        self.boundary = (0, 0), (width_in, 0), (width_in, height_in), (0, height_in)
         width, height = self.size()
         self.my_scale = min(width / float(self.width_in),
                             height / float(self.height_in))
@@ -99,6 +104,22 @@ class MyCanvas(Canvas):
         x, y = self.math_coord((pos[0] - sw_offset[0], pos[1] - sw_offset[1]))
         return self.create_image(x, y, anchor=SW,
                                  image=image, tags=tags + ("math",))
+
+    def visible(self, points):
+        r'''True if there are points to the right of 0, left of width_in,
+        above 0, and below height_in.
+
+        These don't have to be the same point.  For example one point might be x < 0,
+	which counts for left of width_in, but not right of 0.  Another point might
+        be > width_in, which counts the other way.
+        '''
+        to_right = to_left = to_top = to_bottom = False
+        for x, y in points:
+            if x > 0: to_right = True
+            if x < self.width_in: to_left = True
+            if y > 0: to_top = True
+            if y < self.height_in: to_bottom = True
+        return all((to_left, to_right, to_top, to_bottom))
 
     def size(self):
         r'''Returns width, height in pixels.

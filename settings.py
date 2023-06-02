@@ -13,7 +13,7 @@ def read_settings(filename=Settings_filename):
 def init_settings(settings):
     for wall_name, ws in settings['wall_settings'].items():
         for plan_name, plan in ws['plans'].items():
-            ws['plans'][plan_name] = Plan(plan_name, plan, wall_name, {})
+            ws['plans'][plan_name] = Plan(plan_name, plan, app.canvas, {})
     return settings
 
 def dump(settings):
