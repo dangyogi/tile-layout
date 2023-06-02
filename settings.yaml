@@ -149,7 +149,7 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: herringbone
-                    tile: 6x12 white
+                    tile_horz: 6x12 white
                     right: false
             herringbone_right:
                 alignment:
@@ -160,7 +160,30 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: herringbone
-                    tile: 6x12 white
+                    tile_horz: 6x12 white
+                    right: true
+
+            basketweave_left:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 caicos_blue
+                    right: false
+            basketweave_right:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 caicos_blue
                     right: true
 
             box:
@@ -532,6 +555,7 @@ wall_settings:
                           tile: cross-white
                         - type: place
                           tile: star-white
+
     Master Back:
         default_plan: star_X-p1
         plans:
@@ -770,7 +794,7 @@ wall_settings:
                           save:
                               inc_y3: inc_y2 + inc_y
                         - type: herringbone
-                          tile: 3x6 orange
+                          tile_horz: 3x6 orange
                           use:
                               offset_x: 3.9/16 + plan.grout_gap
                               offset_y: inc_y3
@@ -909,7 +933,7 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: herringbone
-                    tile: 3x6 white
+                    tile_horz: 3x6 white
 
             herringbone 3x6 multi:
                 alignment:
@@ -971,7 +995,7 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: herringbone
-                    tile: 3x12 caicos_blue
+                    tile_horz: 3x12 caicos_blue
 
             stacked 4x12 white:
                 alignment:
@@ -1009,7 +1033,7 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: herringbone
-                    tile: 4x12
+                    tile_horz: 4x12
 
             stacked 6x12 white:
                 alignment:
@@ -1047,7 +1071,7 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: herringbone
-                    tile: 6x12 white
+                    tile_horz: 6x12 white
 
             stacked 8x12 white:
                 alignment:
@@ -1085,7 +1109,7 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: herringbone
-                    tile: 8x12
+                    tile_horz: 8x12
 
             hopscotch 8x8 white,4x12 white:
                 alignment:

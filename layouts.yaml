@@ -93,21 +93,54 @@ herringbone:
     description: >
       A herringbone pattern.
 
-      If right is true the flipped tile is placed to right (clockwise) from each corner
-      of the original tile.
+      If right is true the tile_vert is placed to right (clockwise) from each corner
+      of the tile_horz.
 
-      If right is false the flipped tile is placed to left (counter-clockwise) from each
-      corner of the original tile.
-    parameters: [tile, right]
+      If right is false the vert_tile_vert is placed to left (counter-clockwise) from each
+      corner of the tile_horz.
+    parameters: [tile_horz, tile_vert, right]
     defaults:
         right: true
+        tile_vert: tile_horz.flipped
     type: hopscotch
     step_a:
         type: place
-        tile: tile
+        tile: tile_horz
     step_b:
         type: place
-        tile: tile.flipped
+        tile: tile_vert
+    right: right
+
+basketweave:
+    description: >
+      A basketweave pattern.  This is a double herringbone, where each tile is doubled.
+
+      If right is true the tile_vert is placed to right (clockwise) from each corner
+      of the tile_horz.
+
+      If right is false the vert_tile_vert is placed to left (counter-clockwise) from each
+      corner of the tile_horz.
+    parameters: [tile_horz, tile_vert, num_horz, num_vert, right]
+    defaults:
+        right: true
+        tile_vert: tile_horz.flipped
+        num_horz: 2
+        num_vert: 2
+    type: hopscotch
+    step_a:
+        type: repeat
+        step:
+            type: place
+            tile: tile_horz
+        increment: [0, tile_horz.skip_y + plan.grout_gap]
+        times: num_horz
+    step_b:
+        type: repeat
+        step:
+            type: place
+            tile: tile_vert
+        increment: [tile_vert.skip_x + plan.grout_gap, 0]
+        times: num_vert
     right: right
 
 box:
