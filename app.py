@@ -60,8 +60,8 @@ class MyCanvas(Canvas):
 
     def set_scale(self):
         width, height = self.size()
-        self.my_scale = min(width / float(myapp.bg_width),
-                            height / float(myapp.bg_height))
+        self.my_scale = min(width / float(self.width_in),
+                            height / float(self.height_in))
         print(f"new size in inches: "
               f"{self.px_to_in(width):.3f} W x {self.px_to_in(height):.3f} H")
 
@@ -79,8 +79,8 @@ class MyCanvas(Canvas):
 
     def create_my_polygon(self, caller, color, *points, tags=()):
         #print(f"create_my_polygon({caller=}, points={f_to_str(points)})")
-        start_x = max(0, points[0][0])
-        end_x = min(myapp.bg_width, points[1][0])
+        #start_x = max(0, points[0][0])
+        #end_x = min(self.width_in, points[1][0])
         #print(f"row {points[0][1]}: length of next tile in row {end_x - start_x}")
         return self.create_polygon(*(self.math_coord(pt) for pt in points),
                                    width=0, fill=color, tags=tags + ("math",))

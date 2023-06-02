@@ -14,7 +14,7 @@ Sink:
         size: [31.1/4, 37]
         color: cabinet
     right_cab:
-        pos: [bg_width - cab_width, 17.1/2]
+        pos: [width_in - cab_width, 17.1/2]
         size: [cab_width, 36.1/2]
         color: cabinet
     window:
@@ -51,7 +51,7 @@ Stove:
         size: [lt_cab_width, 36.7/8]
         color: cabinet
     right_cab:
-        pos: [bg_width - rt_cab_width, 17.1/2]
+        pos: [width_in - rt_cab_width, 17.1/2]
         size: [rt_cab_width, rt_cab_height]
         color: cabinet
     uWave:
@@ -92,7 +92,7 @@ Dining:
         size: [25.5/8, 36.3/4]
         color: cabinet
     right_cab:
-        pos: [bg_width - rt_cab_width, 17.1/2]
+        pos: [width_in - rt_cab_width, 17.1/2]
         size: [rt_cab_width, 36.11/16]
         color: cabinet
 
@@ -108,7 +108,7 @@ Guest Bath:
         size: [left_indent, left_len]
         color: cabinet
     right cabinet:
-        pos: [bg_width - right_indent, 0]
+        pos: [width_in - right_indent, 0]
         size: [right_indent, right_len]
         color: yellow
     vent:

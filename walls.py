@@ -23,7 +23,7 @@ class Wall:
             del specs['constants']
         self.grout = eval_pair(specs['grout'], constants, f"<Wall({self.name})>")
         del specs['grout']
-        constants['bg_width'], constants['bg_height'] = self.grout
+        constants['width_in'], constants['height_in'] = self.grout
         self.max_x = max_x = self.grout[0]
         self.max_y = max_y = self.grout[1]
         self.diagonal = hypot(max_x, max_y)
@@ -45,25 +45,25 @@ class Wall:
         self.panels = {name: create_panel(name, panel) for name, panel in specs.items()}
 
     def grout_bg(self):
-        bg_width, bg_height = app.myapp.bg_width, app.myapp.bg_height = self.grout
+        width_in, height_in = app.canvas.width_in, app.canvas.height_in = self.grout
         app.canvas.set_scale()
-        app.canvas.create_my_rectangle("grout_bg", 0, 0, bg_width, bg_height, 'black',
+        app.canvas.create_my_rectangle("grout_bg", 0, 0, width_in, height_in, 'black',
                                        ("background", "grout"))
         bg_color = app.canvas.cget('background')
 
         # clip above grout background, across entire canvas
-        if app.canvas.my_height > app.canvas.in_to_px(bg_height):
+        if app.canvas.my_height > app.canvas.in_to_px(height_in):
             app.canvas.create_my_rectangle(
-              "grout clip above", 0, bg_height,
+              "grout clip above", 0, height_in,
               app.canvas.px_to_in(app.canvas.my_width),
-              app.canvas.px_to_in(app.canvas.my_height) - bg_height,
+              app.canvas.px_to_in(app.canvas.my_height) - height_in,
               bg_color, ("background", "topmost"))
 
         # clip to the right of grout background
-        if app.canvas.my_width > app.canvas.in_to_px(bg_width):
+        if app.canvas.my_width > app.canvas.in_to_px(width_in):
             app.canvas.create_my_rectangle(
-              "grout clip right", bg_width, 0,
-              app.canvas.px_to_in(app.canvas.my_width) - bg_width, bg_height,
+              "grout clip right", width_in, 0,
+              app.canvas.px_to_in(app.canvas.my_width) - width_in, height_in,
               bg_color, ("background", "topmost"))
 
     def create(self):

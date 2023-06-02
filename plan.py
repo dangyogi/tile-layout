@@ -293,6 +293,10 @@ class Plan:
               f"inc_y={f_to_str(inc_y)}")
         return visible
 
+    def section(self, step_name, alignment, grout_gap, pos, size, layout, constants,
+                trace=False):
+        pass
+
     def do_step(self, step_name, step, constants, trace=False):
         r'''Returns True if the step is visible, False otherwise.
         '''

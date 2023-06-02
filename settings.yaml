@@ -186,6 +186,35 @@ wall_settings:
                     tile_horz: 3x12 caicos_blue
                     right: true
 
+            split_test:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          steps:
+                            - type: place
+                              tile: cross-white
+                            - type: place
+                              tile: star-white
+                        - type: section
+                          alignment:
+                              angle: 0
+                              x_offset: 0
+                              y_offset: 0
+                          grout_gap: 1/4
+                          pos: [0, 44]
+                          size: [plan.canvas.width_in, plan.canvas.height_in - 44]
+                          layout:
+                              type: basketweave
+                              tile_horz: 3x12 caicos_blue
+                              right: true
+
             box:
                 alignment:
                     angle: 0
