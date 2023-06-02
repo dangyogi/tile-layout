@@ -7,7 +7,7 @@ wall_settings:
     Dining:
         plans: {}
     Test Wall:
-        default_plan: stacked
+        default_plan: split_test
         plans:
 
             stacked:

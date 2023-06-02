@@ -8,8 +8,9 @@ import app
 from utils import my_eval, eval_pair, eval_color
 
 
-def erase_tiles():
-    app.canvas.delete("tile")
+def erase_tiles(canvas):
+    canvas.delete("section")
+    canvas.delete("tile")
 
 def generate_tile(name, shape, args, tile, colors, rotation=0):
     constants = args.copy()

@@ -141,16 +141,12 @@ def my_eval(s, constants, location):
         ans = tuple(my_eval(x, constants, location) for x in s)
     elif isinstance(s, list):
         ans = [my_eval(x, constants, location) for x in s]
-        print(f"my_eval({s},, {location}) list -> {ans}")
+        #print(f"my_eval({s},, {location}) list -> {ans}")
     elif not isinstance(s, str):
         ans = s
     else:
         temp_constants = ChainMap(dict(constants=constants), constants)
         ans = eval(compile_exp(s, location), globals(), temp_constants)
-        if s == 'inc_x':
-            print(f"my_eval({s},, {location}) python exp -> {ans}")
-            print(f"  {temp_constants=}")
-            print(f"  {temp_constants[s]=}")
     #print(f"my_eval({s=}, {location=}) -> {ans}")
     return ans
 
@@ -184,10 +180,10 @@ def eval_tile(s, constants):
             ans = getattr(ans, attr)
     elif s in constants:
         ans = constants[s]
-        print(f"eval_tile({s}): in constants {ans=}")
+        #print(f"eval_tile({s}): in constants {ans=}")
     else:
         ans = s
-        print(f"eval_tile({s}): not in constants {ans=}")
+        #print(f"eval_tile({s}): not in constants {ans=}")
     if isinstance(ans, str):
         ans = app.Tiles[ans]
     return ans

@@ -17,13 +17,18 @@ class Plan:
         self.name = name
         self.canvas = canvas
         for attr in self.attrs:
-            value = plan[attr]
+            try:
+                value = plan[attr]
+            except KeyError:
+                if attr == 'grout_color':
+                    value = None
+                else:
+                    raise
             if attr == 'alignment':
                 value = Alignment(value, constants)
-            if attr == 'grout_gap':
-                setattr(self, attr, my_eval(value, constants, f"<Plan({name}): {attr}>"))
-            else:
-                setattr(self, attr, value)
+            elif attr == 'grout_gap':
+                value = my_eval(value, constants, f"<Plan({name}): {attr}>")
+            setattr(self, attr, value)
 
     def __repr__(self):
         return f"<Plan: {self.name}>"
@@ -35,6 +40,7 @@ class Plan:
                 for attr in self.attrs}
 
     def set_grout_color(self, color):
+        assert self.grout_color is not None, f"Plan({self.name}) does not have a grout_color"
         self.grout_color = color
         self.display_grout_color()
 
@@ -42,13 +48,16 @@ class Plan:
         if app.Plan == self:
             app.canvas.itemconfig("grout", fill=eval_color(self.grout_color))
 
-    def create(self):
-        erase_tiles()
+    def create(self, constants=None, trace=False):
+        erase_tiles(self.canvas)
         self.display_grout_color()
         pt_init()
-        self.do_step(f"Plan({self.name})", self.layout,
-                     #dict(plan=self, offset=(-self.canvas.diagonal, -self.canvas.diagonal)))
-                     dict(plan=self, offset=(0, 0)))
+        #new_constants = dict(plan=self, offset=(-self.canvas.diagonal,
+        #                                        -self.canvas.diagonal)))
+        new_constants = dict(plan=self, offset=(0, 0))
+        if constants is not None:
+            new_constants = ChainMap(new_constants, constants)
+        self.do_step(f"Plan({self.name})", self.layout, new_constants, trace=trace)
 
     def get_inc_xy(self, steps, constants):
         temp_constants = ChainMap(dict(plan=self, offset=(0, 0), skip=True), constants)
@@ -98,14 +107,16 @@ class Plan:
         if aligned_points is None:
             return False
         if not skip:
-            item = app.canvas.create_my_polygon("plan", color, *aligned_points,
-                                                tags=('tile',))
-            app.canvas.tag_lower(item, "topmost")
+            item = self.canvas.create_my_polygon("plan", color, *aligned_points,
+                                                 tags=('tile',))
+            if self.canvas.find_withtag("topmost"):
+                self.canvas.tag_lower(item, "topmost")
         return True
 
     def create_image(self, image, sw_offset, pos):
-        item = app.canvas.create_my_image("plan", image, sw_offset, pos, tags=('tile',))
-        app.canvas.tag_lower(item, "topmost")
+        item = self.canvas.create_my_image("plan", image, sw_offset, pos, tags=('tile',))
+        if self.canvas.find_withtag("topmost"):
+            self.canvas.tag_lower(item, "topmost")
 
     def place(self, step_name, tile, angle, constants, trace=False):
         r'''Returns True if displayed, False if not visible.
@@ -179,13 +190,13 @@ class Plan:
             if self.do_step(f"{step_name}.sequence, step {i}", step, step_constants,
                             trace=trace):
                 if 'save' in step:
-                    print(f"{step_name}.sequence: save {f_to_str(step_constants)}")
+                    #print(f"{step_name}.sequence: save {f_to_str(step_constants)}")
                     for key, value in step['save'].items():
                         my_constants[key] = \
                           my_eval(value, step_constants,
                                   f"{step_name}.sequence: save {key}>")
-                        print(f"{step_name}.sequence save {key} set to "
-                              f"{f_to_str(my_constants[key])}")
+                        #print(f"{step_name}.sequence save {key} set to "
+                        #      f"{f_to_str(my_constants[key])}")
                 if inc_x is None or step_constants['inc_x'] > inc_x:
                     inc_x = step_constants['inc_x']
                 if inc_y is None or step_constants['inc_y'] > inc_y:
@@ -206,14 +217,14 @@ class Plan:
 
         If visible, returns the greatest inc_x, inc_y in constants.
         '''
-        if trace or True:
+        if trace:
             print(f"{step_name}.repeat({step=}, "
                   f"increment={f_to_str(increment)}, {times=}, "
                   f"{step_width_limit=}, {step_height_limit=}, {index_start=})")
         if True:
             unaligned_boundary = self.alignment.unalign(self.canvas.boundary)
-            print(f"{step_name}.repeat: "
-                  f"unaligned_boundary={f_to_str(unaligned_boundary)}")
+            #print(f"{step_name}.repeat: "
+            #      f"unaligned_boundary={f_to_str(unaligned_boundary)}")
             min_x = min(p[0] for p in unaligned_boundary) - 2 * step_width_limit
             max_x = max(p[0] for p in unaligned_boundary)
             min_y = min(p[1] for p in unaligned_boundary) - 2 * step_width_limit
@@ -221,17 +232,17 @@ class Plan:
         else:
             min_x = min_y = -self.canvas.diagonal - 2 * step_width_limit
             max_x = max_y = self.canvas.diagonal + step_width_limit
-        print(f"{step_name}.repeat: "
-              f"min_x={min_x:.2f}, max_x={max_x:.2f}, "
-              f"min_y={min_y:.2f}, max_y={max_y:.2f}")
+        #print(f"{step_name}.repeat: "
+        #      f"min_x={min_x:.2f}, max_x={max_x:.2f}, "
+        #      f"min_y={min_y:.2f}, max_y={max_y:.2f}")
         visible = False
         inc_x = inc_y = None
         x_inc, y_inc = increment
         x, y = offset = starting_offset = constants['offset']
-        print(f"{step_name}.repeat offset={f_to_str(offset)}, {times=}, "
-              f"x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
-        print(f"  min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}, "
-              f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
+        #print(f"{step_name}.repeat offset={f_to_str(offset)}, {times=}, "
+        #      f"x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
+        #print(f"  min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}, "
+        #      f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
         for index in (range(times) if times is not None else count(0)):
             #print(f"{step_name}.repeat {index=}, offset={f_to_str(offset)}")
             constants['offset'] = offset
@@ -284,18 +295,20 @@ class Plan:
         if visible:
             constants['inc_x'] = inc_x
             constants['inc_y'] = inc_y
-        print(f"{step_name}.repeat {visible=}, inc_x={f_to_str(inc_x)}, "
-              f"inc_y={f_to_str(inc_y)}")
+        #print(f"{step_name}.repeat {visible=}, inc_x={f_to_str(inc_x)}, "
+        #      f"inc_y={f_to_str(inc_y)}")
         return visible
 
-    def section(self, step_name, alignment, grout_gap, pos, size, layout, constants,
-                trace=False):
-        pass
+    def section(self, step_name, plan, pos, size, constants, trace=True):
+        print(f"section {step_name=}")
+        canvas = self.canvas.create_canvas("section", pos, size, tags=('section',))
+        plan = Plan(step_name, plan, canvas, constants)
+        plan.create(constants, trace=trace)
 
     def do_step(self, step_name, step, constants, trace=False):
         r'''Returns True if the step is visible, False otherwise.
         '''
-        if trace or True:
+        if trace:
             print(f"{self.name}.do_step({step_name=}, {step=})")
         if 'inc_x' in constants:
             constants['inc_x'] = None
@@ -312,9 +325,9 @@ class Plan:
             x, y = my_eval(step.get('start', (0, 0)), constants,
                            f"<{step_name}.do_step: repeat start>")
             x_off, y_off = constants['offset']
-            print(f"do_step: repeat in {step_name} "
-                  f"x={f_to_str(x)}, y={f_to_str(y)}, "
-                  f"x_off={f_to_str(x_off)}, y_off={f_to_str(y_off)}")
+            #print(f"do_step: repeat in {step_name} "
+            #      f"x={f_to_str(x)}, y={f_to_str(y)}, "
+            #      f"x_off={f_to_str(x_off)}, y_off={f_to_str(y_off)}")
             constants['offset'] = x_off + x, y_off + y
             return self.repeat(step_name, constants,
                                my_eval(step['step'], constants,
@@ -331,6 +344,13 @@ class Plan:
                                my_eval(step.get('index_start', 0), constants,
                                  f"<{step_name}.do_step: repeat index_start>"),
                                trace=trace)
+        if step['type'] == 'section':
+            return self.section(step_name, step,
+                                eval_pair(step['pos'], constants,
+                                  f"<{step_name}.do_step: section pos>"),
+                                eval_pair(step['size'], constants,
+                                  f"<{step_name}.do_step: section size>"),
+                                constants, trace=trace)
 
         # else it's a call to a layout
         new_step = app.Layouts[step['type']]
@@ -341,7 +361,7 @@ class Plan:
                         print(f"{step_name}.lookup({param}) in step -- tile! "
                               f"-- value is {step[param]}")
                     ans = eval_tile(step[param], constants)
-                    print(f"{step['type']}: setting {param=}, {step[param]=} to {ans}")
+                    #print(f"{step['type']}: setting {param=}, {step[param]=} to {ans}")
                 else:
                     if trace:
                         print(f"{step_name}.lookup({param}) in step -- "
@@ -367,7 +387,7 @@ class Plan:
             defaults = new_step['defaults']
         else:
             defaults = {}
-        print(f"{step['type']} {defaults=}")
+        #print(f"{step['type']} {defaults=}")
         new_constants = ChainMap({}, constants)
         for param in new_step.get('parameters', ()):
             new_constants[param] = lookup(param, defaults)
@@ -376,7 +396,7 @@ class Plan:
         if 'constants' in new_step:
             def add_constants(constants):
                 for name, value in constants.items():
-                    if trace or True:
+                    if trace:
                         print(f"{step['type']}: add_constants adding {name=}, {value=}")
                     if name == 'conditionals':
                         for conditional in value:
@@ -397,7 +417,7 @@ class Plan:
                                                 f"<{step_name}.do_step: "
                                                 f"layout {step['type']} {name}>")
             add_constants(new_step['constants'])
-        print(f"{step['type']}: {new_constants=}")
+        #print(f"{step['type']}: {new_constants=}")
         visible = self.do_step(step['type'], new_step, new_constants, trace=trace)
         if visible:
             constants['inc_x'] = new_constants['inc_x']
