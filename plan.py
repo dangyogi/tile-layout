@@ -46,9 +46,18 @@ class Plan:
 
     def display_grout_color(self):
         if app.Plan == self:
-            app.canvas.itemconfig("grout", fill=eval_color(self.grout_color))
-            app.canvas.itemconfig("section", bg=eval_color(self.grout_color))
-            #for section in app.canvas.find_withtag('section'):
+            color = eval_color(self.grout_color)
+            self.canvas.itemconfig("grout", fill=color)
+            self.canvas.current_grout_color = color
+            def do_sections(canvas):
+                for item in canvas.find_withtag('section'):
+                    section = app.root.nametowidget(canvas.itemcget(item, 'window'))
+                    print("section", section)
+                    print(dir(section))
+                    section.configure(bg=color)
+                    section.current_grout_color = color
+                    do_sections(section)
+            do_sections(self.canvas)
 
     def create(self, constants=None, trace=False):
         erase_tiles(self.canvas)
@@ -301,11 +310,11 @@ class Plan:
         #      f"inc_y={f_to_str(inc_y)}")
         return visible
 
-    def section(self, step_name, plan, pos, size, constants, trace=True):
+    def section(self, step_name, plan, pos, size, constants, trace=False):
         print(f"section {step_name=}")
-        canvas = self.canvas.create_canvas("section", pos, size, tags=('section',))
+        canvas, item = self.canvas.create_canvas("section", pos, size, tags=('section',))
         if self.canvas.find_withtag("topmost"):
-            self.canvas.tag_lower(canvas, "topmost")
+            self.canvas.tag_lower(item, "topmost")
         plan = Plan(step_name, plan, canvas, constants)
         plan.create(constants, trace=trace)
 

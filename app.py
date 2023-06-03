@@ -19,7 +19,7 @@ class App(Frame):
     def create_widgets(self, test):
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
-        self.canvas = MyCanvas(self, bg="#777")
+        self.canvas = MyCanvas(self, bd=0, bg="#777")
         fix(self.canvas, 0, 0)
         print(f"{self.canvas.size()=}")
         print(f"{self.canvas.winfo_reqwidth()=}, {self.canvas.winfo_reqheight()=}") 
@@ -71,10 +71,11 @@ class MyCanvasBase(Canvas):
                                  image=image, tags=tags + ("math",))
 
     def create_canvas(self, caller, pos, size, tags=()):
-        new_canvas = MyNestedCanvas(self, size, bd=0, bg='black')
-        self.create_window(self.in_to_px(pos[0]), self.in_to_px(pos[1]), anchor=SW,
-                           window=new_canvas, tags=tags)
-        return new_canvas
+        new_canvas = MyNestedCanvas(self, size, bd=0, bg=self.current_grout_color)
+        new_canvas.current_grout_color = self.current_grout_color
+        item = self.create_window(self.in_to_px(pos[0]), self.in_to_px(pos[1]), anchor=SW,
+                                  window=new_canvas, tags=tags)
+        return new_canvas, item
 
     def visible(self, points):
         r'''True if there are points to the right of 0, left of width_in,
