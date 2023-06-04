@@ -1,8 +1,8 @@
 # settings.yaml
 
 ---
-default_wall: Test Wall
-#default_wall: Master Back
+#default_wall: Test Wall
+default_wall: Master Back
 wall_settings:
     Dining:
         plans: {}
@@ -687,6 +687,30 @@ wall_settings:
                         - type: place
                           tile: star-cotto
 
+            basketweave_caicos_blue:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 caicos_blue
+                    right: true
+
+            basketweave_white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 white
+                    right: true
+
             star_X-tv1:
                 alignment:
                     angle: 0
@@ -782,51 +806,212 @@ wall_settings:
                 layout:
                     type: sequence
                     steps:
+                        - type: hopscotch
+                          step_a:
+                              type: place
+                              tile: 8" square white
+                              #tile: 8" square grey
+                          step_b:
+                              type: place
+                              tile: 4x12
+                          right: false
+                        - type: section
+                          alignment:
+                              angle: 0
+                              x_offset: 0
+                              y_offset: 0
+                          grout_gap: 1/4
+                          pos: [0, 0]
+                          size: [plan.canvas.width_in, 47]
+                          layout:
+                              type: sequence
+                              steps:
+                                  - type: checkerboard
+                                    steps:
+                                        - type: place
+                                          tile: star-white
+                                        - type: place
+                                          tile: cross-white
+                                    num_y: 8
+                                    use:
+                                        offset_x: 2
+                                        offset_y: -1.1/2
+                                    save:
+                                        inc_y1: offset_y + inc_y
+                                  - type: repeat
+                                    step:
+                                        type: place
+                                        #tile: [Estrella de Fuego-6, Arabesque Azul-6]
+                                        tile: Estrella de Fuego-6
+                                    use:
+                                        offset_x: 3.9/16 - 1.15/16 + plan.grout_gap
+                                        offset_y: inc_y1 - 6.1/16
+                                    #start: [3.3/4, 84.1/2]
+                                    increment: [2 * (5.25/32 + plan.grout_gap), 0]
+                        #- type: repeat
+                        #  step:
+                        #      type: place
+                        #      tile: Arabesque Azul-6
+                        #  times: 4
+                        #  start: [5.3/4, 0]
+                        #  increment: [2 * (6 + plan.grout_gap), 0]
+
+            star_X-p2:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: basketweave
+                          #tile_horz: 3x12 caicos_blue
+                          tile_horz: 3x12 white
+                          right: true
+                        - type: section
+                          alignment:
+                              angle: 0
+                              x_offset: 0
+                              y_offset: 0
+                          grout_gap: 1/4
+                          pos: [0, 0]
+                          size: [plan.canvas.width_in, 47]
+                          layout:
+                              type: sequence
+                              steps:
+                                  - type: checkerboard
+                                    steps:
+                                        - type: place
+                                          tile: star-white
+                                        - type: place
+                                          tile: cross-white
+                                    num_y: 8
+                                    use:
+                                        offset_x: 2
+                                        offset_y: -1.1/2
+                                    save:
+                                        inc_y1: offset_y + inc_y
+                                  - type: repeat
+                                    step:
+                                        type: place
+                                        #tile: [Estrella de Fuego-6, Arabesque Azul-6]
+                                        tile: Estrella de Fuego-6
+                                    use:
+                                        offset_x: 3.9/16 - 1.15/16 + plan.grout_gap
+                                        offset_y: inc_y1 - 6.1/16
+                                    #start: [3.3/4, 84.1/2]
+                                    increment: [2 * (5.25/32 + plan.grout_gap), 0]
+                        #- type: repeat
+                        #  step:
+                        #      type: place
+                        #      tile: Arabesque Azul-6
+                        #  times: 4
+                        #  start: [5.3/4, 0]
+                        #  increment: [2 * (6 + plan.grout_gap), 0]
+
+            star_X-p1-rev:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
                         - type: checkerboard
                           steps:
                               - type: place
+                                tile: star-white
+                              - type: place
                                 tile: cross-white
+                        - type: section
+                          alignment:
+                              angle: 0
+                              x_offset: 0
+                              y_offset: 0
+                          grout_gap: 1/4
+                          pos: [0, 0]
+                          size: [plan.canvas.width_in, 47]
+                          layout:
+                              type: sequence
+                              steps:
+                                  - type: hopscotch
+                                    step_a:
+                                        type: place
+                                        tile: 8" square white
+                                        #tile: 8" square grey
+                                    step_b:
+                                        type: place
+                                        tile: 4x12
+                                    right: false
+                                    use:
+                                        offset_x: 2
+                                        offset_y: -1.1/2
+                                  - type: repeat
+                                    step:
+                                        type: place
+                                        #tile: [Estrella de Fuego-6, Arabesque Azul-6]
+                                        tile: Estrella de Fuego-6
+                                    use:
+                                        offset_x: 3.9/16 - 1.15/16 + plan.grout_gap
+                                        offset_y: 47 - 6.1/16
+                                    #start: [3.3/4, 84.1/2]
+                                    increment: [2 * (5.25/32 + plan.grout_gap), 0]
+                        #- type: repeat
+                        #  step:
+                        #      type: place
+                        #      tile: Arabesque Azul-6
+                        #  times: 4
+                        #  start: [5.3/4, 0]
+                        #  increment: [2 * (6 + plan.grout_gap), 0]
+
+            star_X-p2-rev:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/4
+                layout:
+                    type: sequence
+                    steps:
+                        - type: checkerboard
+                          steps:
                               - type: place
                                 tile: star-white
-                          num_y: 7
-                          save:
-                              inc_y1: inc_y
-                        - type: repeat
-                          step:
-                              type: place
-                              tile: [Estrella de Fuego-4, Arabesque Azul-4]
-                          use:
-                              offset_x: 3.9/16 + plan.grout_gap
-                              offset_y: inc_y1
-                          #start: [3.3/4, 84.1/2]
-                          increment: [4 + plan.grout_gap, 0]
-                          save:
-                              inc_y2: inc_y1 + inc_y
-                        - type: repeat
-                          step:
-                              type: place
-                              tile: 3x6 yellow
-                          use:
-                              offset_x: 3.9/16 + plan.grout_gap
-                              offset_y: inc_y2
-                          increment: [0, 3 + plan.grout_gap]
-                          times: 9
-                        - type: repeat
-                          step:
-                              type: place
-                              tile: 3x6 yellow
-                          use:
-                              offset_x: 48 - 3.9/16
-                              offset_y: inc_y2
-                          increment: [0, 3 + plan.grout_gap]
-                          times: 9
-                          save:
-                              inc_y3: inc_y2 + inc_y
-                        - type: herringbone
-                          tile_horz: 3x6 orange
-                          use:
-                              offset_x: 3.9/16 + plan.grout_gap
-                              offset_y: inc_y3
+                              - type: place
+                                tile: cross-white
+                        - type: section
+                          alignment:
+                              angle: 0
+                              x_offset: 0
+                              y_offset: 0
+                          grout_gap: 1/4
+                          pos: [0, 0]
+                          size: [plan.canvas.width_in, 47]
+                          layout:
+                              type: sequence
+                              steps:
+                                  - type: basketweave
+                                    #tile_horz: 3x12 caicos_blue
+                                    tile_horz: 3x12 white
+                                    right: true
+                                    use:
+                                        offset_x: 2
+                                        offset_y: -1.1/2
+                                  - type: repeat
+                                    step:
+                                        type: place
+                                        #tile: [Estrella de Fuego-6, Arabesque Azul-6]
+                                        tile: Estrella de Fuego-6
+                                    use:
+                                        offset_x: 3.9/16 - 1.15/16 + plan.grout_gap
+                                        offset_y: 47 - 6.1/16
+                                    #start: [3.3/4, 84.1/2]
+                                    increment: [2 * (5.25/32 + plan.grout_gap), 0]
                         #- type: repeat
                         #  step:
                         #      type: place
@@ -1140,7 +1325,7 @@ wall_settings:
                     type: herringbone
                     tile_horz: 8x12
 
-            hopscotch 8x8 white,4x12 white:
+            hopscotch 8x8 white,4x12 white-vert:
                 alignment:
                     angle: 0
                     x_offset: -3.9/16
@@ -1156,7 +1341,7 @@ wall_settings:
                         type: place
                         tile: 4x12-flipped
 
-            hopscotch 6x6 white,3x12 caicos_blue:
+            hopscotch 8x8 grey,4x12 white-vert:
                 alignment:
                     angle: 0
                     x_offset: -3.9/16
@@ -1167,11 +1352,76 @@ wall_settings:
                     type: hopscotch
                     step_a:
                         type: place
-                        #tile: 6" square white
-                        tile: 6" square grey
+                        tile: 8" square grey
+                    step_b:
+                        type: place
+                        tile: 4x12-flipped
+
+            hopscotch 6x6 white,3x12 caicos_blue-vert:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: place
+                        tile: 6" square white
+                        #tile: 6" square grey
                     step_b:
                         type: place
                         tile: 3x12 caicos_blue-flipped
+
+            hopscotch 8x8 white,4x12 white-horz:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: place
+                        tile: 8" square white
+                    step_b:
+                        type: place
+                        tile: 4x12
+
+            hopscotch 8x8 grey,4x12 white-horz:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: place
+                        tile: 8" square grey
+                    step_b:
+                        type: place
+                        tile: 4x12
+
+            hopscotch 6x6 white,3x12 caicos_blue-horz:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: acorn
+                grout_gap: 1/8
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: place
+                        tile: 6" square white
+                        #tile: 6" square grey
+                    step_b:
+                        type: place
+                        tile: 3x12 caicos_blue
 
             star_X-Morocco-6:
                 alignment:

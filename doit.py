@@ -87,8 +87,9 @@ def angle_entry(master):
 
 
 def color_entry(master):
-    e = tk.Entry(master)
-    e.type_fn = lambda s: eval_color(s, app.Colors)
+    values = sorted(app.Colors.keys())
+    e = ttk.Combobox(master, values=values)
+    e.type_fn = lambda s: s
     return e
 
 
@@ -116,7 +117,7 @@ def run_set_grout_color():
         app.Plan.set_grout_color(color)
 
     run_dialog("Grout Color", do_grout_color, [app.Plan.grout_color], (
-                  ("color", str_entry),))
+                  ("color", color_entry),))
 
 
 def run_set_grout_gap():

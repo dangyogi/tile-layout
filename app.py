@@ -73,7 +73,10 @@ class MyCanvasBase(Canvas):
     def create_canvas(self, caller, pos, size, tags=()):
         new_canvas = MyNestedCanvas(self, size, bd=0, bg=self.current_grout_color)
         new_canvas.current_grout_color = self.current_grout_color
-        item = self.create_window(self.in_to_px(pos[0]), self.in_to_px(pos[1]), anchor=SW,
+        x_px, y_px = self.math_coord(pos)
+        print(f"create_canvas {caller=}, pos={f_to_str(pos)}, pos_px=({x_px}, {y_px}), "
+              f"size={f_to_str(size)}")
+        item = self.create_window(x_px, y_px, anchor=SW,
                                   window=new_canvas, tags=tags)
         return new_canvas, item
 
@@ -127,6 +130,8 @@ class MyCanvas(MyCanvasBase):
         width, height = self.size()
         self.my_scale = min(width / float(self.width_in),
                             height / float(self.height_in))
+        print(f"set_scale(width_in={f_to_str(width_in)}, height_in={f_to_str(height_in)}) "
+              f"{self.my_scale=:.3f}")
         print(f"new size in inches: "
               f"{self.px_to_in(width):.3f} W x {self.px_to_in(height):.3f} H")
 
@@ -153,11 +158,13 @@ class MyNestedCanvas(MyCanvasBase):
                               **kwargs)
         self.parent = parent
         width_in, height_in = size
-        self.width_in = width_in
-        self.height_in = height_in
+        self.width_in = min(width_in, parent.width_in)
+        self.height_in = min(height_in, parent.height_in)
         self.diagonal = hypot(self.width_in, self.height_in)
-        self.boundary = (0, 0), (width_in, 0), (width_in, height_in), (0, height_in)
-        print(f"MyNestedCanvas, {self.parent=}, {size=}")
+        self.boundary = ((0, 0), (self.width_in, 0), (self.width_in, self.height_in),
+                         (0, self.height_in))
+        print(f"MyNestedCanvas, {self.parent=}, "
+              f"size={f_to_str((self.width_in, self.height_in))}")
 
     def in_to_px(self, in_):
         return self.parent.in_to_px(in_)

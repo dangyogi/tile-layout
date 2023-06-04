@@ -193,11 +193,13 @@ Master Back:
         #color: sea_foam
         color: orange
         #color: yellow
+        #color: grey
         #color: caicos_blue
     pencil:
         pos: [pic_x - 1/2 - 2 * pic_grout_gap, pic_y - 1/2 - 2 * pic_grout_gap]
         size: [pic_width + 1 + 4 * pic_grout_gap, pic_height + 1 + 4 * pic_grout_gap]
         color: white
+        #color: black
     picture:
         pos: [pic_x, pic_y]
         size: [pic_width, pic_height]

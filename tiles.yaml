@@ -22,6 +22,11 @@
     width: 8
     color: white
 
+8" square grey:
+    shape: square
+    width: 8
+    color: "#666"
+
 8" square black:
     shape: square
     width: 8
@@ -73,7 +78,8 @@
 
 3x12 white:
     shape: rectangle
-    height: 3
+    #height: 3
+    height: 2.8125
     width: 12
     color: white
 
@@ -81,8 +87,8 @@
     shape: rectangle
     height: 3
     width: 12
-    #color: caicos_blue
-    color: yellow
+    color: caicos_blue
+    #color: yellow
 
 3x12 black:
     shape: rectangle

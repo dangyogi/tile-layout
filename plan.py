@@ -71,6 +71,8 @@ class Plan:
         self.do_step(f"Plan({self.name})", self.layout, new_constants, trace=trace)
 
     def get_inc_xy(self, steps, constants):
+        hold_alignment = self.alignment
+        self.alignment = Alignment(dict(angle=0,x_offset=0,y_offset=0), {})
         temp_constants = ChainMap(dict(plan=self, offset=(0, 0), skip=True), constants)
         if not isinstance(steps, (tuple, list)):
             steps = [steps]
@@ -90,9 +92,10 @@ class Plan:
             elif inc_y != ans_constants['inc_y']:
                 inc_x = None
                 y_dead = True
-        print(f"get_inc_xy: {steps=}")
-        print(f"  {constants=}")
-        print(f"  inc_x={f_to_str(inc_x)}, inc_y={f_to_str(inc_y)}")
+        #print(f"get_inc_xy: {steps=}")
+        #print(f"  {constants=}")
+        #print(f"  inc_x={f_to_str(inc_x)}, inc_y={f_to_str(inc_y)}")
+        self.alignment = hold_alignment
         return inc_x, inc_y
 
     def align(self, points, offset):
@@ -180,7 +183,7 @@ class Plan:
         my_constants['initial_x'] = initial_x
         my_constants['initial_y'] = initial_y
         for i, step in enumerate(steps, 1):
-            print(f"{step_name}.sequence: step {i}, {step=}, {constants=}")
+            #print(f"{step_name}.sequence: step {i}, {step=}, {constants=}")
             step = pick(step, constants)
             step_constants = my_constants.new_child()
             step_constants['offset_x'] = step_constants['initial_x']
@@ -310,12 +313,14 @@ class Plan:
         #      f"inc_y={f_to_str(inc_y)}")
         return visible
 
-    def section(self, step_name, plan, pos, size, constants, trace=False):
-        print(f"section {step_name=}")
+    def section(self, step_name, step, pos, size, constants, trace=False):
+        print(f"section {step_name=}, pos={f_to_str(pos)}, size={f_to_str(size)}")
+        if not isinstance(step, dict):
+            print(f"section got {step=}, expected dict")
         canvas, item = self.canvas.create_canvas("section", pos, size, tags=('section',))
         if self.canvas.find_withtag("topmost"):
             self.canvas.tag_lower(item, "topmost")
-        plan = Plan(step_name, plan, canvas, constants)
+        plan = Plan(step_name, step, canvas, constants)
         plan.create(constants, trace=trace)
 
     def do_step(self, step_name, step, constants, trace=False):
