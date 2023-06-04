@@ -445,7 +445,7 @@ wall_settings:
     Guest Bath:
         plans: {}
     Master Left:
-        default_plan: star_X
+        default_plan: basketweave_white
         plans:
             hex:
                 alignment:
@@ -514,8 +514,21 @@ wall_settings:
                           tile: cross-white
                         - type: place
                           tile: star-white
+
+            basketweave_white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 white
+                    right: true
+
     Master Right:
-        default_plan: star_X
+        default_plan: basketweave_white
         plans:
             hex:
                 alignment:
@@ -585,8 +598,20 @@ wall_settings:
                         - type: place
                           tile: star-white
 
+            basketweave_white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 white
+                    right: true
+
     Master Back:
-        default_plan: star_X-p1
+        default_plan: basketweave_white
         plans:
             hex:
                 alignment:
@@ -699,6 +724,44 @@ wall_settings:
                     tile_horz: 3x12 caicos_blue
                     right: true
 
+            basketweave_sea_foam:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: sea_foam
+                    right: true
+
+            basketweave_caicos_blue_white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: [3x12 caicos_blue, 3x12 white]
+                    tile_vert: [3x12 caicos_blue-flipped, 3x12 white-flipped]
+                    right: true
+
+            basketweave_caicos_blue_white-2:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 caicos_blue
+                    tile_vert: 3x12 white-flipped
+                    right: true
+
             basketweave_white:
                 alignment:
                     angle: 0
@@ -709,6 +772,48 @@ wall_settings:
                 layout:
                     type: basketweave
                     tile_horz: 3x12 white
+                    right: true
+
+            basketweave_1_2_horz:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/4
+                layout:
+                    type: hopscotch
+                    step_b:
+                        type: repeat
+                        step:
+                            type: place
+                            tile: 3x12 white-flipped
+                        increment: [2.13/16 + plan.grout_gap, 0]
+                        times: 2
+                    step_a:
+                        type: place
+                        tile: 3x12 white
+                    right: true
+
+            basketweave_1_2_vert:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/4
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: repeat
+                        step:
+                            type: place
+                            tile: 3x12 white
+                        increment: [0, 2.13/16 + plan.grout_gap]
+                        times: 2
+                    step_b:
+                        type: place
+                        tile: 3x12 white-flipped
                     right: true
 
             star_X-tv1:

@@ -198,6 +198,12 @@ def multi_getattr(value, attr):
     return ans
 
 
+def pick(value, constants):
+    if not isinstance(value, (tuple, list)):
+        value = [value]
+    return value[constants.get('index', 0) % len(value)]
+
+
 def read_yaml(filename):
     with open(os.path.join(Data_dir, filename), "r") as yaml_file:
         return safe_load(yaml_file)

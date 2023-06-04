@@ -132,14 +132,14 @@ basketweave:
         step:
             type: place
             tile: tile_horz
-        increment: [0, tile_horz.skip_y + plan.grout_gap]
+        increment: [0, "multi_getattr(tile_horz, 'skip_y') + plan.grout_gap"]
         times: num_horz
     step_b:
         type: repeat
         step:
             type: place
             tile: tile_vert
-        increment: [tile_vert.skip_x + plan.grout_gap, 0]
+        increment: ["multi_getattr(tile_vert, 'skip_x') + plan.grout_gap", 0]
         times: num_vert
     right: right
 

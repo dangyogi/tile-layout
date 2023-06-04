@@ -146,6 +146,10 @@ Master Left:
         pos: [width - 9.1/2, bar_y]
         size: 1.7/8
         color: silver
+    door:
+        pos: [1/2, 0]
+        size: [1.9/16, 70]
+        color: silver
 
 Master Right:
     constants:
@@ -173,6 +177,10 @@ Master Right:
         pos: [niche_center_x - back_width / 2, niche_center_y - back_height / 2]
         size: [back_width, back_height]
         color: "#DDD"
+    door:
+        pos: [width - 1.9/16 - 1/2, 0]
+        size: [1.9/16, 70]
+        color: silver
 
 Master Back:
     constants:

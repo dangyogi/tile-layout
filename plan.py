@@ -4,7 +4,7 @@ from collections import ChainMap
 from itertools import count
 
 import app
-from utils import my_eval, eval_pair, eval_color, eval_tile, format, f_to_str
+from utils import my_eval, eval_pair, eval_color, eval_tile, format, f_to_str, pick
 from tile import erase_tiles
 from alignment import Alignment
 from place_trace import pt_init, place
@@ -441,26 +441,4 @@ class Plan:
             constants['inc_x'] = new_constants['inc_x']
             constants['inc_y'] = new_constants['inc_y']
         return visible
-
-
-def pick(value, constants):
-    if not isinstance(value, (tuple, list)):
-        value = [value]
-    return value[constants.get('index', 0) % len(value)]
-
-
-def get(value, attr=None):
-    if not isinstance(value, (tuple, list)):
-        value = [value]
-    ans = None
-    for x in value:
-        if attr is None:
-            xv = x
-        else:
-            xv = getattr(x, attr)
-        if ans is None:
-            ans = xv
-        elif ans != xv:
-            return None
-    return ans
 
