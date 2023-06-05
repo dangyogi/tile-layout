@@ -611,7 +611,7 @@ wall_settings:
                     right: true
 
     Master Back:
-        default_plan: basketweave_white
+        default_plan: new_basketweave_2_3x12-black
         plans:
             hex:
                 alignment:
@@ -814,6 +814,240 @@ wall_settings:
                     step_b:
                         type: place
                         tile: 3x12 white-flipped
+                    right: true
+
+            new_basketweave_4_3x12:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 4
+                    tile_square: null
+
+            new_basketweave_3_3x12-white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 3
+                    tile_square: 1_1/4" square white
+
+            new_basketweave_3_3x12-black:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 3
+                    tile_square: 1_1/4" square black
+
+            new_basketweave_2_3x12-white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 2
+                    tile_square: 2_13/16" square white
+
+            new_basketweave_2_3x12-black:
+                alignment:
+                    angle: 0            # don't like 45
+                    x_offset: -1.1/4
+                    y_offset: 0
+                    #x_offset: -3.9/16
+                    #y_offset: 1/4
+                grout_color: g_chocolate
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 2
+                    tile_square: 2_13/16" square black
+
+            new_basketweave_1_3x12-black:
+                alignment:
+                    angle: 0
+                    #x_offset: 0
+                    #y_offset: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 1
+                    tile_square: 4_3/8" square black
+
+            new_basketweave_4_4x12-white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 4x12
+                    num_strands: 4
+                    tile_square: 2_1/16" square white
+
+            new_basketweave_4_4x12-black:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 4x12
+                    num_strands: 4
+                    tile_square: 2_1/16" square black
+
+            new_basketweave_3_4x12:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 4x12
+                    num_strands: 3
+                    tile_square: null
+
+            new_basketweave_2_4x12-white:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 4x12
+                    num_strands: 2
+                    tile_square: 1_13/16" square white
+
+            new_basketweave_2_4x12-black:
+                alignment:
+                    angle: 0
+                    #x_offset: 0
+                    #y_offset: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 4x12
+                    num_strands: 2
+                    tile_square: 1_13/16" square black
+
+            new_basketweave_1_4x12-black:
+                alignment:
+                    angle: 0
+                    #x_offset: 0
+                    #y_offset: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 4x12
+                    num_strands: 1
+                    tile_square: 3_7/8" square black
+
+            new_basketweave_3_4_3-black:
+                alignment:
+                    angle: 0
+                    #x_offset: 0
+                    #y_offset: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave_mixed
+                    tile_a: 3x12 white
+                    tile_b: 4x12
+                    tile_c: 3x12 white
+                    tile_square: null
+
+            test_3_4_3:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: sequence
+                    steps:
+                        - type: mixed_horz
+                          tile_a: 3x12 white-flipped
+                          tile_b: 4x12-flipped
+                          tile_c: 3x12 white-flipped
+                          offset: [5, 5]
+                        - type: mixed_vert
+                          tile_a: 3x12 white
+                          tile_b: 4x12
+                          tile_c: 3x12 white
+                          offset: [5, 22]
+
+            new_basketweave_4_3_4-black:
+                alignment:
+                    angle: 0
+                    #x_offset: 0
+                    #y_offset: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave_mixed
+                    tile_a: 4x12
+                    tile_b: 3x12 white
+                    tile_c: 4x12
+                    tile_square: null
+
+            marilyn-hopscotch:
+                alignment:
+                    angle: 0
+                    x_offset: -3.9/16
+                    y_offset: 1/4
+                grout_color: black
+                grout_gap: 1/8
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: place
+                        tile: 6" square white
+                    step_b:
+                        type: place
+                        tile: 6x12 white
                     right: true
 
             star_X-tv1:

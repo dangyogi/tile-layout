@@ -2,6 +2,71 @@
 
 ---
 
+1_1/4" square white:
+    shape: square
+    width: 1.1/4
+    color: white
+
+1_1/4" square black:
+    shape: square
+    width: 1.1/4
+    color: black
+
+1_13/16" square white:
+    shape: square
+    width: 1.13/16
+    color: white
+
+1_13/16" square black:
+    shape: square
+    width: 1.13/16
+    color: black
+
+2_1/16" square white:
+    shape: square
+    width: 2.1/16
+    color: white
+
+2_1/16" square black:
+    shape: square
+    width: 2.1/16
+    color: black
+
+2_13/16" square white:
+    shape: square
+    width: 2.13/16
+    color: white
+
+2_13/16" square black:
+    shape: square
+    width: 2.13/16
+    color: paprika
+
+3_7/8" square white:
+    shape: square
+    width: 3.7/8
+    color: white
+
+3_7/8" square black:
+    shape: square
+    width: 3.7/8
+    color: black
+
+4_3/8" square white:
+    shape: square
+    width: 4.3/8
+    color: white
+
+4_3/8" square black:
+    shape: square
+    width: 4.3/8
+    color: black
+
+6" square white:
+    shape: square
+    width: 6
+    color: white
+
 6" square white:
     shape: square
     width: 6
@@ -78,12 +143,15 @@
 
 3x12 white:
     shape: rectangle
-    #height: 3
-    height: 2.3/4
-    width: 11.3/4
-    #height: 3.15/16
-    #width: 15.11/16
+    height: 3
+    width: 12
     color: white
+
+3x12 paprika:
+    shape: rectangle
+    height: 3
+    width: 12
+    color: paprika
 
 3x12 caicos_blue:
     shape: rectangle

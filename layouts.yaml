@@ -143,6 +143,132 @@ basketweave:
         times: num_vert
     right: right
 
+do_new_basketweave:
+    description: >
+        Rect_a and rect_b should be rotated 90 degrees from each other for the horizontal
+        and vertical strands of the basketweave.
+
+        The tile_square takes up the space in the corners left by the different vertical
+        and horizontal dimensions of the rectangles.  The size of the square should be the
+        difference in dimensions / 2 minus one grout_gap.
+    parameters: [rect_a, rect_b, tile_square]
+    constants:
+        ainc: plan.get_inc_xy(rect_a, constants, "rect_a")
+        ainc_x: ainc[0]
+        ainc_y: ainc[1]
+        binc: plan.get_inc_xy(rect_b, constants, "rect_b")
+        binc_x: binc[0]
+        binc_y: binc[1]
+    type: sequence
+    steps:
+        - type: repeat
+          step:
+              type: sequence
+              steps:
+                  - type: repeat
+                    step: rect_a
+                    increment: [ainc_x + binc_x, 0]
+                  - type: repeat
+                    step: rect_b
+                    increment: [ainc_x + binc_x, 0]
+                    offset: [ainc_x, (ainc_y - binc_y) / 2]
+          increment: [-ainc_x + (ainc_x - binc_x) / 2, (ainc_y + binc_y) / 2]
+        - type: repeat
+          step:
+              type: repeat
+              step:
+                  type: place
+                  tile: tile_square
+              increment: [binc_x + square_inc_x, 0]
+          increment: [0, square_inc_y + ainc_y]
+          use:
+              square_inc_x: multi_getattr(tile_square, 'skip_x') + plan.grout_gap
+              square_inc_y: multi_getattr(tile_square, 'skip_y') + plan.grout_gap
+              offset_y: ainc_y
+          skip: tile_square is None
+
+new_basketweave:
+    description: |
+        For the size of tile_square:
+
+        rect_a_height = num_strands * tile_horz.height + (num_strands - 1) * grout_gap
+        rect_b_height = tile_vert.height
+
+        tile_square.height = abs(rect_a_height - rect_b_height) / 2 - grout_gap
+    parameters: [tile_horz, tile_vert, num_strands, tile_square]
+    defaults:
+        tile_vert: tile_horz.flipped
+    type: do_new_basketweave
+    rect_a:
+        type: repeat
+        step:
+            type: place
+            tile: tile_horz
+        increment: [0, "multi_getattr(tile_horz, 'skip_y') + plan.grout_gap"]
+        times: num_strands
+    rect_b:
+        type: repeat
+        step:
+            type: place
+            tile: tile_vert
+        increment: ["multi_getattr(tile_vert, 'skip_x') + plan.grout_gap", 0]
+        times: num_strands
+    tile_square: tile_square
+
+new_basketweave_mixed:
+    description: |
+        For the size of tile_square:
+
+        rect_a_height = num_strands * tile_horz.height + (num_strands - 1) * grout_gap
+        rect_b_height = tile_vert.height
+
+        tile_square.height = abs(rect_a_height - rect_b_height) / 2 - grout_gap
+    parameters: [tile_a, tile_b, tile_c, tile_square]
+    type: do_new_basketweave
+    rect_a:
+        type: mixed_vert
+        tile_a: tile_a
+        tile_b: tile_b
+        tile_c: tile_c
+    rect_b:
+        type: mixed_horz
+        tile_a: tile_a.flipped
+        tile_b: tile_b.flipped
+        tile_c: tile_c.flipped
+    tile_square: tile_square
+
+mixed_vert:
+    parameters: [tile_a, tile_b, tile_c]
+    constants:
+        ainc_y: tile_a.skip_y + plan.grout_gap
+        binc_y: tile_b.skip_y + plan.grout_gap
+    type: sequence
+    steps:
+        - type: place
+          tile: tile_a
+        - type: place
+          tile: tile_b
+          offset: [0, ainc_y]
+        - type: place
+          tile: tile_c
+          offset: [0, ainc_y + binc_y]
+
+mixed_horz:
+    parameters: [tile_a, tile_b, tile_c]
+    constants:
+        ainc_x: tile_a.skip_x + plan.grout_gap
+        binc_x: tile_b.skip_x + plan.grout_gap
+    type: sequence
+    steps:
+        - type: place
+          tile: tile_a
+        - type: place
+          tile: tile_b
+          offset: [ainc_x, 0]
+        - type: place
+          tile: tile_c
+          offset: [ainc_x + binc_x, 0]
+
 box:
     description: >
       A solid rectangle of `step`s num_x steps wide, and num_y steps high.

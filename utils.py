@@ -171,6 +171,8 @@ def eval_color(s, colors=None):
 
 
 def eval_tile(s, constants):
+    if s is None:
+        return None
     if isinstance(s, (tuple, list)):
         return [eval_tile(x, constants) for x in s]
     if '.' in s:

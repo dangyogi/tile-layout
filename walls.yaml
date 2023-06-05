@@ -194,12 +194,17 @@ Master Back:
         pic_grout_gap: 1/16
     grout: [width, 88.7/8]
     border:
-        pos: [pic_x - 1/2 - 2 * pic_grout_gap - 3.15/16,
-              pic_y - 1/2 - 2 * pic_grout_gap - 3.15/16]
-        size: [pic_width + 1 + 4 * pic_grout_gap + 2 * 3.15/16,
-               pic_height + 1 + 4 * pic_grout_gap + 2 * 3.15/16]
+        #pos: [pic_x - 1/2 - 2 * pic_grout_gap - 3.15/16,
+        #      pic_y - 1/2 - 2 * pic_grout_gap - 3.15/16]
+        #size: [pic_width + 1 + 4 * pic_grout_gap + 2 * 3.15/16,
+        #       pic_height + 1 + 4 * pic_grout_gap + 2 * 3.15/16]
+        pos: [pic_x - 1/2 - 2 * pic_grout_gap - 3,
+              pic_y - 1/2 - 2 * pic_grout_gap - 3]
+        size: [pic_width + 1 + 4 * pic_grout_gap + 2 * 3,
+               pic_height + 1 + 4 * pic_grout_gap + 2 * 3]
         #color: sea_foam
-        color: orange
+        #color: orange
+        color: paprika
         #color: yellow
         #color: grey
         #color: caicos_blue

@@ -70,7 +70,7 @@ class Plan:
             new_constants = ChainMap(new_constants, constants)
         self.do_step(f"Plan({self.name})", self.layout, new_constants, trace=trace)
 
-    def get_inc_xy(self, steps, constants):
+    def get_inc_xy(self, steps, constants, location=None):
         hold_alignment = self.alignment
         self.alignment = Alignment(dict(angle=0,x_offset=0,y_offset=0), {})
         temp_constants = ChainMap(dict(plan=self, offset=(0, 0), skip=True), constants)
@@ -92,9 +92,9 @@ class Plan:
             elif inc_y != ans_constants['inc_y']:
                 inc_x = None
                 y_dead = True
-        #print(f"get_inc_xy: {steps=}")
-        #print(f"  {constants=}")
-        #print(f"  inc_x={f_to_str(inc_x)}, inc_y={f_to_str(inc_y)}")
+        if location is not None:
+            print(f"get_inc_xy {location=}: "
+                  f"inc_x={f_to_str(inc_x)}, inc_y={f_to_str(inc_y)}")
         self.alignment = hold_alignment
         return inc_x, inc_y
 
@@ -173,6 +173,8 @@ class Plan:
 
         To override this default, each step may specify an 'offset' that is added to
         'initial_x', 'initial_y', or specify the offset directly as 'offset_x', 'offset_y'.
+
+        Individual steps may be skipped by setting skip: true on the step.
         '''
         if trace:
             print(f"{step_name}.sequence({steps=})")
@@ -185,6 +187,8 @@ class Plan:
         for i, step in enumerate(steps, 1):
             #print(f"{step_name}.sequence: step {i}, {step=}, {constants=}")
             step = pick(step, constants)
+            if my_eval(step.get('skip', False), constants, f"<{step_name}.sequence: skip"):
+                continue
             step_constants = my_constants.new_child()
             step_constants['offset_x'] = step_constants['initial_x']
             step_constants['offset_y'] = step_constants['initial_y']
@@ -198,9 +202,13 @@ class Plan:
                                f"<{step_name}.sequence: offset>")
                 step_constants['offset'] = \
                   step_constants['initial_x'] + x, step_constants['initial_y'] + y
+                #print(f"sequence step {i}: offset ({f_to_str(x)}, {f_to_str(y)}), "
+                #      f"final offset={f_to_str(step_constants['offset'])}")
             else:
                 step_constants['offset'] = \
                   step_constants['offset_x'], step_constants['offset_y']
+                #print(f"sequence step {i}: offset={f_to_str(step_constants['offset'])}")
+            offset_x, offset_y = step_constants['offset']
             if self.do_step(f"{step_name}.sequence, step {i}", step, step_constants,
                             trace=trace):
                 if 'save' in step:
@@ -209,13 +217,15 @@ class Plan:
                         my_constants[key] = \
                           my_eval(value, step_constants,
                                   f"{step_name}.sequence: save {key}>")
-                        #print(f"{step_name}.sequence save {key} set to "
+                        #print(f"{step_name}.sequence step {i}: save {key} set to "
                         #      f"{f_to_str(my_constants[key])}")
-                if inc_x is None or step_constants['inc_x'] > inc_x:
-                    inc_x = step_constants['inc_x']
-                if inc_y is None or step_constants['inc_y'] > inc_y:
-                    inc_y = step_constants['inc_y']
+                if inc_x is None or step_constants['inc_x'] + offset_x> inc_x:
+                    inc_x = step_constants['inc_x'] + offset_x
+                if inc_y is None or step_constants['inc_y'] + offset_y > inc_y:
+                    inc_y = step_constants['inc_y'] + offset_y
                 visible = True
+            #else:
+            #    print(f"{step_name}.sequence step {i}: not visible")
         if visible:
             constants['inc_x'] = inc_x
             constants['inc_y'] = inc_y
@@ -326,6 +336,8 @@ class Plan:
     def do_step(self, step_name, step, constants, trace=False):
         r'''Returns True if the step is visible, False otherwise.
         '''
+        if 'trace' in step:
+            trace = step['trace']
         if trace:
             print(f"{self.name}.do_step({step_name=}, {step=})")
         if 'inc_x' in constants:
