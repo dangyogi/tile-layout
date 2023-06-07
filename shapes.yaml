@@ -26,6 +26,7 @@ rectangle:
         arguments: [height, width]
     skip_x: width
     skip_y: height
+    is_rect: True
 
 hex:
     type: polygon

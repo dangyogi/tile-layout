@@ -1,6 +1,6 @@
 # tile.py
 
-from math import sin, cos
+from math import sqrt
 import os.path
 from PIL import Image, ImageTk
 
@@ -17,12 +17,16 @@ def generate_tile(name, shape, args, tile, colors, rotation=0):
     if 'constants' in shape:
         for name, exp in shape['constants'].items():
             constants[name] = my_eval(exp, constants, f"<generate_tile({name})>")
-    def get(name, eval_fn=my_eval):
+    def get(name, eval_fn=my_eval, default='fail'):
         #print(f"get({name!r})")
-        return eval_fn(shape[name], constants, f"<generate_tile({name})>")
+        if default == 'fail':
+            value = shape[name]
+        else:
+            value = shape.get(name, default)
+        return eval_fn(value, constants, f"<generate_tile({name})>")
     if 'color' in tile:
         return Tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
-                    eval_color(tile['color'], colors))
+                    eval_color(tile['color'], colors), get('is_rect', default=False))
     return Image_tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
                       tile['image'], rotation)
 
@@ -65,14 +69,117 @@ class Base_tile:
 
 
 class Tile(Base_tile):
-    def __init__(self, name, points, skip_x, skip_y, color):
+    r'''Polygon tiles.  Rectangles have a clip method.
+    '''
+
+    # for rectangles, these are the indexes for the four points:
+    lower_left = 0
+    upper_left = 1
+    upper_right = 2
+    lower_right = 3
+
+    def __init__(self, name, points, skip_x, skip_y, color, is_rect):
         super().__init__(name, points, skip_x, skip_y)
         self.color = color
+        self.is_rect = is_rect and skip_x != skip_y
+        if self.is_rect:
+            self.alignment = 'horz' if skip_x > skip_y else 'vert'
 
     def place_at(self, offset, angle, plan, skip):
         r'''The `angle` is ignored here.  Only used for Image_tiles.
         '''
         return plan.create_polygon(self.points, offset, self.color, skip)
+
+    def with_color(self, color):
+        return Tile(f"{self.name}-{color}", self.points, self.skip_x, self.skip_y, color,
+                    self.is_rect)
+
+    def clip(self, length, corner=None, grout_gap=None):
+        r'''Clip the length (whether horizontal or vertical) and return a new Tile.
+
+        If corner is None, the tile is simply shortened.
+
+        Otherwise, corner is 'lower_left', 'lower_right', 'upper_left', or 'upper_right'
+        and the tile is mitred at 45 degrees removing that corner.
+
+        The `grout_gap` is only used if corner is not None.
+        '''
+        assert self.is_rect, f"Tile({self.name}).clip only allowed on rectangles"
+        points = list(self.points)
+        if corner is None:
+            if self.alignment == 'horz':
+                points[self.upper_right] = [length, self.skip_y]
+                points[self.lower_right] = [length, 0]
+                skip_x = length
+                skip_y = self.skip_y
+            else:
+                points[self.upper_left] = [0, length]
+                points[self.upper_right] = [self.skip_x, length]
+                skip_x = self.skip_x
+                skip_y = length
+            return Tile(f"{self.name}-clipped", points, skip_x, skip_y, self.color, True)
+        if corner not in ('lower_left', 'lower_right', 'upper_left', 'upper_right'):
+            raise ValueError(f"Tile({self.name}).clip: illegal corner, got {corner!r}, "
+                             "expected 'lower_left', 'lower_right', 'upper_left', or "
+                             "'upper_right'")
+        grout_offset = grout_gap / sqrt(2)
+        long_length = length - grout_offset
+        short_length = long_length - min(self.skip_x, self.skip_y)
+        if self.alignment == 'horz':
+            if corner == 'lower_left':
+                # this tile will sit on top of the upper left corner.
+                points = [
+                    [length - short_length, 0],   # lower_left
+                    [grout_offset, self.skip_y],  # upper_left
+                    [length, self.skip_y],        # upper_right
+                    [length, 0],                  # lower_right
+                ]
+            elif corner == 'lower_right':
+                # this tile will sit on top of the upper right corner.
+                points[self.upper_right] = [long_length, self.skip_y]
+                points[self.lower_right] = [short_length, 0]
+            elif corner == 'upper_left':
+                # this tile will sit on bottom of the lower left corner.
+                points = [
+                    [grout_offset, 0],                      # lower_left
+                    [length - short_length, self.skip_y],   # upper_left
+                    [length, self.skip_y],                  # upper_right
+                    [length, 0],                            # lower_right
+                ]
+            else:  # corner == 'upper_right'
+                # this tile will sit on bottom of the lower right corner.
+                points[self.upper_right] = [short_length, self.skip_y]
+                points[self.lower_right] = [long_length, 0]
+            skip_x = length
+            skip_y = self.skip_y
+        else: # self.alignment == 'vert'
+            if corner == 'lower_left':
+                # this tile will sit to the right of the lower right corner.
+                points = [
+                    [0, length - short_length],   # lower_left
+                    [0, length],                  # upper_left
+                    [self.skip_x, length],        # upper_right
+                    [self.skip_x, grout_offset],  # lower_right
+                ]
+            elif corner == 'lower_right':
+                # this tile will sit to the left of the lower left corner.
+                points = [
+                    [0, grout_offset],                     # lower_left
+                    [0, length],                           # upper_left
+                    [self.skip_x, length],                 # upper_right
+                    [self.skip_x, length - short_length],  # lower_right
+                ]
+            elif corner == 'upper_left':
+                # this tile will sit to the right of the upper right corner.
+                points[self.upper_left] = [0, short_length]
+                points[self.upper_right] = [self.skip_x, long_length]
+            else:  # corner == 'upper_right'
+                # this tile will sit to the left of the upper left corner.
+                points[self.upper_left] = [0, long_length]
+                points[self.upper_right] = [self.skip_x, short_length]
+            skip_x = self.skip_x
+            skip_y = length
+        return Tile(f"{self.name}-mitred", points, skip_x, skip_y, self.color, True)
 
 
 class Image_tile(Base_tile):

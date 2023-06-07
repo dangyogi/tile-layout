@@ -2,6 +2,12 @@
 
 ---
 
+pencil:
+    shape: rectangle
+    height: 1/2
+    width: 12
+    color: "#ccc"
+
 1_1/4" square white:
     shape: square
     width: 1.1/4
@@ -61,11 +67,6 @@
     shape: square
     width: 4.3/8
     color: black
-
-6" square white:
-    shape: square
-    width: 6
-    color: white
 
 6" square white:
     shape: square
@@ -146,6 +147,7 @@
     height: 3
     width: 12
     color: white
+    #color: rope
 
 3x12 paprika:
     shape: rectangle
@@ -271,6 +273,66 @@ test_image:
     shape: square
     width: 6
     image: test.webp
+
+Mural_A1:
+    shape: square
+    width: 6
+    image: Mural/Mural_A1.v01.jpg
+
+Mural_A2:
+    shape: square
+    width: 6
+    image: Mural/Mural_A2.v01.jpg
+
+Mural_A3:
+    shape: square
+    width: 6
+    image: Mural/Mural_A3.v01.jpg
+
+Mural_B1:
+    shape: square
+    width: 6
+    image: Mural/Mural_B1.v01.jpg
+
+Mural_B2:
+    shape: square
+    width: 6
+    image: Mural/Mural_B2.v01.jpg
+
+Mural_B3:
+    shape: square
+    width: 6
+    image: Mural/Mural_B3.v01.jpg
+
+Mural_C1:
+    shape: square
+    width: 6
+    image: Mural/Mural_C1.v01.jpg
+
+Mural_C2:
+    shape: square
+    width: 6
+    image: Mural/Mural_C2.v01.jpg
+
+Mural_C3:
+    shape: square
+    width: 6
+    image: Mural/Mural_C3.v01.jpg
+
+Mural_D1:
+    shape: square
+    width: 6
+    image: Mural/Mural_D1.v01.jpg
+
+Mural_D2:
+    shape: square
+    width: 6
+    image: Mural/Mural_D2.v01.jpg
+
+Mural_D3:
+    shape: square
+    width: 6
+    image: Mural/Mural_D3.v01.jpg
 
 Anillo de Flores-4:
     shape: square

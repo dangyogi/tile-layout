@@ -20,6 +20,8 @@ class App(Frame):
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
         self.canvas = MyCanvas(self, bd=0, bg="#777")
+        #self.canvas = MyCanvas(self, bd=0, bg="#4E3E37")  # g_chocolate
+        #self.canvas = MyCanvas(self, bd=0, bg="#671906")  # paprika
         fix(self.canvas, 0, 0)
         print(f"{self.canvas.size()=}")
         print(f"{self.canvas.winfo_reqwidth()=}, {self.canvas.winfo_reqheight()=}") 

@@ -2,7 +2,8 @@
 
 ---
 #default_wall: Test Wall
-default_wall: Master Back
+#default_wall: Master Back
+default_wall: Mural
 wall_settings:
     Dining:
         plans: {}
@@ -15,7 +16,7 @@ wall_settings:
                     angle: -45
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: stepped
@@ -27,7 +28,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: stepped
@@ -40,7 +41,7 @@ wall_settings:
                     angle: -45
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: stepped
@@ -53,7 +54,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: stepped
@@ -67,7 +68,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -82,7 +83,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -97,7 +98,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -112,7 +113,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: hopscotch
@@ -128,7 +129,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: hopscotch
@@ -145,7 +146,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: herringbone
@@ -156,7 +157,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: herringbone
@@ -168,7 +169,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: basketweave
@@ -179,7 +180,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: basketweave
@@ -191,7 +192,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -220,7 +221,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: box
@@ -236,7 +237,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -254,11 +255,11 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: border
-                    step:
+                    step_horz:
                         type: place
                         tile: 8" square white
                     num_x: 5
@@ -271,7 +272,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: flower
@@ -282,7 +283,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: stepped
@@ -296,7 +297,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: stepped
@@ -312,7 +313,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -325,7 +326,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -338,7 +339,7 @@ wall_settings:
                     angle: 16.9
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -351,7 +352,7 @@ wall_settings:
                     angle: 45
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -365,7 +366,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -380,7 +381,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -393,7 +394,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -406,7 +407,7 @@ wall_settings:
                     angle: 16.9
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -419,7 +420,7 @@ wall_settings:
                     angle: 45
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -433,7 +434,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -445,14 +446,14 @@ wall_settings:
     Guest Bath:
         plans: {}
     Master Left:
-        default_plan: basketweave_white
+        default_plan: new_basketweave_2_3x12-black
         plans:
             hex:
                 alignment:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -465,7 +466,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -478,7 +479,7 @@ wall_settings:
                     angle: 16.9
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -491,7 +492,7 @@ wall_settings:
                     angle: 45
                     x_offset: 2.3/4
                     y_offset: -1.3/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -505,7 +506,7 @@ wall_settings:
                     angle: 0
                     x_offset: 2.3/4
                     y_offset: -1.3/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -526,16 +527,32 @@ wall_settings:
                     type: basketweave
                     tile_horz: 3x12 white
                     right: true
+
+            new_basketweave_2_3x12-black:
+                alignment:
+                    angle: 0            # don't like 45
+                    #x_offset: 1.3/4     # centered on wall
+                    x_offset: 2.1/2     # centered on shower valve
+                    y_offset: 0
+                    #x_offset: -3.9/16
+                    #y_offset: 1/4
+                grout_color: g_chocolate
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 2
+                    tile_square: 2_13/16" square black
 
     Master Right:
-        default_plan: basketweave_white
+        default_plan: new_basketweave_2_3x12-black
         plans:
             hex:
                 alignment:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -548,7 +565,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -561,7 +578,7 @@ wall_settings:
                     angle: 16.9
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -574,7 +591,7 @@ wall_settings:
                     angle: 45
                     x_offset: 3/4
                     y_offset: 5
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -588,7 +605,7 @@ wall_settings:
                     angle: 0
                     x_offset: 3/4
                     y_offset: 5
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -609,6 +626,21 @@ wall_settings:
                     type: basketweave
                     tile_horz: 3x12 white
                     right: true
+
+            new_basketweave_2_3x12-black:
+                alignment:
+                    angle: 0            # don't like 45
+                    x_offset: 1/2       # Centered on niche
+                    y_offset: 0
+                    #x_offset: -3.9/16
+                    #y_offset: 1/4
+                grout_color: g_chocolate
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 2
+                    tile_square: 2_13/16" square black
 
     Master Back:
         default_plan: new_basketweave_2_3x12-black
@@ -618,7 +650,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -631,7 +663,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -644,7 +676,7 @@ wall_settings:
                     angle: 16.9
                     x_offset: 0
                     y_offset: 0
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -657,7 +689,7 @@ wall_settings:
                     angle: 45
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -672,7 +704,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: checkerboard
@@ -1055,7 +1087,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1109,7 +1141,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1140,7 +1172,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1200,7 +1232,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1255,7 +1287,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1312,7 +1344,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1364,7 +1396,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1377,7 +1409,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1393,7 +1425,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1406,7 +1438,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1420,7 +1452,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1433,7 +1465,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1450,7 +1482,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1464,7 +1496,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1482,7 +1514,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: herringbone
@@ -1493,7 +1525,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
@@ -1517,7 +1549,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1530,7 +1562,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1544,7 +1576,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: herringbone
@@ -1555,7 +1587,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1568,7 +1600,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1582,7 +1614,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: herringbone
@@ -1593,7 +1625,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1606,7 +1638,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1620,7 +1652,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: herringbone
@@ -1631,7 +1663,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1644,7 +1676,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: stepped
@@ -1658,7 +1690,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: herringbone
@@ -1669,7 +1701,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
@@ -1685,7 +1717,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
@@ -1701,7 +1733,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
@@ -1718,7 +1750,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
@@ -1734,7 +1766,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
@@ -1750,7 +1782,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/8
                 layout:
                     type: hopscotch
@@ -1767,7 +1799,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1791,7 +1823,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1815,7 +1847,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1839,7 +1871,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1863,7 +1895,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1875,7 +1907,7 @@ wall_settings:
                               - type: place
                                 tile: star-white
                         - type: border
-                          step:
+                          step_horz:
                               type: place
                               tile: Arabesque Azul-6
                           num_x: 6
@@ -1888,7 +1920,7 @@ wall_settings:
                     angle: 0
                     x_offset: -3.9/16
                     y_offset: 1/4
-                grout_color: acorn
+                grout_color: gu_acorn
                 grout_gap: 1/4
                 layout:
                     type: sequence
@@ -1900,11 +1932,109 @@ wall_settings:
                               - type: place
                                 tile: star-white
                         - type: border
-                          step:
+                          step_horz:
                               type: place
                               tile: Arabesque Azul-6
                           num_x: 7
                           num_y: 6
                           start_x: 5.1/4
                           start_y: 42.1/4
+
+    Mural:  # wall: width: 31.5/8, height: 25.3/8
+        default_plan: mural
+        plans:
+            mural:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/16
+                layout:
+                    type: sequence
+                    steps:
+                        - type: stepped
+                          step:
+                              - type: place
+                                tile: [
+                                    Mural_A3, Mural_B3, Mural_C3, Mural_D3,
+                                    Mural_A2, Mural_B2, Mural_C2, Mural_D2,
+                                    Mural_A1, Mural_B1, Mural_C1, Mural_D1
+                                ]
+                          num_x: 4
+                          num_y: 3
+                          start_xy: [3.5/8, 3.5/8]
+                        - type: automatic_border
+                          center_size: [24 + 3 * plan.grout_gap, 18 + 2 * plan.grout_gap]
+                          tile: pencil
+                          start_x: 3.5/8
+                          start_y: 3.5/8
+                          mitre: true
+                        - type: automatic_border
+                          center_size: [25 + 5 * plan.grout_gap, 19 + 4 * plan.grout_gap]
+                          tile: 3x12 paprika
+                          start_x: 3.5/8 - 1/2 - plan.grout_gap
+                          start_y: 3.5/8 - 1/2 - plan.grout_gap
+                          mitre: true
+
+            border_row:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/16
+                layout:
+                    type: border_row
+                    tile_first: 3x6 orange.clip(3)
+                    tile_middle: 3x6 orange
+                    tile_last: 3x6 orange.clip(3).with_color('black')
+                    num_middle: 2
+                    start_x: 1
+                    start_y: 2
+
+            border_column:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/16
+                layout:
+                    type: border_column
+                    tile_first: 3x6 orange-flipped.clip(3)
+                    tile_middle: 3x6 orange-flipped
+                    tile_last: 3x6 orange-flipped.clip(3).with_color('black')
+                    num_middle: 2
+                    start_x: 1
+                    start_y: 2
+
+            automatic_border:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/16
+                layout:
+                    type: automatic_border
+                    center_size: [24.3/16, 18.1/8]
+                    tile: 3x12 paprika
+                    start_x: 3.5/8
+                    start_y: 3.5/8
+
+            mitred_border:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/16
+                layout:
+                    type: automatic_border
+                    center_size: [24.3/16, 18.1/8]
+                    tile: 3x12 paprika
+                    start_x: 3.5/8
+                    start_y: 3.5/8
+                    mitre: true
 

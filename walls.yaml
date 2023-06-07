@@ -165,6 +165,11 @@ Master Right:
         sill_width: 18
         sill_height: 2.1/2
     grout: [width, 87.15/16]
+    border:
+        pos: [niche_center_x - border_width / 2 - 3,
+              niche_center_y - border_height / 2 - 3]
+        size: [border_width + 6, border_height + 6]
+        color: paprika
     niche_border:
         pos: [niche_center_x - border_width / 2, niche_center_y - border_height / 2]
         size: [border_width, border_height]
@@ -194,20 +199,11 @@ Master Back:
         pic_grout_gap: 1/16
     grout: [width, 88.7/8]
     border:
-        #pos: [pic_x - 1/2 - 2 * pic_grout_gap - 3.15/16,
-        #      pic_y - 1/2 - 2 * pic_grout_gap - 3.15/16]
-        #size: [pic_width + 1 + 4 * pic_grout_gap + 2 * 3.15/16,
-        #       pic_height + 1 + 4 * pic_grout_gap + 2 * 3.15/16]
         pos: [pic_x - 1/2 - 2 * pic_grout_gap - 3,
               pic_y - 1/2 - 2 * pic_grout_gap - 3]
         size: [pic_width + 1 + 4 * pic_grout_gap + 2 * 3,
                pic_height + 1 + 4 * pic_grout_gap + 2 * 3]
-        #color: sea_foam
-        #color: orange
         color: paprika
-        #color: yellow
-        #color: grey
-        #color: caicos_blue
     pencil:
         pos: [pic_x - 1/2 - 2 * pic_grout_gap, pic_y - 1/2 - 2 * pic_grout_gap]
         size: [pic_width + 1 + 4 * pic_grout_gap, pic_height + 1 + 4 * pic_grout_gap]
@@ -225,3 +221,9 @@ Master Back:
         pos: [width - 12, 30.3/4]
         size: 3
         color: silver
+
+Mural:
+    constants:
+        width: 31.5/8
+        height: 25.3/8
+    grout: [width, height]

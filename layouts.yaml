@@ -6,15 +6,17 @@ lay_row:
     description: >
       Lays one row of the `step` pattern.  If count is provided, that many tiles are layed.
       Otherwise, the row will extend to the left and right edges of the wall.
-    parameters: [step, num_x]
+    parameters: [step, num_x, index_start]
     defaults:
         num_x: null
+        index_start: 0
     constants:
         increment_x: plan.get_inc_xy(step, constants)[0]
     type: repeat
     step: step
     increment: [increment_x, 0]
     times: num_x
+    index_start: index_start
 
 stepped:
     description: >
@@ -23,11 +25,12 @@ stepped:
       The offset is percent_offset * the width of the `step` (including the grout_gap).
       
       The percent_offset defaults to 0 (for a stacked pattern).
-    parameters: [step, percent_offset, num_x, num_y]
+    parameters: [step, percent_offset, num_x, num_y, start_xy]
     defaults:
         percent_offset: 0
         num_x: null
         num_y: null
+        start_xy: [0, 0]
     constants:
         increment_xy: plan.get_inc_xy(step, constants)
         x: increment_xy[0]
@@ -42,9 +45,11 @@ stepped:
     step:
         type: lay_row
         step: step
-        times: num_x
+        num_x: num_x
+        index_start: index * num_x
     increment: [x_inc, y]
     times: num_y
+    start: start_xy
 
 hopscotch:
     description: >
@@ -317,37 +322,195 @@ checkerboard:
 border:
     description: >
       A border of single steps num_x steps wide, and num_y steps high.
-    parameters: [step, num_x, num_y, start_x, start_y]
+    parameters: [step_horz, step_vert, num_x, num_y, start_x, start_y]
     defaults:
         start_x: 0
         start_y: 0
+        step_vert: step_horz
     constants:
-        increment_xy: plan.get_inc_xy(step, constants)
-        x: increment_xy[0]
-        y: increment_xy[1]
+        hincrement_xy: plan.get_inc_xy(step_horz, constants)
+        hx: hincrement_xy[0]
+        hy: hincrement_xy[1]
+        vincrement_xy: plan.get_inc_xy(step_vert, constants)
+        vx: vincrement_xy[0]
+        vy: vincrement_xy[1]
     type: sequence
     steps:
         - type: repeat  # bottom
-          step: step
-          increment: [x, 0]
+          step: step_horz
+          increment: [hx, 0]
           start: [start_x, start_y]
           times: num_x
         - type: repeat  # top
-          step: step
-          increment: [x, 0]
+          step: step_horz
+          increment: [hx, 0]
           start: [start_x,
-                  start_y + y * (num_y - 1)]
+                  start_y + hy + vy * (num_y - 2)]
           times: num_x
         - type: repeat  # left
-          step: step
-          increment: [0, y]
-          start: [start_x, start_y + y]
+          step: step_vert
+          increment: [0, vy]
+          start: [start_x, start_y + hy]
           times: num_y - 2
         - type: repeat  # right
-          step: step
-          increment: [0, y]
-          start: [start_x + x * (num_x - 1), start_y + y]
+          step: step_vert
+          increment: [0, vy]
+          start: [start_x + hx * (num_x - 1), start_y + hy]
           times: num_y - 2
+
+automatic_border:
+    description: >
+      A border of a single layer of tiles around a center step formed by either butting the left
+      and right vertical tiles against the top and bottom rows, or with mitre joints.
+
+      start_x, start_y specifies the corner of the center piece.  The border extends
+      outward from there.
+    parameters: [center_size, tile, start_x, start_y, mitre]
+    defaults:
+        start_x: 0
+        start_y: 0
+        mitre: false
+    constants:
+        tile_horz: tile
+        tile_vert: tile.flipped
+        center_width: center_size[0]
+        center_height: center_size[1]
+        gg: plan.grout_gap
+        width_tile: tile.skip_y + gg
+        length_tile: tile.skip_x + gg
+        num_horz: max(0, (center_width + 2 * width_tile) // length_tile - 1)
+        horz_clip: (center_width + 2 * width_tile - num_horz * length_tile - gg) / 2
+        border_start_x: start_x - width_tile
+        border_start_y: start_y - width_tile
+        conditionals:
+            - test: mitre
+              true:
+                  num_vert: max(0, (center_height + 2 * width_tile) // length_tile - 1)
+                  vert_clip: (center_height + 2 * width_tile - num_vert * length_tile - gg) / 2
+                  lower_left_horz_clip_tile: tile_horz.clip(horz_clip, 'upper_left', gg)
+                  lower_right_horz_clip_tile: tile_horz.clip(horz_clip, 'upper_right', gg)
+                  upper_left_horz_clip_tile: tile_horz.clip(horz_clip, 'lower_left', gg)
+                  upper_right_horz_clip_tile: tile_horz.clip(horz_clip, 'lower_right', gg)
+                  lower_left_vert_clip_tile: tile_vert.clip(vert_clip, 'lower_right', gg)
+                  lower_right_vert_clip_tile: tile_vert.clip(vert_clip, 'lower_left', gg)
+                  upper_left_vert_clip_tile: tile_vert.clip(vert_clip, 'upper_right', gg)
+                  upper_right_vert_clip_tile: tile_vert.clip(vert_clip, 'upper_left', gg)
+                  sides_start_y: border_start_y
+              false:
+                  num_vert: max(0, center_height // length_tile - 1)
+                  vert_clip: (center_height - num_vert * length_tile - gg) / 2
+                  lower_left_horz_clip_tile: tile_horz.clip(horz_clip)
+                  lower_right_horz_clip_tile: lower_left_horz_clip_tile
+                  upper_left_horz_clip_tile: lower_left_horz_clip_tile
+                  upper_right_horz_clip_tile: upper_left_horz_clip_tile
+                  lower_left_vert_clip_tile: tile_vert.clip(vert_clip)
+                  lower_right_vert_clip_tile: lower_left_vert_clip_tile
+                  upper_left_vert_clip_tile: lower_left_vert_clip_tile
+                  upper_right_vert_clip_tile: upper_left_vert_clip_tile
+                  sides_start_y: border_start_y + width_tile
+    type: sequence
+    steps:
+        # bottom
+        - type: border_row
+          tile_first: lower_left_horz_clip_tile
+          tile_middle: tile_horz
+          tile_last: lower_right_horz_clip_tile
+          num_middle: num_horz
+          start_x: border_start_x
+          start_y: border_start_y
+
+        # left
+        - type: border_column
+          tile_first: lower_left_vert_clip_tile
+          tile_middle: tile_vert
+          tile_last: upper_left_vert_clip_tile
+          num_middle: num_vert
+          start_x: border_start_x
+          start_y: sides_start_y
+
+        # right
+        - type: border_column
+          tile_first: lower_right_vert_clip_tile
+          tile_middle: tile_vert
+          tile_last: upper_right_vert_clip_tile
+          num_middle: num_vert
+          start_x: start_x + center_width + gg
+          start_y: sides_start_y
+
+        # top
+        - type: border_row
+          tile_first: upper_left_horz_clip_tile
+          tile_middle: tile_horz
+          tile_last: upper_right_horz_clip_tile
+          num_middle: num_horz
+          start_x: border_start_x
+          start_y: start_y + center_height + gg
+
+border_row:
+    description: >
+      Lays one row of tiles starting with one tile_first, then num_middle tile_middles
+      and finally one tile_last.
+    parameters: [tile_first, tile_middle, tile_last, num_middle, start_x, start_y]
+    defaults:
+        start_x: 0
+        start_y: 0
+        tile_last: tile_first
+    type: sequence
+    steps:
+        - type: place
+          tile: tile_first
+          offset: [start_x, start_y]
+          save:
+              inc_x: inc_x + start_x + offset_x
+        - type: repeat
+          step:
+              type: place
+              tile: tile_middle
+          increment: [tile_middle.skip_x + plan.grout_gap, 0]
+          use:
+              offset_x: inc_x
+              offset_y: start_y
+          times: num_middle
+          save:
+              inc_x: inc_x + offset_x
+        - type: place
+          tile: tile_last
+          use:
+              offset_x: inc_x
+              offset_y: start_y
+
+border_column:
+    description: >
+      Lays one column of tiles starting with one tile_first, then num_middle tile_middles
+      and finally one tile_last.
+    parameters: [tile_first, tile_middle, tile_last, num_middle, start_x, start_y]
+    defaults:
+        start_x: 0
+        start_y: 0
+        tile_last: tile_first
+    type: sequence
+    steps:
+        - type: place
+          tile: tile_first
+          offset: [start_x, start_y]
+          save:
+              inc_y: inc_y + start_y + offset_y
+        - type: repeat
+          step:
+              type: place
+              tile: tile_middle
+          increment: [0, tile_middle.skip_y + plan.grout_gap]
+          use:
+              offset_x: start_x
+              offset_y: inc_y
+          times: num_middle
+          save:
+              inc_y: inc_y + offset_y
+        - type: place
+          tile: tile_last
+          use:
+              offset_x: start_x
+              offset_y: inc_y
 
 flower:
     description: >

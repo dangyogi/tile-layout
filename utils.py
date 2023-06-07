@@ -177,9 +177,13 @@ def eval_tile(s, constants):
         return [eval_tile(x, constants) for x in s]
     if '.' in s:
         attrs = s.split('.')
-        ans = constants[attrs[0]]
-        for attr in attrs[1:]:
-            ans = getattr(ans, attr)
+        temp_constants = ChainMap({}, constants)
+        temp_s = s
+        if attrs[0] not in constants:
+            temp_constants['_placeholder_'] = app.Tiles[attrs[0]]
+            temp_s = '_placeholder_.' + '.'.join(attrs[1:])
+        print(f"eval_tile({s}) -> {temp_s=}")
+        ans = my_eval(temp_s, temp_constants, f"eval_tile({s})")
     elif s in constants:
         ans = constants[s]
         #print(f"eval_tile({s}): in constants {ans=}")
