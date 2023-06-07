@@ -903,7 +903,7 @@ wall_settings:
             new_basketweave_2_3x12-black:
                 alignment:
                     angle: 0            # don't like 45
-                    x_offset: -1.1/4
+                    x_offset: -1
                     y_offset: 0
                     #x_offset: -3.9/16
                     #y_offset: 1/4
@@ -1948,7 +1948,7 @@ wall_settings:
                     angle: 0
                     x_offset: 0
                     y_offset: 0
-                grout_color: gu_acorn
+                grout_color: gu_silver
                 grout_gap: 1/16
                 layout:
                     type: sequence

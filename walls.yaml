@@ -191,11 +191,11 @@ Master Back:
     constants:
         width: 46.3/4
         center: width / 2
-        pic_tile_size: 6.1/8
-        pic_width: pic_tile_size * 4
-        pic_height: pic_tile_size * 3
+        pic_tile_size: 6.1/16
+        pic_width: pic_tile_size * 4 - 1/16
+        pic_height: pic_tile_size * 3 - 1/16
         pic_x: center - pic_width / 2
-        pic_y: 70 - pic_height
+        pic_y: 49
         pic_grout_gap: 1/16
     grout: [width, 88.7/8]
     border:
