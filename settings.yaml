@@ -3,12 +3,14 @@
 ---
 #default_wall: Test Wall
 #default_wall: Master Back
-default_wall: Mural
+default_wall: Master Right
+#default_wall: Mural
+
 wall_settings:
     Dining:
         plans: {}
     Test Wall:
-        default_plan: split_test
+        default_plan: flower
         plans:
 
             stacked:
@@ -277,6 +279,7 @@ wall_settings:
                 layout:
                     type: flower
                     tile: test_image
+                    trace: [save, offset, delta]
 
             hex:
                 alignment:
@@ -446,7 +449,7 @@ wall_settings:
     Guest Bath:
         plans: {}
     Master Left:
-        default_plan: new_basketweave_2_3x12-black
+        default_plan: new_basketweave_2_3x12-paprika
         plans:
             hex:
                 alignment:
@@ -544,8 +547,45 @@ wall_settings:
                     num_strands: 2
                     tile_square: 2_13/16" square black
 
+            new_basketweave_2_3x12-paprika:
+                alignment:
+                    angle: 0            # don't like 45
+                    #x_offset: 1.3/4     # centered on wall
+                    #x_offset: 2.1/2     # centered on shower valve
+                    x_offset: -3.7/16    # centered on outer vertical tiles, option A
+                    #x_offset: 5.13/16    # centered on outer vertical tiles, option B
+                    #y_offset: 3/16
+                    y_offset: -3/8
+                    #x_offset: -3.9/16
+                    #y_offset: 1/4
+                grout_color: g_chocolate
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 2
+                    tile_square: 2_13/16" square paprika
+
+    Master Right Niche:
+        default_plan: diamond
+        plans:
+            diamond:
+                alignment:
+                    angle: 0
+                    #x_offset: -7/8   # grout joint centered over niche
+                    x_offset: 5.1/8   # tile centered over niche
+                    y_offset: 0
+                #grout_color: g_chocolate
+                grout_color: gu_silver
+                grout_gap: 1/8
+                layout:
+                    type: stepped
+                    step:
+                        type: place
+                        tile: full paprika
+
     Master Right:
-        default_plan: new_basketweave_2_3x12-black
+        default_plan: new_basketweave_2_3x12-paprika
         plans:
             hex:
                 alignment:
@@ -642,8 +682,204 @@ wall_settings:
                     num_strands: 2
                     tile_square: 2_13/16" square black
 
+            new_basketweave_2_3x12-paprika:
+                alignment:
+                    angle: 0            # don't like 45
+                    #x_offset: 1/2       # Centered on niche
+                    #x_offset: 5.15/16     # centered on outer vertical tiles
+                    x_offset: 5.11/16    # right edge not cut
+                    #y_offset: 3/16
+                    y_offset: -3/8
+                    #x_offset: -3.9/16
+                    #y_offset: 1/4
+                grout_color: g_chocolate
+                grout_gap: 1/8
+                layout:
+                    type: sequence
+                    steps:
+                        - type: new_basketweave
+                          tile_horz: 3x12 white
+                          num_strands: 2
+                          tile_square: 2_13/16" square paprika
+                        - type: repeat                           # make paprika squares white
+                          step:
+                              type: repeat
+                              step:
+                                  type: place
+                                  tile: 2_13/16" square white
+                              times: 3
+                              increment: [9.15/64, 0]
+                          times: 3
+                          increment: [0, 9.15/64]
+                          delta: [0, 43.1/4]
+                          skip: true
+                        - type: sequence        # 4" white border
+                          trace: [constants, save]
+                          constants:
+                              bottom: wall.panels['niche_sill'].bottom - plan.grout_gap
+                              #bottom: wall.panels['niche_sill'].bottom - 1.31/32 - plan.grout_gap
+                              top: wall.panels['niche_border'].top + 1.31/32
+                              niche_height: wall.panels['niche_border'].top - wall.panels['niche_sill'].bottom
+                              niche_width: wall.panels['niche_border'].right - wall.panels['niche_border'].left
+                              border_height: top - bottom
+                              adj_bottom: bottom - plan.alignment.y_offset
+                              right: wall.panels['niche_sill'].right + 2.8/32
+                              left: wall.panels['niche_sill'].left - (right - wall.panels['niche_sill'].right)
+                              adj_right: right - plan.alignment.x_offset
+                              adj_left: left - plan.alignment.x_offset
+                              border_width: right - left
+                              #tile_horz: 4x12
+                              #tile_vert: 4x12.flipped
+                              tile_horz: 4x12.with_color('paprika')
+                              tile_vert: 4x12.flipped.with_color('paprika')
+                          steps:
+                            - type: place  # bottom grout line
+                              tile: 1/8" chocolate.clip(border_width) # .with_color('blue')
+                            - type: place  # left grout line
+                              tile: 1/8" chocolate.flipped.clip(border_height - 1/8) # .with_color('blue')
+                              delta_y: 1/8
+                            - type: repeat       # vert sides, left and right
+                              step:
+                                  type: sequence
+                                  trace: [save]
+                                  steps:
+                                      - type: place
+                                        tile: tile_vert.clip((niche_height - 1/8) / 2)
+                                        save:
+                                            next_y: inc_y - plan.grout_gap
+                                      - type: place
+                                        tile: 1/8" chocolate.clip(4) # .with_color('blue')
+                                        delta_y: next_y
+                                        save:
+                                            next_y: next_y + inc_y - 1/8
+                                      - type: place
+                                        tile: tile_vert.clip(border_height - 1/4 - (niche_height - 1/8) / 2)
+                                        delta_y: next_y
+                              times: 2
+                              increment: [border_width - 4.1/8, 0]
+                              delta_x: 1/8
+                              delta_y: 1/8
+                              save:
+                                  saved_inc_x: inc_x
+                                  saved_inc_y: inc_y
+                            - type: place  # right grout line
+                              tile: 1/8" chocolate.flipped.clip(border_height - 1/8) # .with_color('blue')
+                              delta_x: border_width - 1/8
+                              delta_y: 1/8
+                            - type: place  # upper grout line
+                              tile: 1/8" chocolate.clip(border_width) # .with_color('blue')
+                              delta_y: border_height - 1/8
+                            - type: repeat       # upper horz side
+                              step:
+                                  type: place
+                                  tile: tile_horz.clip((border_width - 3/8) / 2)
+                              times: 2
+                              delta_x: 1/8
+                              delta_y: border_height - 4.1/8
+                              increment: [(border_width - 3/8) / 2 + 1/8, 0]
+                            - type: repeat       # lower horz side
+                              step:
+                                  type: place
+                                  tile: tile_horz.clip((border_width - 3/8) / 2)
+                              times: 2
+                              delta_x: 1/8
+                              delta_y: 1/8
+                              increment: [(border_width - 3/8) / 2 + 1/8, 0]
+                              skip: true
+                            - type: place  # upper left grout line
+                              tile: 1/8" chocolate.flipped.clip(4) # .with_color('blue')
+                              delta_x: 4
+                              delta_y: border_height - 4.1/8
+                            - type: place  # upper center grout line
+                              tile: 1/8" chocolate.flipped.clip(4) # .with_color('blue')
+                              delta_x: (border_width - 3/8) / 2 + 1/8
+                              delta_y: border_height - 4.1/8
+                            - type: place  # upper right grout line
+                              tile: 1/8" chocolate.flipped.clip(4) # .with_color('blue')
+                              delta_x: border_width - 4
+                              delta_y: border_height - 4.1/8
+                          #delta: [-1, 42.21/32]
+                          offset: [adj_left, adj_bottom]
+                          #delta: [0, 43.1/4]
+                          skip: false
+                        - type: sequence   # diagonal squares
+                          trace: [constants, save]
+                          constants:
+                              bottom: wall.panels['niche_sill'].bottom - plan.grout_gap
+                              top: wall.panels['niche_border'].top + 1.31/32
+                              niche_height: wall.panels['niche_border'].top - wall.panels['niche_sill'].bottom
+                              niche_width: wall.panels['niche_border'].right - wall.panels['niche_border'].left
+                              border_height: top - bottom
+                              adj_bottom: bottom - plan.alignment.y_offset
+                              right: wall.panels['niche_sill'].right + 2.8/32
+                              left: wall.panels['niche_sill'].left - (right - wall.panels['niche_sill'].right)
+                              adj_right: right - plan.alignment.x_offset
+                              adj_left: left - plan.alignment.x_offset
+                              border_width: right - left
+                          steps:
+                            - type: place  # bottom grout line
+                              tile: 1/8" chocolate.clip(border_width) # .with_color('blue')
+                            - type: place  # left grout line
+                              tile: 1/8" chocolate.flipped.clip(border_height - 1/8) # .with_color('blue')
+                              delta_y: 1/8
+                            - type: repeat       # vert sides, left and right
+                              step:
+                                  type: sequence
+                                  trace: [save]
+                                  steps:
+                                      - type: place
+                                        tile: 4x12.flipped.clip((niche_height - 1/8) / 2)
+                                        save:
+                                            next_y: inc_y - plan.grout_gap
+                                      - type: place
+                                        tile: 1/8" chocolate.clip(4) # .with_color('blue')
+                                        delta_y: next_y
+                                        save:
+                                            next_y: next_y + inc_y - 1/8
+                                      - type: place
+                                        tile: 4x12.flipped.clip(border_height - 1/4 - (niche_height - 1/8) / 2)
+                                        delta_y: next_y
+                              times: 2
+                              increment: [border_width - 4.1/8, 0]
+                              delta_x: 1/8
+                              delta_y: 1/8
+                              save:
+                                  saved_inc_x: inc_x
+                                  saved_inc_y: inc_y
+                            - type: place  # right grout line
+                              tile: 1/8" chocolate.flipped.clip(border_height - 1/8) # .with_color('blue')
+                              delta_x: border_width - 1/8
+                              delta_y: 1/8
+                            - type: place  # upper grout line
+                              tile: 1/8" chocolate.clip(border_width) # .with_color('blue')
+                              delta_y: border_height - 1/8
+                            - type: repeat       # horz side
+                              step:
+                                  type: place
+                                  tile: 4x12.clip((border_width - 3/8) / 2)
+                              times: 2
+                              delta_x: 1/8
+                              delta_y: border_height - 4.1/8
+                              increment: [(border_width - 3/8) / 2 + 1/8, 0]
+                            - type: place  # upper left grout line
+                              tile: 1/8" chocolate.flipped.clip(4) # .with_color('blue')
+                              delta_x: 4
+                              delta_y: border_height - 4.1/8
+                            - type: place  # upper center grout line
+                              tile: 1/8" chocolate.flipped.clip(4) # .with_color('blue')
+                              delta_x: (border_width - 3/8) / 2 + 1/8
+                              delta_y: border_height - 4.1/8
+                            - type: place  # upper right grout line
+                              tile: 1/8" chocolate.flipped.clip(4) # .with_color('blue')
+                              delta_x: border_width - 4
+                              delta_y: border_height - 4.1/8
+                          #delta: [-1, 42.21/32]
+                          offset: [adj_left, adj_bottom]
+                          #delta: [0, 43.1/4]
+                          skip: true
+
     Master Back:
-        default_plan: new_basketweave_2_3x12-black
+        default_plan: new_basketweave_2_3x12-paprika
         plans:
             hex:
                 alignment:
@@ -915,6 +1151,21 @@ wall_settings:
                     num_strands: 2
                     tile_square: 2_13/16" square black
 
+            new_basketweave_2_3x12-paprika:
+                alignment:
+                    angle: 0            # don't like 45
+                    x_offset: -1.1/8
+                    #y_offset: 3/16
+                    y_offset: -3/8
+                    #y_offset: -5/8     # looks like limit at top
+                grout_color: g_chocolate
+                grout_gap: 1/8
+                layout:
+                    type: new_basketweave
+                    tile_horz: 3x12 white
+                    num_strands: 2
+                    tile_square: 2_13/16" square paprika
+
             new_basketweave_1_3x12-black:
                 alignment:
                     angle: 0
@@ -1042,12 +1293,12 @@ wall_settings:
                           tile_a: 3x12 white-flipped
                           tile_b: 4x12-flipped
                           tile_c: 3x12 white-flipped
-                          offset: [5, 5]
+                          delta: [5, 5]
                         - type: mixed_vert
                           tile_a: 3x12 white
                           tile_b: 4x12
                           tile_c: 3x12 white
-                          offset: [5, 22]
+                          delta: [5, 22]
 
             new_basketweave_4_3_4-black:
                 alignment:
@@ -1116,24 +1367,24 @@ wall_settings:
                         - type: place
                           tile: Estrella de Fuego-6
                           #tile: Arabesque Azul-6
-                          offset: [6, 30]
+                          delta: [6, 30]
                         #- type: place
                         #  tile: Estrella de Fuego-6
                         #  #tile: Arabesque Azul-6
-                        #  offset: [42, 30]
+                        #  delta: [42, 30]
                         #- type: place
                         #  tile: Estrella de Fuego-6
                         #  #tile: Arabesque Azul-6
-                        #  offset: [6, 6]
+                        #  delta: [6, 6]
                         - type: place
                           tile: Estrella de Fuego-6
                           #tile: Arabesque Azul-6
-                          offset: [42, 6]
+                          delta: [42, 6]
                         - type: place
                           tile: Estrella de Fuego-6
                           #tile: Arabesque Azul-6
-                          offset: [24, 18]
-                          #offset: [22.5/8, 16.5/8]
+                          delta: [24, 18]
+                          #delta: [22.5/8, 16.5/8]
                           #angle: 45
 
             star_X-tv2:

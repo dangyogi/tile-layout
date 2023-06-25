@@ -46,7 +46,7 @@ stepped:
         type: lay_row
         step: step
         num_x: num_x
-        index_start: index * num_x
+        index_start: index * num_x if num_x is not None else 0
     increment: [x_inc, y]
     times: num_y
     start: start_xy
@@ -157,26 +157,27 @@ do_new_basketweave:
         and horizontal dimensions of the rectangles.  The size of the square should be the
         difference in dimensions / 2 minus one grout_gap.
     parameters: [rect_a, rect_b, tile_square]
+    trace: [constants, use]
     constants:
-        ainc: plan.get_inc_xy(rect_a, constants, "rect_a")
+        ainc: plan.get_inc_xy(rect_a, constants, "rect_a")   # includes all but last grout gap
         ainc_x: ainc[0]
         ainc_y: ainc[1]
-        binc: plan.get_inc_xy(rect_b, constants, "rect_b")
+        binc: plan.get_inc_xy(rect_b, constants, "rect_b")   # includes all but last grout gap
         binc_x: binc[0]
         binc_y: binc[1]
     type: sequence
     steps:
-        - type: repeat
+        - type: repeat         # fill wall with rect_a and rect_b
           step:
-              type: sequence
+              type: sequence   # for horz row of both rect_a and rect_b
               steps:
-                  - type: repeat
+                  - type: repeat    # horz row of rect_a, leaving a gap for rect_b
                     step: rect_a
                     increment: [ainc_x + binc_x, 0]
-                  - type: repeat
+                  - type: repeat    # horz row of rect_b, filling the gaps above
                     step: rect_b
                     increment: [ainc_x + binc_x, 0]
-                    offset: [ainc_x, (ainc_y - binc_y) / 2]
+                    delta: [ainc_x, (ainc_y - binc_y) / 2]
           increment: [-ainc_x + (ainc_x - binc_x) / 2, (ainc_y + binc_y) / 2]
         - type: repeat
           step:
@@ -204,14 +205,14 @@ new_basketweave:
     defaults:
         tile_vert: tile_horz.flipped
     type: do_new_basketweave
-    rect_a:
+    rect_a:   # num_strands tile_horz stacked on top of each other.
         type: repeat
         step:
             type: place
             tile: tile_horz
         increment: [0, "multi_getattr(tile_horz, 'skip_y') + plan.grout_gap"]
         times: num_strands
-    rect_b:
+    rect_b:   # num_strands tile_vert stacked side by side.
         type: repeat
         step:
             type: place
@@ -253,10 +254,10 @@ mixed_vert:
           tile: tile_a
         - type: place
           tile: tile_b
-          offset: [0, ainc_y]
+          delta: [0, ainc_y]
         - type: place
           tile: tile_c
-          offset: [0, ainc_y + binc_y]
+          delta: [0, ainc_y + binc_y]
 
 mixed_horz:
     parameters: [tile_a, tile_b, tile_c]
@@ -269,10 +270,10 @@ mixed_horz:
           tile: tile_a
         - type: place
           tile: tile_b
-          offset: [ainc_x, 0]
+          delta: [ainc_x, 0]
         - type: place
           tile: tile_c
-          offset: [ainc_x + binc_x, 0]
+          delta: [ainc_x + binc_x, 0]
 
 box:
     description: >
@@ -459,24 +460,24 @@ border_row:
     steps:
         - type: place
           tile: tile_first
-          offset: [start_x, start_y]
+          delta: [start_x, start_y]
           save:
-              inc_x: inc_x + start_x + offset_x
+              saved_inc_x: inc_x + start_x + offset_x
         - type: repeat
           step:
               type: place
               tile: tile_middle
           increment: [tile_middle.skip_x + plan.grout_gap, 0]
           use:
-              offset_x: inc_x
+              offset_x: saved_inc_x
               offset_y: start_y
           times: num_middle
           save:
-              inc_x: inc_x + offset_x
+              saved_inc_x: inc_x + offset_x
         - type: place
           tile: tile_last
           use:
-              offset_x: inc_x
+              offset_x: saved_inc_x
               offset_y: start_y
 
 border_column:
@@ -492,9 +493,9 @@ border_column:
     steps:
         - type: place
           tile: tile_first
-          offset: [start_x, start_y]
+          delta: [start_x, start_y]
           save:
-              inc_y: inc_y + start_y + offset_y
+              saved_inc_y: inc_y + start_y + offset_y
         - type: repeat
           step:
               type: place
@@ -502,15 +503,15 @@ border_column:
           increment: [0, tile_middle.skip_y + plan.grout_gap]
           use:
               offset_x: start_x
-              offset_y: inc_y
+              offset_y: saved_inc_y
           times: num_middle
           save:
-              inc_y: inc_y + offset_y
+              saved_inc_y: inc_y + offset_y
         - type: place
           tile: tile_last
           use:
               offset_x: start_x
-              offset_y: inc_y
+              offset_y: saved_inc_y
 
 flower:
     description: >
@@ -524,20 +525,20 @@ flower:
           angle: 90
           index: 3
           save:
-              inc_x: inc_x
-              inc_y: inc_y
+              first_inc_x: inc_x
+              first_inc_y: inc_y
         - type: place
           tile: tile
           angle: 180
           index: 2
-          offset: [inc_x, 0]
+          delta: [first_inc_x, 0]
         - type: place
           tile: tile
           angle: 0
           index: 0
-          offset: [0, inc_y]
+          delta: [0, first_inc_y]
         - type: place
           tile: tile
           angle: -90
           index: 1
-          offset: [inc_x, inc_y]
+          delta: [first_inc_x, first_inc_y]

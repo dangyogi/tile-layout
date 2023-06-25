@@ -85,14 +85,19 @@ class Tile(Base_tile):
         if self.is_rect:
             self.alignment = 'horz' if skip_x > skip_y else 'vert'
 
+    def __str__(self):
+        return f"<{self.__class__.__name__}: {self.name}, {self.color}>"
+
     def place_at(self, offset, angle, plan, skip):
         r'''The `angle` is ignored here.  Only used for Image_tiles.
         '''
         return plan.create_polygon(self.points, offset, self.color, skip)
 
     def with_color(self, color):
-        return Tile(f"{self.name}-{color}", self.points, self.skip_x, self.skip_y, color,
-                    self.is_rect)
+        tk_color = eval_color(color)
+        print(f"Tile({self.name}).with_color({color}) -> {tk_color=}")
+        return Tile(f"{self.name}-{color}", self.points, self.skip_x, self.skip_y,
+                    tk_color, self.is_rect)
 
     def clip(self, length, corner=None, grout_gap=None):
         r'''Clip the length (whether horizontal or vertical) and return a new Tile.

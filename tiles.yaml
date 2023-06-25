@@ -2,6 +2,12 @@
 
 ---
 
+1/8" chocolate:
+    shape: rectangle
+    height: 1/8
+    width: 24
+    color: g_chocolate
+
 pencil:
     shape: rectangle
     height: 1/2
@@ -40,13 +46,27 @@ pencil:
 
 2_13/16" square white:
     shape: square
-    width: 2.13/16
+    #width: 2.13/16
+    width: 2.107/128
     color: white
+
+2_13/16" square paprika:
+    shape: square
+    #width: 2.13/16
+    width: 2.107/128
+    color: paprika
+
+full paprika:
+    shape: rectangle
+    height: 3
+    width: 11.15/16
+    color: paprika
 
 2_13/16" square black:
     shape: square
-    width: 2.13/16
-    color: paprika
+    #width: 2.13/16
+    width: 2.107/128
+    color: black
 
 3_7/8" square white:
     shape: square
@@ -144,8 +164,8 @@ pencil:
 
 3x12 white:
     shape: rectangle
-    height: 3
-    width: 12
+    height: 3.1/64
+    width: 12.5/64
     color: white
     #color: rope
 

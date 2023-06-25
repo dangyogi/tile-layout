@@ -122,12 +122,18 @@ Guest Bath:
 
 Master Left:
     constants:
-        width: 33.5/8
-        bar_x: width - 5.5/8
+        #old_width: 33.5/8
+        #width: 33.1/4
+        #width: 33.1/4 - 3/16
+        width: 33.1/8 - 3/16
+        valve_x: 17.3/4
+        nipple_x: 24
+        #bar_x: old_width - 5.5/8
+        bar_x: 27.7/8
         bar_y: 43.3/16
     grout: [width, 88]
     valve:
-        pos: [width - 15.15/16, bar_y]
+        pos: [valve_x, bar_y]
         size: 7
         color: silver
     bar_bottom:
@@ -143,7 +149,7 @@ Master Left:
         size: [1, 31.1/4]
         color: silver
     nipple:
-        pos: [width - 9.1/2, bar_y]
+        pos: [nipple_x, bar_y]
         size: 1.7/8
         color: silver
     door:
@@ -151,37 +157,161 @@ Master Left:
         size: [1.9/16, 70]
         color: silver
 
-Master Right:
+Master Right Niche:
     constants:
-        width: 33.13/16
-        niche_width: 21.11/16 - 9.5/8
-        niche_center_x: 9.5/8 + niche_width / 2
-        niche_height: 61.1/8 - 44.7/8
-        niche_center_y: 44.7/8 + niche_height / 2
-        back_width: 11
-        back_height: 15.1/4
-        border_width: 16
-        border_height: 20
-        sill_width: 18
-        sill_height: 2.1/2
-    grout: [width, 87.15/16]
+        full_width: 33.1/4
+        width: 22.1/8
+        height: 22.1/32 - 1/4
+        #height: 22.312 - 1/4
+
+        shift_x: 4.23/32 + 1/8
+        shift_y: 42.781 + 1/8
+
+        cutout_left: 9.1/4 - shift_x
+        cutout_right: 21.7/8 - shift_x
+        outside_back_width: 11.15/16     # middle
+        outside_back_height: 16
+        niche_center_x: cutout_right - outside_back_width / 2
+        #niche_center_x: cutout_left + outside_back_width / 2
+
+        cutout_lower: 44.3/8 - shift_y
+        cutout_upper: 61.1/4 - shift_y
+        inside_back_width: 11.1/16
+        inside_back_height: 15.3/16
+        niche_center_y: cutout_lower + outside_back_height / 2
+        #niche_center_y: cutout_lower + outside_back_height / 2 + 5/16
+        #niche_center_y: cutout_upper - outside_back_height / 2
+
+        niche_back_left: niche_center_x - inside_back_width / 2
+        niche_back_bottom: niche_center_y - inside_back_height / 2
+
+        niche_lip_width: 2.3/8      # niche border (lip)
+        niche_lip_left: niche_back_left - niche_lip_width
+        niche_width_with_lips: inside_back_width + 2 * niche_lip_width
+        sill_width: 17.7/8
+        sill_height: niche_lip_width
+        niche_sill_bottom: niche_back_bottom - sill_height
+        niche_height_with_lips: inside_back_height + niche_lip_width + sill_height
+
+        #border_width: 1.7/8
+        #border_width_beneath_sill: 2/8
+        #border_width_top: 0
+        #border_width_left: 0
+        #border_width_right: 1
+        border_width_top: 1.5/8
+        border_width_left: 2.1/8
+        border_width_right: 3.4/8
+        border_width_beneath_sill: 0
+
+        hide_niche: false
+        #hide_niche: true
+    grout: [width, height]
+    cutout:
+        pos: [cutout_left, cutout_lower]
+        size: [cutout_right - cutout_left, cutout_upper - cutout_lower]
+        color: "#DDD"
     border:
-        pos: [niche_center_x - border_width / 2 - 3,
-              niche_center_y - border_height / 2 - 3]
-        size: [border_width + 6, border_height + 6]
-        color: paprika
+        pos: [niche_lip_left - border_width_left,
+              niche_sill_bottom - border_width_beneath_sill]
+        size: [niche_width_with_lips + border_width_left + border_width_right,
+               niche_height_with_lips + border_width_top + border_width_beneath_sill]
+        color: white
+        #color: paprika
+        #color: black
+        #color: darkblue
+        skip: True or hide_niche
     niche_border:
-        pos: [niche_center_x - border_width / 2, niche_center_y - border_height / 2]
-        size: [border_width, border_height]
+        pos: [niche_lip_left, niche_back_bottom]
+        size: [niche_width_with_lips, inside_back_height + niche_lip_width]
         color: "#888"
+        skip: hide_niche
     niche_sill:
-        pos: [niche_center_x - sill_width / 2, niche_center_y - border_height / 2]
+        pos: [niche_center_x - sill_width / 2, niche_sill_bottom]
         size: [sill_width, sill_height]
         color: "#888"
+        skip: hide_niche
     niche_back:
-        pos: [niche_center_x - back_width / 2, niche_center_y - back_height / 2]
-        size: [back_width, back_height]
+        pos: [niche_back_left, niche_back_bottom]
+        size: [inside_back_width, inside_back_height]
         color: "#DDD"
+        skip: hide_niche
+
+Master Right:
+    constants:
+        #width: 33.13/16
+        width: 33.1/4         # 33, 33.1/4, 33
+
+        cutout_left: 9.1/4
+        cutout_right: 21.7/8
+        outside_back_width: 11.15/16     # middle
+        outside_back_height: 16
+        niche_center_x: cutout_right - outside_back_width / 2
+        #niche_center_x: cutout_left + outside_back_width / 2
+
+        cutout_lower: 44.3/8
+        cutout_upper: 61.1/4
+        inside_back_width: 11.1/16
+        inside_back_height: 15.3/16
+        niche_center_y_low: cutout_lower + outside_back_height / 2
+        #niche_center_y: niche_center_y_low
+        niche_center_y_on_line: cutout_lower + outside_back_height / 2 + 8/16
+        niche_center_y: niche_center_y_on_line
+        niche_center_y_high: cutout_upper - outside_back_height / 2
+        #niche_center_y: niche_center_y_high
+
+        niche_back_left: niche_center_x - inside_back_width / 2
+        niche_back_bottom: niche_center_y - inside_back_height / 2
+
+        niche_lip_width: 2.3/8      # niche border (lip)
+        niche_lip_left: niche_back_left - niche_lip_width
+        niche_width_with_lips: inside_back_width + 2 * niche_lip_width
+        sill_width: 17.7/8
+        sill_height: niche_lip_width
+        niche_sill_bottom: niche_back_bottom - sill_height
+        niche_height_with_lips: inside_back_height + niche_lip_width + sill_height
+
+        #border_width: 1.7/8
+        #border_width_beneath_sill: 2/8
+        #border_width_top: 0
+        #border_width_left: 0
+        #border_width_right: 1
+        border_width_top: 1.5/8
+        border_width_left: 2.1/8
+        border_width_right: 3.4/8
+        border_width_beneath_sill: 0
+
+        hide_niche: false
+        #hide_niche: true
+    grout: [width, 87.15/16]
+    cutout:
+        pos: [cutout_left, cutout_lower]
+        size: [cutout_right - cutout_left, cutout_upper - cutout_lower]
+        color: "#DDD"
+    border:
+        pos: [niche_lip_left - border_width_left,
+              niche_sill_bottom - border_width_beneath_sill]
+        size: [niche_width_with_lips + border_width_left + border_width_right,
+               niche_height_with_lips + border_width_top + border_width_beneath_sill]
+        color: white
+        #color: paprika
+        #color: black
+        #color: darkblue
+        skip: True or hide_niche
+    niche_border:
+        pos: [niche_lip_left, niche_back_bottom]
+        size: [niche_width_with_lips, inside_back_height + niche_lip_width]
+        color: "#888"
+        skip: hide_niche
+    niche_sill:
+        pos: [niche_center_x - sill_width / 2, niche_sill_bottom]
+        size: [sill_width, sill_height]
+        color: "#888"
+        skip: hide_niche
+    niche_back:
+        pos: [niche_back_left, niche_back_bottom]
+        size: [inside_back_width, inside_back_height]
+        color: "#DDD"
+        skip: hide_niche
     door:
         pos: [width - 1.9/16 - 1/2, 0]
         size: [1.9/16, 70]
@@ -191,7 +321,7 @@ Master Back:
     constants:
         width: 46.3/4
         center: width / 2
-        pic_tile_size: 6.1/16
+        pic_tile_size: 6.1/16                   # incl. grout gap
         pic_width: pic_tile_size * 4 - 1/16
         pic_height: pic_tile_size * 3 - 1/16
         pic_x: center - pic_width / 2
@@ -199,10 +329,10 @@ Master Back:
         pic_grout_gap: 1/16
     grout: [width, 88.7/8]
     border:
-        pos: [pic_x - 1/2 - 2 * pic_grout_gap - 3,
-              pic_y - 1/2 - 2 * pic_grout_gap - 3]
-        size: [pic_width + 1 + 4 * pic_grout_gap + 2 * 3,
-               pic_height + 1 + 4 * pic_grout_gap + 2 * 3]
+        pos: [pic_x - 1/2 - 2 * pic_grout_gap - 3.1/32,
+              pic_y - 1/2 - 2 * pic_grout_gap - 3.1/32]
+        size: [pic_width + 1 + 4 * pic_grout_gap + 2 * 3.1/32,
+               pic_height + 1 + 4 * pic_grout_gap + 2 * 3.1/32]
         color: paprika
     pencil:
         pos: [pic_x - 1/2 - 2 * pic_grout_gap, pic_y - 1/2 - 2 * pic_grout_gap]
