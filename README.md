@@ -3,47 +3,126 @@ Crude program to help with ceramic tile layout.
 
 This directly supports fractional numbers to make measurements in inches easier.
 
-## Expression Syntax:
-
-Spaces are required on either side of all binary operators so they don't get confused with
-unary operators or fractions.
-
-Spaces are prohibited following unary operators.
-
-Parenthesis are currently unsupported.
-
-fraction: `-? <integer> | -? <integer>.<integer>/<integer> | -? <integer>/<integer>`
-
-num: `-? <constant_name> | -? !<integer> | <fraction> | -? <name> (\. <name>)*`
-
-  No spaces are allowed in numbers.  The ! operator is square-root.
-
-term: `num ([*/] num)*`
-
-exp: `term ([-+] term)*`
-
-pair: `exp (, exp)?`
-
 ## Files:
 
 ### colors.csv
 
-Columns: Name, value (can be any TK color value)
+Columns: Name, value (can be any TK color value, e.g., blue or #123456)
 
 Reader: colors.read_colors(filename='colors.csv') -> \{name: value\}
 
 ### shapes.yaml
 
-    name:
-        type: polygon
-        parameters: name (, name)*
+    <name>:
+        type: <shape_type>
+        parameters: [<name>]
         constants:
-            name: exp
+            name: <exp>
         points:
             - pair
+        flipped:
+            shape: <name>
+            arguments: [<exp>]
+        skip_x: <exp>
+        skip_y: <exp>
+        is_rect: true|false
+
+For shape_types, only polygon is currently accepted.
+
+is_rect defaults to false.
 
 ### tiles.yaml
+
+    <name>:
+        shape: <name>
+        <shape param>: <exp>
+        color: <color>
+        image: <filename>
 
 Reader: tiles.read_tiles(colors, filename="tiles.csv") -> \{name: tile\}
 
 ### walls.yaml
+
+    <name>:
+        grout: [<width>, <height>]
+        constants:
+            name: <exp>
+        <panel name>:
+            pos: [<x>, <y>]
+            size: [<width>, <height>] or <diameter>
+            color: <color>
+            image: <filename>
+            skip: true|false
+
+### layouts.yaml
+
+    <name>:
+        description: <string>
+        parameters: [<name>]
+        defaults:
+            <param name>: <exp>
+        <step>
+
+### step
+
+All steps may use the following tags:
+
+    trace: [<trace_flag>]
+    constants:
+        <name>: <exp>
+    type: <step type>
+    offset: [<x>, <y>]
+    delta: [<x>, <y>]
+    delta_x: <x>
+    delta_y: <y>
+
+#### Built-in step types:
+
+place
+    tile:
+    angle:
+
+sequence:
+    steps:
+        - <step>
+
+Each step may include skip: <exp>.
+
+repeat:
+    step: <step>
+    start: [<x>, <y>]
+    increment: [<x>, <y>]
+    times: <exp>
+    step_width_limit: <exp>
+    step_height_limit: <exp>
+    index_start: <exp>
+
+section:
+    pos: [<x>, <y>]
+    size: [<width>, <height>]
+    <plan>
+
+For <plan>, see plans in settings.yaml, excluding grout_color.
+
+#### Layout step types:
+
+    type: <layout name>
+    trace: [<trace_flag>]
+    <param>: <exp>
+
+### settings.yaml
+
+    default_wall: <wall name>
+    wall_settings:
+        <wall name>:
+            default_plan: <plan name>
+            plans:
+                <plan name>:
+                    alignment:
+                        angle: <exp>
+                        x_offset: <exp>
+                        y_offset: <exp>
+                    grout_color: <color>
+                    grout_gap: <exp>
+                    layout: <step>
+

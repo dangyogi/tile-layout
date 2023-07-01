@@ -310,11 +310,13 @@ wall_settings:
                     percent_offset: 1/2
 
     Sink:
+        default_plan: star_X
+
         plans:
             hex:
                 alignment:
                     angle: 0
-                    x_offset: 0
+                    x_offset: 4
                     y_offset: 0
                 grout_color: gu_acorn
                 grout_gap: 1/8
@@ -376,8 +378,188 @@ wall_settings:
                     steps:
                         - type: place
                           tile: cross-white
+                        - type: place
                           tile: star-white
+
+            stacked:
+                alignment:
+                    angle: -45
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: stepped
+                    step:
+                        type: place
+                        tile: 8" square white
+            stacked_image:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: stepped
+                    step:
+                        type: place
+                        tile: test_image
+
+            stepped:
+                alignment:
+                    angle: -45
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: stepped
+                    step:
+                        type: place
+                        tile: 6x12 white
+                    percent_offset: 1/3
+            stepped_rev:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: stepped
+                    step:
+                        type: place
+                        tile: 6x12 white
+                    percent_offset: -1/3
+
+            star_cross_white:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
+
+            star_cross_white_cross:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-cotto
+
+            star_cross_white_star:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    steps:
+                        - type: place
+                          tile: cross-cotto
+                        - type: place
+                          tile: star-white
+
+            hopscotch_left:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: place
+                        tile: 4x12
+                    step_b:
+                        type: place
+                        tile: 8" square white
+                    right: false
+            hopscotch_right:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: place
+                        tile: 4x12
+                    step_b:
+                        type: place
+                        tile: 8" square white
+                    right: true
+
+            herringbone_left:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: herringbone
+                    tile_horz: 6x12 white
+                    right: false
+            herringbone_right:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: herringbone
+                    tile_horz: 6x12 white
+                    right: true
+
+            basketweave_left:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 caicos_blue
+                    right: false
+            basketweave_right:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 caicos_blue
+                    right: true
+
     Stove:
+        default_plan: star_X
+
         plans:
             hex:
                 alignment:
@@ -446,8 +628,186 @@ wall_settings:
                           tile: cross-white
                         - type: place
                           tile: star-white
+
+            stacked:
+                alignment:
+                    angle: -45
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: stepped
+                    step:
+                        type: place
+                        tile: 8" square white
+            stacked_image:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: stepped
+                    step:
+                        type: place
+                        tile: test_image
+
+            stepped:
+                alignment:
+                    angle: -45
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: stepped
+                    step:
+                        type: place
+                        tile: 6x12 white
+                    percent_offset: 1/3
+            stepped_rev:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: stepped
+                    step:
+                        type: place
+                        tile: 6x12 white
+                    percent_offset: -1/3
+
+            star_cross_white:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-white
+
+            star_cross_white_cross:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    steps:
+                        - type: place
+                          tile: cross-white
+                        - type: place
+                          tile: star-cotto
+
+            star_cross_white_star:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: checkerboard
+                    steps:
+                        - type: place
+                          tile: cross-cotto
+                        - type: place
+                          tile: star-white
+
+            hopscotch_left:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: place
+                        tile: 4x12
+                    step_b:
+                        type: place
+                        tile: 8" square white
+                    right: false
+            hopscotch_right:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: hopscotch
+                    step_a:
+                        type: place
+                        tile: 4x12
+                    step_b:
+                        type: place
+                        tile: 8" square white
+                    right: true
+
+            herringbone_left:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: herringbone
+                    tile_horz: 6x12 white
+                    right: false
+            herringbone_right:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: herringbone
+                    tile_horz: 6x12 white
+                    right: true
+
+            basketweave_left:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 caicos_blue
+                    right: false
+            basketweave_right:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/4
+                layout:
+                    type: basketweave
+                    tile_horz: 3x12 caicos_blue
+                    right: true
+
     Guest Bath:
         plans: {}
+
     Master Left:
         default_plan: new_basketweave_2_3x12-paprika
         plans:
@@ -2224,6 +2584,8 @@ wall_settings:
                         - type: automatic_border
                           center_size: [25 + 5 * plan.grout_gap, 19 + 4 * plan.grout_gap]
                           tile: 3x12 paprika
+                          #tile: 3x12 paprika.with_color('blue')
+                          #tile: 3x12 caicos_blue
                           start_x: 3.5/8 - 1/2 - plan.grout_gap
                           start_y: 3.5/8 - 1/2 - plan.grout_gap
                           mitre: true

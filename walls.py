@@ -19,7 +19,7 @@ class Wall:
         if 'constants' in specs:
             for name, exp in specs['constants'].items():
                 self.constants[name] = my_eval(exp, self.constants, f"<Wall({self.name}): {name}>")
-                print(f"Wall({self.name}) setting {name} to {self.constants[name]}")
+                print(f"Wall({self.name}) setting {name} to {f_to_str(self.constants[name])}")
             del specs['constants']
         self.grout = eval_pair(specs['grout'], self.constants, f"<Wall({self.name})>")
         del specs['grout']
@@ -86,6 +86,7 @@ class Rect_panel(Panel):
         self.color = color
         self.left = pos[0]
         self.bottom = pos[1]
+        print(f"Rect_panel({self.name}): self.bottom={f_to_str(self.bottom)}")
         self.right = self.left + size[0]
         self.top = self.bottom + size[1]
 

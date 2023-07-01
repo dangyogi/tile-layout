@@ -1,13 +1,13 @@
 # tiles.py
 
-from utils import read_yaml
+from utils import read_yaml, f_to_str
 from tile import gen_tile
 
 
-def read_tiles(shapes=None, colors=None, filename="tiles.yaml"):
+def read_tiles(filename="tiles.yaml"):
     return {name: tile
             for tile_name, specs in read_yaml(filename).items()
-            for name, tile in gen_tile(tile_name, specs, shapes, colors)}
+            for name, tile in gen_tile(tile_name, specs)}
 
 
 
@@ -16,19 +16,10 @@ if __name__ == "__main__":
     from colors import read_colors
     from shapes import read_shapes
 
-    colors = read_colors()
-    shapes = read_shapes()
+    import app
 
-    def dump(name, tile):
-        print(name)
-        print("  name:", tile.name)
-        print("  skip_x:", tile.skip_x)
-        print("  skip_y:", tile.skip_y)
-        print("  color:", tile.color)
-        print("  points:", tile.points)
-        if hasattr(tile, 'flipped'):
-            print("  flipped:", tile.flipped.name)
-        print()
+    app.Colors = read_colors()
+    app.Shapes = read_shapes()
 
-    for name, tile in read_tiles(shapes, colors).items():
-        dump(name, tile)
+    for name, tile in read_tiles().items():
+        tile.dump(name)

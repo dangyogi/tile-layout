@@ -459,7 +459,7 @@ class Plan:
             #elif param in new_constants:
             #    if 'lookup' in trace:
             #        print(f"{step_name}.lookup({param}) in constants "
-            #              f"-- value is {constants[param]}")
+            #              f"-- value is {f_to_str(constants[param])}")
             #    ans = constants[param]
             elif param in defaults:
                 ans = my_eval(defaults[param], new_constants,
@@ -468,7 +468,7 @@ class Plan:
             else:
                 ans = None
             if 'lookup' in trace:
-                print(f"{step['type']}: setting parameter {param} to {ans}")
+                print(f"{step['type']}: setting parameter {param} to {f_to_str(ans)}")
             return ans
         if 'defaults' in new_step:
             defaults = new_step['defaults']
@@ -510,4 +510,4 @@ class Plan:
                         if 'constants' in trace:
                             print(f"{location} adding {name=}, value={f_to_str(new_constants[name])}")
             add_constants(step['constants'])
-        #print(f"{location}: {new_constants=}")
+        #print(f"{location}: new_constants={f_to_str(new_constants)}")
