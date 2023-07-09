@@ -6,9 +6,13 @@ Test Wall:
     grout: [48, 88]
 
 Sink:
-    grout: [96.1/16, 17.1/2]
     constants:
+        width: 96.1/16
         cab_width: 32.3/4
+        image_top: 8.3/8 + 4.7/8 - 6
+        skip_images: true
+        #skip_images: false
+    grout: [width, 17.1/2]
     left_cab:
         pos: [0, 17.1/2]
         size: [31.1/4, 37]
@@ -21,10 +25,48 @@ Sink:
         pos: [32.7/16, 9.3/8]
         size: [29.3/4, 26.1/2]
         color: "#CCC"
+    image0:
+        pos: [6.1/16 - 3, image_top]
+        size: [6, 6]
+        skip: skip_images
+        image: Anillo de Flores-4.25-6.25.jpg
+        #image: Arabesque Azul-4.25-6.25.jpg
+        #image: Candela Cielo-4.25.jpg
+        #image: Candela Verde-6.25.jpg
+        #image: Diamante Michoacana-4.25-6.25.jpg
+        #image: Escamilla Amarillo-4.25-6.25.jpg
+        #image: Escamilla Rojo-4.25-6.25.jpg
+        #image: Estrella de Fuego-4.25-6.25.jpg
+        #image: Flor de Amapola-4.25-6.25.jpg
+        #image: Flor de Corazones-4.25-6.25.jpg
+        #image: Lace Azul-4.25-6.25.jpg
+        #image: Morocco-4.25-6.25.jpg
+        #image: Nube Verde-4.25-6.25.jpg
+        #image: Royal-4.25-6.25.jpg
+        #image: Taxco Real-4.25-6.25.jpg
     outlet1:
         pos: [12.1/8, 8.3/8]
         size: [3, 4.7/8]
         color: outlet
+    image1:
+        pos: [19.1/8 + 1.1/2 - 3, image_top]
+        size: [6, 6]
+        skip: skip_images
+        #image: Anillo de Flores-4.25-6.25.jpg
+        image: Arabesque Azul-4.25-6.25.jpg
+        #image: Candela Cielo-4.25.jpg
+        #image: Candela Verde-6.25.jpg
+        #image: Diamante Michoacana-4.25-6.25.jpg
+        #image: Escamilla Amarillo-4.25-6.25.jpg
+        #image: Escamilla Rojo-4.25-6.25.jpg
+        #image: Estrella de Fuego-4.25-6.25.jpg
+        #image: Flor de Amapola-4.25-6.25.jpg
+        #image: Flor de Corazones-4.25-6.25.jpg
+        #image: Lace Azul-4.25-6.25.jpg
+        #image: Morocco-4.25-6.25.jpg
+        #image: Nube Verde-4.25-6.25.jpg
+        #image: Royal-4.25-6.25.jpg
+        #image: Taxco Real-4.25-6.25.jpg
     outlet2:
         pos: [26.1/8, 8.3/8]
         size: [3, 4.7/8]
@@ -33,10 +75,48 @@ Sink:
         pos: [65.7/16, 8.3/8]
         size: [3, 4.7/8]
         color: outlet
+    image2:
+        pos: [(65.7/16 + 80.1/4) / 2 + 1.1/2 - 3, image_top]
+        size: [6, 6]
+        skip: skip_images
+        #image: Anillo de Flores-4.25-6.25.jpg
+        #image: Arabesque Azul-4.25-6.25.jpg
+        image: Candela Cielo-4.25.jpg
+        #image: Candela Verde-6.25.jpg
+        #image: Diamante Michoacana-4.25-6.25.jpg
+        #image: Escamilla Amarillo-4.25-6.25.jpg
+        #image: Escamilla Rojo-4.25-6.25.jpg
+        #image: Estrella de Fuego-4.25-6.25.jpg
+        #image: Flor de Amapola-4.25-6.25.jpg
+        #image: Flor de Corazones-4.25-6.25.jpg
+        #image: Lace Azul-4.25-6.25.jpg
+        #image: Morocco-4.25-6.25.jpg
+        #image: Nube Verde-4.25-6.25.jpg
+        #image: Royal-4.25-6.25.jpg
+        #image: Taxco Real-4.25-6.25.jpg
     outlet4:
         pos: [80.1/4, 8.3/8]
         size: [3, 4.7/8]
         color: outlet
+    image3:
+        pos: [(width + 80.1/4) / 2, image_top]
+        size: [6, 6]
+        skip: skip_images
+        #image: Anillo de Flores-4.25-6.25.jpg
+        #image: Arabesque Azul-4.25-6.25.jpg
+        #image: Candela Cielo-4.25.jpg
+        image: Candela Verde-6.25.jpg
+        #image: Diamante Michoacana-4.25-6.25.jpg
+        #image: Escamilla Amarillo-4.25-6.25.jpg
+        #image: Escamilla Rojo-4.25-6.25.jpg
+        #image: Estrella de Fuego-4.25-6.25.jpg
+        #image: Flor de Amapola-4.25-6.25.jpg
+        #image: Flor de Corazones-4.25-6.25.jpg
+        #image: Lace Azul-4.25-6.25.jpg
+        #image: Morocco-4.25-6.25.jpg
+        #image: Nube Verde-4.25-6.25.jpg
+        #image: Royal-4.25-6.25.jpg
+        #image: Taxco Real-4.25-6.25.jpg
 
 Stove:
     grout: [96, 17.1/2]
@@ -349,7 +429,9 @@ Master Back:
               pic_y - 1/2 - 2 * pic_grout_gap - 3.1/32]
         size: [pic_width + 1 + 4 * pic_grout_gap + 2 * 3.1/32,
                pic_height + 1 + 4 * pic_grout_gap + 2 * 3.1/32]
-        color: paprika
+        #color: paprika
+        color: green1
+        #color: green3
     pencil:
         pos: [pic_x - 1/2 - 2 * pic_grout_gap, pic_y - 1/2 - 2 * pic_grout_gap]
         size: [pic_width + 1 + 4 * pic_grout_gap, pic_height + 1 + 4 * pic_grout_gap]
@@ -373,3 +455,26 @@ Mural:
         width: 31.5/8
         height: 25.3/8
     grout: [width, height]
+
+Master Bath Floor:
+    constants:
+        door_threshold_depth: 2
+        width: 64.5/8
+        height: 46.1/2 + door_threshold_depth
+    grout: [width, height]
+    vanity:
+        pos: [31.5/8, 29 + door_threshold_depth]
+        size: [33, height - 29 - door_threshold_depth]
+        color: cabinet
+    door_right:
+        pos: [width - 1.9/16, 0]
+        size: [1.9/16, door_threshold_depth]
+        color: green
+    door_left:
+        pos: [0, 0]
+        size: [width - 28.1/4 - 1.9/16, door_threshold_depth]
+        color: green
+    toilet:
+        pos: [31.5/8 - 15.1/2, height - 11.1/2]
+        size: 7
+        color: "#444"

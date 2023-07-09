@@ -162,6 +162,18 @@ full paprika:
     width: 6
     color: black
 
+3x8 white:
+    shape: rectangle
+    height: 3
+    width: 8
+    color: white
+
+3x10 white:
+    shape: rectangle
+    height: 3
+    width: 10
+    color: white
+
 3x12 white:
     shape: rectangle
     height: 3.1/64
@@ -190,6 +202,18 @@ full paprika:
     height: 3
     width: 12
     color: black
+
+4x8:
+    shape: rectangle
+    height: 4
+    width: 8
+    color: white
+
+4x10:
+    shape: rectangle
+    height: 4
+    width: 10
+    color: white
 
 4x12:
     shape: rectangle
@@ -238,6 +262,150 @@ floor:
     height: 11.13/16
     width: 23.1/2
     color: "#c4b4ae"
+
+large_star-koi:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: 1
+    color: koi
+
+large_cross-koi:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: -1
+    color: koi
+
+mini_star-koi:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: 1
+    color: koi
+
+mini_cross-koi:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: -1
+    color: koi
+
+large_star-tuolumne_meadows:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: 1
+    color: tuolumne_meadows
+
+large_cross-tuolumne_meadows:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: -1
+    color: tuolumne_meadows
+
+mini_star-tuolumne_meadows:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: 1
+    color: tuolumne_meadows
+
+mini_cross-tuolumne_meadows:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: -1
+    color: tuolumne_meadows
+
+large_star-bryce_canyon:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: 1
+    color: bryce_canyon
+
+large_cross-bryce_canyon:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: -1
+    color: bryce_canyon
+
+mini_star-bryce_canyon:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: 1
+    color: bryce_canyon
+
+mini_cross-bryce_canyon:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: -1
+    color: bryce_canyon
+
+large_star-haystack:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: 1
+    color: haystack
+
+large_cross-haystack:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: -1
+    color: haystack
+
+mini_star-haystack:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: 1
+    color: haystack
+
+mini_cross-haystack:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: -1
+    color: haystack
+
+large_star-sunflower:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: 1
+    color: sunflower
+
+large_cross-sunflower:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: -1
+    color: sunflower
+
+mini_star-sunflower:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: 1
+    color: sunflower
+
+mini_cross-sunflower:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: -1
+    color: sunflower
+
+large_star-antique:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: 1
+    color: antique
+
+large_cross-antique:
+    shape: star_cross
+    width: 5.1/2
+    point_direction: -1
+    color: antique
+
+mini_star-antique:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: 1
+    color: antique
+
+mini_cross-antique:
+    shape: star_cross
+    width: 4.1/16
+    point_direction: -1
+    color: antique
 
 star-white:
     shape: star_cross

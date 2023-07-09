@@ -151,7 +151,12 @@ class Plan:
         if visible:
             constants['inc_x'] = the_tile.skip_x + self.grout_gap
             constants['inc_y'] = the_tile.skip_y + self.grout_gap
+            if 'place' in trace or 'place_true' in trace:
+                print(f"{step_name}.place {the_tile.name=} -> True, "
+                      f"offset={f_to_str(constants['offset'])}")
             return True
+        if 'place' in trace:
+            print(f"{step_name}.place -> False")
         return False
 
     def sequence(self, step_name, constants, *steps, trace=()):
@@ -184,10 +189,14 @@ class Plan:
         inc_x = inc_y = None
         initial_x, initial_y = constants['offset']
         if 'sequence' in trace:
-            print(f"{step_name}.sequence: initial_x={f_to_str(initial_x)}, initial_y={f_to_str(initial_y)}")
-        my_constants = ChainMap({}, constants)  # these are passed on from one step to the next with save/use
+            print(f"{step_name}.sequence: "
+                  f"initial_x={f_to_str(initial_x)}, initial_y={f_to_str(initial_y)}")
+
+        # These are passed on from one step to the next with save/use.
+        my_constants = ChainMap({}, constants)
         my_constants['initial_x'] = initial_x
         my_constants['initial_y'] = initial_y
+
         for i, step in enumerate(steps, 1):
             #print(f"{step_name}.sequence: step {i}, {step=}, {constants=}")
             step = pick(step, constants)
@@ -234,14 +243,22 @@ class Plan:
                                   f"{f_to_str(my_constants[key])}")
                 if inc_x is None or step_constants['inc_x'] + offset_x > inc_x:
                     inc_x = step_constants['inc_x'] + offset_x
+                    if 'inc_x' in trace:
+                        print(f"{step_name}.sequence step {i}: "
+                              f"got inc_x {f_to_str(step_constants['inc_x'])}, "
+                              f"offset_x {f_to_str(offset_x)}, inc_x set to {f_to_str(inc_x)}")
                 if inc_y is None or step_constants['inc_y'] + offset_y > inc_y:
                     inc_y = step_constants['inc_y'] + offset_y
+                    if 'inc_y' in trace:
+                        print(f"{step_name}.sequence step {i}: inc_y set to {f_to_str(inc_y)}")
                 visible = True
             #else:
             #    print(f"{step_name}.sequence step {i}: not visible")
         if visible:
             constants['inc_x'] = inc_x
             constants['inc_y'] = inc_y
+        if 'sequence' in trace:
+            print(f"{step_name}.sequence -> {visible=}")
         return visible
 
     def repeat(self, step_name, constants, step, increment, times,
@@ -255,38 +272,45 @@ class Plan:
         If visible, returns the greatest inc_x, inc_y in constants.
         '''
         if 'repeat' in trace:
-            print(f"{step_name}.repeat({step=}, "
+            print(f"{step_name}({step=}, "
                   f"offset={f_to_str(constants['offset'])}, "
                   f"increment={f_to_str(increment)}, {times=}, "
                   f"{step_width_limit=}, {step_height_limit=}, {index_start=})")
         if True:
             unaligned_boundary = self.alignment.unalign(self.canvas.boundary)
-            #print(f"{step_name}.repeat: "
+            #print(f"{step_name}: "
             #      f"unaligned_boundary={f_to_str(unaligned_boundary)}")
             min_x = min(p[0] for p in unaligned_boundary) - 2 * step_width_limit
-            max_x = max(p[0] for p in unaligned_boundary)
+            max_x = max(p[0] for p in unaligned_boundary) + step_width_limit
             min_y = min(p[1] for p in unaligned_boundary) - 2 * step_height_limit
-            max_y = max(p[1] for p in unaligned_boundary)
+            max_y = max(p[1] for p in unaligned_boundary) + step_height_limit
         else:
             min_x = min_y = -self.canvas.diagonal - 2 * step_width_limit
             max_x = max_y = self.canvas.diagonal + step_width_limit
-        #print(f"{step_name}.repeat: "
+        #print(f"{step_name}: "
         #      f"min_x={min_x:.2f}, max_x={max_x:.2f}, "
         #      f"min_y={min_y:.2f}, max_y={max_y:.2f}")
         visible = False
         inc_x = inc_y = None
         x_inc, y_inc = increment
+        if 'xy_inc' in trace:
+            print(f"{step_name} x_inc={f_to_str(x_inc)}, "
+                  f"min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}")
+            print(f"{step_name} y_inc={f_to_str(y_inc)}, "
+                  f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
         x, y = offset = starting_offset = constants['offset']
+        if 'xy' in trace:
+            print(f"{step_name} forward direction: x={f_to_str(x)}, y={f_to_str(y)}")
         #print(f"{step_name}.repeat offset={f_to_str(offset)}, {times=}, "
         #      f"x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
         #print(f"  min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}, "
         #      f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
         for index in (range(times) if times is not None else count(0)):
-            #print(f"{step_name}.repeat {index=}, offset={f_to_str(offset)}")
+            #print(f"{step_name} {index=}, offset={f_to_str(offset)}")
             constants['offset'] = offset
             constants['index'] = index + index_start
             step_visible = self.do_step(f"repeat {index=}", pick(step, constants),
-                                        constants, trace=(trace if index < 5 else ()))
+                                        constants, trace=(trace if index < 3 else ()))
             if step_visible:
                 step_inc_x = constants['inc_x'] + index * x_inc
                 step_inc_y = constants['inc_y'] + index * y_inc
@@ -297,24 +321,38 @@ class Plan:
                 visible = True
             if times is None:
                 keep_going = step_visible or \
-                             x_inc > 0 and x <= max_x or \
-                             x_inc < 0 and x >= min_x or \
-                             y_inc > 0 and y <= max_y or \
-                             y_inc < 0 and y >= min_y
+                             (x_inc == 0 and min_x <= x <= max_x or
+                              x_inc > 0 and x <= max_x or \
+                              x_inc < 0 and x >= min_x) and \
+                             (y_inc == 0 and min_y <= y <= max_y or
+                              y_inc > 0 and y <= max_y or \
+                              y_inc < 0 and y >= min_y)
                 if not keep_going:
                     break
+            if index > 100:
+                print(f"{step_name} x={f_to_str(x)}, x_inc={f_to_str(x_inc)}, "
+                      f"min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}")
+                print(f"{step_name} y={f_to_str(y)}, y_inc={f_to_str(y_inc)}, "
+                      f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
+                raise AssertionError(f"{step_name}: {index=} out of bounds, {step_visible=}")
             x, y = offset = x + x_inc, y + y_inc
+            if 'xy' in trace:
+                print(f"{step_name} x={f_to_str(x)}, y={f_to_str(y)}, {step_visible=}, {index=}")
         if times is None:
             # go backwards
             x_inc, y_inc = -x_inc, -y_inc
+            if 'xy_inc' in trace:
+                print(f"{step_name} reverse direction: x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
             x, y = offset = starting_offset[0] + x_inc, starting_offset[1] + y_inc
+            if 'xy' in trace:
+                print(f"{step_name} reverse direction: x={f_to_str(x)}, y={f_to_str(y)}")
             for index in count(-1, -1):
-                #print(f"{step_name}.repeat {index=}, offset={f_to_str(offset)}")
+                #print(f"{step_name} {index=}, offset={f_to_str(offset)}")
                 constants['offset'] = offset
                 constants['index'] = index + index_start
                 step_visible = self.do_step(f"repeat backwards {index=}",
                                             pick(step, constants), constants,
-                                            trace=(trace if index > -5 else ()))
+                                            trace=(trace if index > -3 else ()))
                 if step_visible:
                     step_inc_x = constants['inc_x'] + index * x_inc
                     step_inc_y = constants['inc_y'] + index * y_inc
@@ -323,19 +361,36 @@ class Plan:
                     if inc_y is None or step_inc_y > inc_y:
                         inc_y = step_inc_y
                     visible = True
+                #keep_going = step_visible or \
+                #             x_inc > 0 and x <= max_x or \
+                #             x_inc < 0 and x >= min_x or \
+                #             y_inc > 0 and y <= max_y or \
+                #             y_inc < 0 and y >= min_y
                 keep_going = step_visible or \
-                             x_inc > 0 and x <= max_x or \
-                             x_inc < 0 and x >= min_x or \
-                             y_inc > 0 and y <= max_y or \
-                             y_inc < 0 and y >= min_y
+                             (x_inc == 0 and min_x <= x <= max_x or
+                              x_inc > 0 and x <= max_x or \
+                              x_inc < 0 and x >= min_x) and \
+                             (y_inc == 0 and min_y <= y <= max_y or
+                              y_inc > 0 and y <= max_y or \
+                              y_inc < 0 and y >= min_y)
                 if not keep_going:
                     break
+                if index < -100:
+                    print(f"{step_name}: x={f_to_str(x)}, x_inc={f_to_str(x_inc)}, "
+                          f"min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}")
+                    print(f"{step_name}: y={f_to_str(y)}, y_inc={f_to_str(y_inc)}, "
+                          f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
+                    raise AssertionError(f"{step_name}: {index=} out of bounds, {step_visible=}")
                 x, y = offset = x + x_inc, y + y_inc
+                if 'xy' in trace:
+                    print(f"{step_name}: x={f_to_str(x)}, y={f_to_str(y)}, {step_visible=}, {index=}")
         if visible:
             constants['inc_x'] = inc_x
             constants['inc_y'] = inc_y
-        #print(f"{step_name}.repeat {visible=}, inc_x={f_to_str(inc_x)}, "
+        #print(f"{step_name}: {visible=}, inc_x={f_to_str(inc_x)}, "
         #      f"inc_y={f_to_str(inc_y)}")
+        if 'repeat' in trace:
+            print(f"{step_name} -> {visible=}")
         return visible
 
     def section(self, step_name, step, pos, size, constants, trace=()):
@@ -370,7 +425,8 @@ class Plan:
         new_constants = ChainMap({}, constants)
         self.load_constants(new_constants, step, f"do_step {step_name} load_constants", trace)
         if 'offset' in step:
-            constants['offset'] = eval_pair(step['offset'], new_constants, f"<{step_name}.do_step: offset>")
+            constants['offset'] = eval_pair(step['offset'], new_constants,
+                                            f"<{step_name}.do_step: offset>")
         else:
             if 'delta' in step:
                 delta = eval_pair(step['delta'], new_constants, f"<{step_name}.do_step: delta>")
@@ -383,6 +439,8 @@ class Plan:
                 print(f"do_step {step_name}: delta={f_to_str(delta)}")
             constants['offset'] = (constants['offset'][0] + delta[0], 
                                    constants['offset'][1] + delta[1])
+        if 'offset' in trace:
+            print(f"do_step {step_name}: offset={f_to_str(constants['offset'])}")
         if step['type'] == 'place':
             visible = self.place(step_name, eval_tile(step['tile'], new_constants),
                                  my_eval(step.get('angle', 0), new_constants,
@@ -391,12 +449,20 @@ class Plan:
             if visible:
                 constants['inc_x'] = new_constants['inc_x']
                 constants['inc_y'] = new_constants['inc_y']
+                if 'inc_x' in trace:
+                    print(f"do_step {step_name}: inc_x={f_to_str(constants['inc_x'])}")
+                if 'inc_y' in trace:
+                    print(f"do_step {step_name}: inc_y={f_to_str(constants['inc_y'])}")
             return visible
         if step['type'] == 'sequence':
             visible = self.sequence(step_name, new_constants, *step['steps'], trace=trace)
             if visible:
                 constants['inc_x'] = new_constants['inc_x']
                 constants['inc_y'] = new_constants['inc_y']
+                if 'inc_x' in trace:
+                    print(f"do_step {step_name}: inc_x={f_to_str(constants['inc_x'])}")
+                if 'inc_y' in trace:
+                    print(f"do_step {step_name}: inc_y={f_to_str(constants['inc_y'])}")
             return visible
         if step['type'] == 'repeat':
             x, y = my_eval(step.get('start', (0, 0)), new_constants,
@@ -406,7 +472,7 @@ class Plan:
             #      f"x={f_to_str(x)}, y={f_to_str(y)}, "
             #      f"x_off={f_to_str(x_off)}, y_off={f_to_str(y_off)}")
             new_constants['offset'] = x_off + x, y_off + y
-            visible = self.repeat(step_name, new_constants,
+            visible = self.repeat((step['name'] if 'name' in step else step_name), new_constants,
                                   my_eval(step['step'], new_constants,
                                     f"{step_name} repeat step"),
                                   my_eval(step['increment'], new_constants,
@@ -424,6 +490,10 @@ class Plan:
             if visible:
                 constants['inc_x'] = new_constants['inc_x']
                 constants['inc_y'] = new_constants['inc_y']
+                if 'inc_x' in trace:
+                    print(f"do_step {step_name}: inc_x={f_to_str(constants['inc_x'])}")
+                if 'inc_y' in trace:
+                    print(f"do_step {step_name}: inc_y={f_to_str(constants['inc_y'])}")
             return visible
         if step['type'] == 'section':
             visible = self.section(step_name, step,
@@ -435,6 +505,10 @@ class Plan:
             if visible:
                 constants['inc_x'] = new_constants['inc_x']
                 constants['inc_y'] = new_constants['inc_y']
+                if 'inc_x' in trace:
+                    print(f"do_step {step_name}: inc_x={f_to_str(constants['inc_x'])}")
+                if 'inc_y' in trace:
+                    print(f"do_step {step_name}: inc_y={f_to_str(constants['inc_y'])}")
             return visible
 
         # else it's a call to a layout
@@ -484,6 +558,10 @@ class Plan:
         if visible:
             constants['inc_x'] = new_constants['inc_x']
             constants['inc_y'] = new_constants['inc_y']
+            if 'inc_x' in trace:
+                print(f"do_step {step_name}: inc_x={f_to_str(constants['inc_x'])}")
+            if 'inc_y' in trace:
+                print(f"do_step {step_name}: inc_y={f_to_str(constants['inc_y'])}")
         return visible
 
     def load_constants(self, new_constants, step, location, trace):
@@ -507,7 +585,7 @@ class Plan:
                         else:
                             new_constants[name] = my_eval(value, new_constants,
                                                     location + f"{name}>")
-                        if 'constants' in trace:
+                        if 'constants' in trace or name in trace:
                             print(f"{location} adding {name=}, value={f_to_str(new_constants[name])}")
             add_constants(step['constants'])
         #print(f"{location}: new_constants={f_to_str(new_constants)}")

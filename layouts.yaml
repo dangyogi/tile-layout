@@ -6,7 +6,7 @@ lay_row:
     description: >
       Lays one row of the `step` pattern.  If count is provided, that many tiles are layed.
       Otherwise, the row will extend to the left and right edges of the wall.
-    parameters: [step, num_x, index_start]
+    parameters: [step, num_x, index_start, location]
     defaults:
         num_x: null
         index_start: 0
@@ -542,3 +542,271 @@ flower:
           angle: -90
           index: 1
           delta: [first_inc_x, first_inc_y]
+
+sp2:
+    parameters: [tile_rect, tile_square]
+    type: repeat
+    step:
+        type: repeat
+        step:
+            type: sequence
+            steps:
+                - type: place
+                  tile: tile_rect
+                - type: place
+                  tile: tile_square
+                  use:
+                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+        increment: [tile_rect.skip_x + plan.grout_gap, 0]
+    increment: [0, tile_rect.skip_y + tile_square.skip_y + 2 * plan.grout_gap]
+
+sp3:
+    parameters: [tile_rect, tile_vert_rect, tile_square]
+    defaults:
+        tile_vert_rect: tile_rect.flipped
+    type: stepped
+    step:
+        type: sequence
+        steps:
+            - type: place
+              tile: tile_vert_rect
+            - type: place
+              tile: tile_square
+              use:
+                  offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+            - type: place   # bottom horz tile
+              tile: tile_rect
+              use:
+                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+            - type: place   # top horz tile
+              tile: tile_rect
+              use:
+                  offset_y: initial_y + tile_vert_rect.skip_y + tile_rect.skip_y + 2 * plan.grout_gap
+            - type: place
+              tile: tile_vert_rect
+              use:
+                  offset_x: initial_x + tile_rect.skip_x + plan.grout_gap
+                  offset_y: initial_y + tile_square.skip_y + plan.grout_gap
+
+sp4:
+    parameters: [tile_vert_rect, tile_square]
+    type: stepped
+    step:
+        type: sequence
+        steps:
+            - type: place
+              tile: tile_vert_rect
+            - type: place
+              tile: tile_square
+              use:
+                  offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+            - type: place
+              tile: tile_square
+              use:
+                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+            - type: place
+              tile: tile_vert_rect
+              use:
+                  offset_x: initial_x + tile_square.skip_x + plan.grout_gap
+                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+
+sp6:
+    parameters: [tile_vert_rect, tile_square]
+    type: stepped
+    step:
+        type: sequence
+        steps:
+            - type: place
+              tile: tile_vert_rect
+            - type: place
+              tile: tile_vert_rect
+              use:
+                  offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+            - type: place
+              tile: tile_square
+              use:
+                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+
+sp7:
+    parameters: [tile_rect, tile_vert_rect]
+    defaults:
+        tile_vert_rect: tile_rect.flipped
+    type: stepped
+    step:
+        type: sequence
+        steps:
+            - type: place
+              tile: tile_vert_rect
+            - type: place
+              tile: tile_vert_rect
+              use:
+                  offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+            - type: place
+              tile: tile_rect
+              use:
+                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+            - type: place
+              tile: tile_rect
+              use:
+                  offset_y: initial_y + tile_vert_rect.skip_y + tile_rect.skip_y + 2 * plan.grout_gap
+
+sp9:
+    parameters: [tile_rect, percent_offset]
+    defaults:
+        percent_offset: 1/3
+    type: repeat
+    step:
+        type: sequence
+        steps:
+            - type: lay_row
+              step:
+                  type: place
+                  tile: tile_rect
+            - type: lay_row
+              step:
+                  type: place
+                  tile: tile_rect
+              use:
+                  offset_x: initial_x + percent_offset * (tile_rect.skip_x + plan.grout_gap)
+                  offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+    increment: [0, 2 * (tile_rect.skip_y + plan.grout_gap)]
+
+sp12:
+    parameters: [tile_rect, tile_vert_rect, tile_square]
+    defaults:
+        tile_vert_rect: tile_rect.flipped
+    type: repeat
+    step:
+        type: repeat
+        step:
+            type: sequence
+            steps:
+                - type: place
+                  tile: tile_vert_rect
+                - type: place
+                  tile: tile_square
+                  use:
+                      offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+                - type: place
+                  tile: tile_rect
+                  use:
+                      offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+                      offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+        increment: [tile_square.skip_x + plan.grout_gap, -(tile_vert_rect.skip_y + plan.grout_gap)]
+    increment: [tile_vert_rect.skip_x + tile_square.skip_x + 2 * plan.grout_gap,
+                tile_rect.skip_y + plan.grout_gap]
+
+sp14:
+    parameters: [tile_rect, tile_vert_rect, tile_square]
+    defaults:
+        tile_vert_rect: tile_rect.flipped
+    type: repeat
+    step:
+        type: repeat
+        step:
+            type: sequence
+            steps:
+                - type: place
+                  tile: tile_rect
+                - type: place
+                  tile: tile_vert_rect
+                  use:
+                      offset_x: initial_x - (tile_vert_rect.skip_x + plan.grout_gap)
+                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+                - type: place
+                  tile: tile_square
+                  use:
+                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+                - type: place
+                  tile: tile_vert_rect
+                  use:
+                      offset_x: initial_x + tile_square.skip_x + plan.grout_gap
+                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+                - type: place
+                  tile: tile_rect
+                  use:
+                      offset_y: initial_y + tile_rect.skip_y + tile_square.skip_y + 2 * plan.grout_gap
+        increment: [0, 2 * tile_rect.skip_y + tile_square.skip_y + 3 * plan.grout_gap]
+    increment: [tile_rect.skip_x + tile_vert_rect.skip_x + 2 * plan.grout_gap,
+                -(tile_vert_rect.skip_y + plan.grout_gap)]
+
+sp18:
+    parameters: [tile_rect, tile_vert_rect]
+    defaults:
+        tile_vert_rect: tile_rect.flipped
+    type: repeat
+    step:
+        type: repeat
+        step:
+            type: sequence
+            steps:
+                - type: place
+                  tile: tile_rect
+                - type: place
+                  tile: tile_vert_rect
+                  use:
+                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+                - type: place
+                  tile: tile_rect
+                  use:
+                      offset_x: initial_x + tile_vert_rect.skip_x - tile_rect.skip_x
+                      offset_y: initial_y + tile_rect.skip_y + tile_vert_rect.skip_y + 2 * plan.grout_gap
+        increment: [tile_vert_rect.skip_x + plan.grout_gap, tile_rect.skip_y + plan.grout_gap]
+    increment: [tile_vert_rect.skip_x - tile_rect.skip_x - plan.grout_gap,
+                tile_rect.skip_y + tile_vert_rect.skip_y + 2 * plan.grout_gap]
+
+sp23:
+    parameters: [tile_rect, tile_vert_rect]
+    defaults:
+        tile_vert_rect: tile_rect.flipped
+    type: repeat
+    step:
+        type: repeat
+        step:
+            type: sequence
+            steps:
+                - type: place
+                  tile: tile_vert_rect
+                - type: place
+                  tile: tile_rect
+                  use:
+                      offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+                      offset_y: initial_y + (tile_rect.skip_y + plan.grout_gap) / 2
+                - type: place
+                  tile: tile_rect
+                  use:
+                      offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+                      offset_y: initial_y + (tile_rect.skip_y + plan.grout_gap) / 2 + tile_rect.skip_y + plan.grout_gap
+        increment: [0, 2 * (tile_rect.skip_y + plan.grout_gap)]
+    increment: [tile_vert_rect.skip_x + tile_rect.skip_x + 2 * plan.grout_gap, 0]
+
+sp24:
+    parameters: [tile_rect, tile_vert_rect]
+    defaults:
+        tile_vert_rect: tile_rect.flipped
+    type: repeat          # vertical stripe pairs horizontally
+    name: step_horz
+    step:
+        type: repeat      # 2 vertical stripes offset from each other
+        name: 2 stripes
+        step:
+            type: repeat  # vertical stripe
+            name: vert stripe
+            step:
+                type: sequence
+                steps:
+                    - type: place
+                      tile: tile_vert_rect
+                    - type: place
+                      tile: tile_vert_rect
+                      use:
+                          offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+                    - type: place
+                      tile: tile_rect
+                      use:
+                          offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+            increment: [0, tile_vert_rect.skip_y + tile_rect.skip_y + 2 * plan.grout_gap]
+        increment: [2 * (tile_vert_rect.skip_x + plan.grout_gap), -(tile_vert_rect.skip_y + plan.grout_gap)]
+        times: 2
+    increment: [4 * (tile_vert_rect.skip_x + plan.grout_gap), 0]
+

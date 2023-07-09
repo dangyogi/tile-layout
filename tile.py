@@ -12,23 +12,23 @@ def erase_tiles(canvas):
     canvas.delete("section")
     canvas.delete("tile")
 
-def generate_tile(name, shape, args, tile, rotation=0):
+def generate_tile(name, shape, args, color, image, rotation=0):
     constants = args.copy()
     if 'constants' in shape:
-        for name, exp in shape['constants'].items():
-            constants[name] = my_eval(exp, constants, f"<generate_tile({name})>")
-    def get(name, eval_fn=my_eval, default='fail'):
-        #print(f"get({name!r})")
+        for const_name, exp in shape['constants'].items():
+            constants[const_name] = my_eval(exp, constants, f"<generate_tile({name})>")
+    def get(attr, eval_fn=my_eval, default='fail'):
+        #print(f"get({attr!r})")
         if default == 'fail':
-            value = shape[name]
+            value = shape[attr]
         else:
-            value = shape.get(name, default)
+            value = shape.get(attr, default)
         return eval_fn(value, constants, f"<generate_tile({name})>")
-    if 'color' in tile:
+    if color is not None:
         return Tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
-                    eval_color(tile['color']), get('is_rect', default=False), shape)
+                    color, get('is_rect', default=False), shape, args)
     return Image_tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
-                      tile['image'], rotation)
+                      image, rotation)
 
 def eval_points(points, constants, location):
     return tuple(eval_pair(p, constants, location) for p in points)
@@ -39,20 +39,11 @@ def gen_tile(name, tile):
     assert shape['type'] == 'polygon', f"expected type 'polygon', got '{shape['type']}'"
     args = {param: my_eval(tile[param], {}, f"<gen_tile({name}) {param}>")
             for param in shape['parameters']}
-    tile_1 = generate_tile(name, shape, args, tile)
+    tile_1 = generate_tile(name, shape, args, eval_color(tile.get('color')), tile.get('image'))
     yield name, tile_1
-    if 'flipped' in shape:
-        f = shape['flipped']
-        if 'shape' in f:
-            shape = app.Shapes[f['shape']]
-        args = {param: args[arg_name]
-                for param, arg_name
-                 in zip(shape['parameters'], f['arguments'])}
-        name += '-flipped'
-        tile_2 = generate_tile(name, shape, args, tile, 90)
-        yield name, tile_2
-        tile_1.flipped = tile_2
-        tile_2.flipped = tile_1
+    tile_2 = tile_1.flip()
+    if tile_2 is not None:
+        yield tile_2.name, tile_2
 
 
 class Base_tile:
@@ -77,6 +68,9 @@ class Base_tile:
             print("  flipped:", self.flipped.name)
         print()
 
+    def flip(self):
+        return None
+
 
 class Tile(Base_tile):
     r'''Polygon tiles.  Rectangles have a clip method.
@@ -88,27 +82,40 @@ class Tile(Base_tile):
     upper_right = 2
     lower_right = 3
 
-    def __init__(self, name, points, skip_x, skip_y, color, is_rect, shape):
+    def __init__(self, name, points, skip_x, skip_y, color, is_rect, shape, args):
         super().__init__(name, points, skip_x, skip_y)
         self.color = color
         self.is_rect = is_rect and skip_x != skip_y
         if self.is_rect:
             self.alignment = 'horz' if skip_x > skip_y else 'vert'
         self.shape = shape
+        self.args = args
 
     def __str__(self):
         return f"<{self.__class__.__name__}: {self.name}, {self.color}>"
 
-    def place_at(self, offset, angle, plan, skip):
-        r'''The `angle` is ignored here.  Only used for Image_tiles.
-        '''
-        return plan.create_polygon(self.points, offset, self.color, skip)
+    def flip(self):
+        shape = self.shape
+        if 'flipped' in shape:
+            f = shape['flipped']
+            if 'shape' in f:
+                shape = app.Shapes[f['shape']]
+            args = {param: self.args[arg_name]
+                    for param, arg_name
+                     in zip(shape['parameters'], f['arguments'])}
+            tile_2 = generate_tile(f"{self.name}-flipped", shape, args, self.color, None, 90)
+            self.flipped = tile_2
+            tile_2.flipped = self
+            return tile_2
+        return None
 
     def with_color(self, color):
         tk_color = eval_color(color)
         print(f"Tile({self.name}).with_color({color}) -> {tk_color=}")
-        return Tile(f"{self.name}-{color}", self.points, self.skip_x, self.skip_y,
-                    tk_color, self.is_rect, self.shape)
+        ans = Tile(f"{self.name}-{color}", self.points, self.skip_x, self.skip_y,
+                   tk_color, self.is_rect, self.shape, self.args)
+        ans.flip()
+        return ans
 
     def clip(self, length, corner=None, grout_gap=None):
         r'''Clip the length (whether horizontal or vertical) and return a new Tile.
@@ -133,8 +140,10 @@ class Tile(Base_tile):
                 points[self.upper_right] = [self.skip_x, length]
                 skip_x = self.skip_x
                 skip_y = length
-            return Tile(f"{self.name}-clipped", points, skip_x, skip_y, self.color, True,
-                        self.shape)
+            ans = Tile(f"{self.name}-clipped", points, skip_x, skip_y, self.color, True,
+                       self.shape, self.args)
+            ans.flip()
+            return ans
         if corner not in ('lower_left', 'lower_right', 'upper_left', 'upper_right'):
             raise ValueError(f"Tile({self.name}).clip: illegal corner, got {corner!r}, "
                              "expected 'lower_left', 'lower_right', 'upper_left', or "
@@ -196,8 +205,15 @@ class Tile(Base_tile):
                 points[self.upper_right] = [self.skip_x, short_length]
             skip_x = self.skip_x
             skip_y = length
-        return Tile(f"{self.name}-mitred", points, skip_x, skip_y, self.color, True,
-                    self.shape)
+        ans = Tile(f"{self.name}-mitred", points, skip_x, skip_y, self.color, True,
+                   self.shape, self.args)
+        ans.flip()
+        return ans
+
+    def place_at(self, offset, angle, plan, skip):
+        r'''The `angle` is ignored here.  Only used for Image_tiles.
+        '''
+        return plan.create_polygon(self.points, offset, self.color, skip)
 
 
 class Image_tile(Base_tile):

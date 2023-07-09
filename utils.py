@@ -162,6 +162,8 @@ def eval_pair(s, constants, location, relaxed=False):
 def eval_color(s, colors=None):
     if colors is None:
         colors = app.Colors
+    if s is None:
+        return None
     if s[0] == '#': return s
     try:
         return colors[s.lower()]
