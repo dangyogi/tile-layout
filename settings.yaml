@@ -417,7 +417,7 @@ wall_settings:
                         #tile: Diamante Michoacana-4
                         #tile: Diamante Michoacana-6     # Wow!  Very striking
                         #tile: Escamilla Amarillo-4
-                        #tile: Escamilla Amarillo-6      # not really...
+                        #tile: Escamilla Amarillo-6      # not really...  M likes
                         #tile: Escamilla Rojo-4
                         #tile: Escamilla Rojo-6          # not really...
                         #tile: Estrella de Fuego-4
@@ -425,7 +425,7 @@ wall_settings:
                         #tile: Flor de Amapola-4
                         #tile: Flor de Amapola-6         # don't think so, need to use 'flower' on this
                         #tile: Flor de Corazones-4
-                        #tile: Flor de Corazones-6       # something weird about this one...
+                        #tile: Flor de Corazones-6       # something weird about this one...  M no
                         #tile: Lace Azul-4
                         #tile: Lace Azul-6               # all black!  No go...
                         #tile: Morocco-4
@@ -433,9 +433,9 @@ wall_settings:
                         #tile: Nube Verde-4
                         #tile: Nube Verde-6              # too much green
                         #tile: Royal-4
-                        tile: Royal-6                   # needs 'flower', then maybe?
+                        #tile: Royal-6                   # needs 'flower', then maybe?   M likes
                         #tile: Taxco Real-4
-                        #tile: Taxco Real-6              # maybe
+                        tile: Taxco Real-6              # maybe
 
             stepped:
                 alignment:
@@ -600,128 +600,135 @@ wall_settings:
                     right: true
             sp2:
                 alignment:
-                    angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    angle: 45
+                    x_offset: 5
+                    y_offset: 1/4       # centered on wall #1
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp2
-                    tile_rect: 3x6 white
-                    tile_square: 6" square white
+                    tile_rect: 3x6 koi
+                    tile_square: 6" square koi
             sp3:
                 alignment:
-                    angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    angle: 45
+                    x_offset: -2
+                    #x_offset: 6.3/4
+                    y_offset: 3/16
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp3
-                    tile_rect: 3x6 white
-                    tile_square: 6" square white
+                    tile_rect: 3x6 koi
+                    tile_square: 6" square koi
                     #trace: [offset, inc_x, inc_y, increment_xy, sequence, delta]
             sp4:
                 alignment:
-                    angle: 0
-                    x_offset: 0
+                    angle: 45
+                    x_offset: -2
                     y_offset: 0
-                grout_color: g_chocolate
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp4
-                    tile_vert_rect: 3x6 white.flipped
-                    tile_square: 6" square white
+                    tile_vert_rect: 3x6 koi.flipped
+                    tile_square: 6" square koi
             sp6:
                 alignment:
-                    angle: 0
+                    angle: 6.7
                     x_offset: 0
                     y_offset: 0
-                grout_color: g_chocolate
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp6
-                    tile_vert_rect: 3x6 white.flipped
-                    tile_square: 6" square white
+                    tile_vert_rect: 3x6 koi.flipped
+                    tile_square: 6" square koi
             sp7:
                 alignment:
-                    angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    angle: 90
+                    #x_offset: 5
+                    x_offset: 8.1/8
+                    y_offset: -5/8
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp7
-                    tile_rect: 3x6 white
+                    tile_rect: 3x6 koi
             sp9:
                 alignment:
                     angle: 0
                     x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    y_offset: -5/8      # centered on wall
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp9
-                    tile_rect: 3x6 white
+                    tile_rect: 3x6 koi
             sp12:
                 alignment:
-                    angle: 0
+                    angle: 45
                     x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    y_offset: 2.3/8     # rect points touching bottom and top of wall
+                    #y_offset: 6.3/4     # square points touching bottom and top of wall
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp12
-                    tile_rect: 3x6 white
-                    tile_square: 6" square white
+                    tile_rect: 3x6 koi
+                    tile_square: 6" square koi
             sp14:
                 alignment:
-                    angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    angle: 6.2
+                    x_offset: -1
+                    y_offset: 3.1/4
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp14
-                    tile_rect: 3x6 white
-                    tile_square: 6" square white
+                    tile_rect: 3x6 koi
+                    tile_square: 6" square koi
             sp18:
                 alignment:
                     angle: -45
                     x_offset: 0
                     y_offset: 0
-                grout_color: g_chocolate
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp18
-                    tile_rect: 3x6 white
+                    tile_rect: 3x6 koi
             sp23:
                 alignment:
-                    angle: 0
+                    angle: -60    # needs fine tuning
                     x_offset: 0
                     y_offset: 0
-                grout_color: g_chocolate
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     type: sp23
-                    tile_rect: 3x6 white
+                    tile_rect: 3x6 koi
             sp24:
                 alignment:
-                    angle: 0
+                    angle: 37
                     x_offset: 0
                     y_offset: 0
-                grout_color: g_chocolate
+                grout_color: gu_mahogany
                 grout_gap: 1/8
                 layout:
                     #trace: [xy_inc, xy, repeat, place_true]
                     type: sp24
-                    tile_rect: 3x6 white
+                    tile_rect: 3x6 koi
             large_sc_koi:
                 alignment:
                     angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    x_offset: 0         # tiles centered on wall
+                    #y_offset: 2.3/8     # outlets centered on tile
+                    y_offset: 3.1/4     # tiles centered on wall
+                #grout_color: gu_avalanche
+                grout_color: gu_mahogany
+                #grout_color: gu_black
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -733,9 +740,12 @@ wall_settings:
             mini_sc_koi:
                 alignment:
                     angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    x_offset: -3/4      # tiles centered on wall
+                    y_offset: 2.1/2     # tiles centered on wall, grout line centered on outlets
+                #grout_color: gu_avalanche
+                grout_color: gu_mahogany
+                #grout_color: gu_black
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -748,8 +758,9 @@ wall_settings:
                 alignment:
                     angle: 0
                     x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    #y_offset: 2.3/8     # outlets centered on tile
+                    y_offset: 3.1/4     # tiles centered on wall
+                grout_color: gu_mahogany
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -761,9 +772,9 @@ wall_settings:
             mini_sc_tuolumne_meadows:
                 alignment:
                     angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    x_offset: -3/4      # tiles centered on wall
+                    y_offset: 2.1/2     # tiles centered on wall, grout line centered on outlets
+                grout_color: gu_mahogany
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -776,8 +787,14 @@ wall_settings:
                 alignment:
                     angle: 0
                     x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    #y_offset: 2.3/8     # outlets centered on tile
+                    y_offset: 3.1/4     # tiles centered on wall
+                #grout_color: g_chocolate
+                #grout_color: g_mint
+                #grout_color: gu_black
+                grout_color: gu_mahogany
+                #grout_color: gu_warm_gray       # almost identical to g_mint
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -789,9 +806,14 @@ wall_settings:
             mini_sc_bryce_canyon:
                 alignment:
                     angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    x_offset: -3/4      # tiles centered on wall
+                    y_offset: 2.1/2     # tiles centered on wall, grout line centered on outlets
+                #grout_color: g_chocolate
+                #grout_color: g_mint
+                #grout_color: gu_black
+                grout_color: gu_mahogany
+                #grout_color: gu_warm_gray       # almost identical to g_mint
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -804,8 +826,15 @@ wall_settings:
                 alignment:
                     angle: 0
                     x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    #y_offset: 2.3/8     # outlets centered on tile
+                    y_offset: 3.1/4     # tiles centered on wall
+                #grout_color: g_chocolate
+                #grout_color: gu_black
+                grout_color: gu_mahogany
+                #grout_color: gu_mocha
+                #grout_color: gu_pearl_gray
+                #grout_color: gu_pecan
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -817,9 +846,15 @@ wall_settings:
             mini_sc_haystack:
                 alignment:
                     angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    x_offset: -3/4      # tiles centered on wall
+                    y_offset: 2.1/2     # tiles centered on wall, grout line centered on outlets
+                #grout_color: g_chocolate
+                #grout_color: gu_black
+                grout_color: gu_mahogany
+                #grout_color: gu_mocha
+                #grout_color: gu_pearl_gray
+                #grout_color: gu_pecan
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -832,8 +867,12 @@ wall_settings:
                 alignment:
                     angle: 0
                     x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    #y_offset: 2.3/8     # outlets centered on tile
+                    y_offset: 3.1/4     # tiles centered on wall
+                #grout_color: gu_light_almond
+                grout_color: gu_mahogany
+                #grout_color: gu_pecan
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -845,9 +884,12 @@ wall_settings:
             mini_sc_sunflower:
                 alignment:
                     angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    x_offset: -3/4      # tiles centered on wall
+                    y_offset: 2.1/2     # tiles centered on wall, grout line centered on outlets
+                #grout_color: gu_light_almond
+                grout_color: gu_mahogany
+                #grout_color: gu_pecan
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -860,8 +902,19 @@ wall_settings:
                 alignment:
                     angle: 0
                     x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    #y_offset: 2.3/8     # outlets centered on tile
+                    y_offset: 3.1/4     # tiles centered on wall
+                #grout_color: g_aquamarine    # purplish white
+                #grout_color: g_hickory
+                #grout_color: g_mint
+                #grout_color: gu_acorn   # subdued
+                #grout_color: gu_avalanche
+                #grout_color: gu_bone    # pinkish white
+                grout_color: gu_light_almond    # slightly off-white
+                #grout_color: gu_pearl_gray      # softer
+                #grout_color: gu_silver          # whitish
+                #grout_color: gu_warm_gray       # whitish
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard
@@ -873,9 +926,19 @@ wall_settings:
             mini_sc_antique:
                 alignment:
                     angle: 0
-                    x_offset: 0
-                    y_offset: 0
-                grout_color: g_chocolate
+                    x_offset: -3/4      # tiles centered on wall
+                    y_offset: 2.1/2     # tiles centered on wall, grout line centered on outlets
+                #grout_color: g_aquamarine    # purplish white
+                #grout_color: g_hickory
+                #grout_color: g_mint
+                #grout_color: gu_acorn   # subdued
+                #grout_color: gu_avalanche
+                #grout_color: gu_bone    # pinkish white
+                grout_color: gu_light_almond    # slightly off-white
+                #grout_color: gu_pearl_gray      # softer
+                #grout_color: gu_silver          # whitish
+                #grout_color: gu_warm_gray       # whitish
+                #grout_color: gu_white
                 grout_gap: 3/16
                 layout:
                     type: checkerboard

@@ -103,10 +103,30 @@ full paprika:
     width: 6
     color: black
 
+6" square bryce_canyon:
+    shape: square
+    width: 6
+    color: bryce_canyon
+
+6" square koi:
+    shape: square
+    width: 6
+    color: koi
+
 8" square white:
     shape: square
     width: 8
     color: white
+
+8" square bryce_canyon:
+    shape: square
+    width: 8
+    color: bryce_canyon
+
+8" square koi:
+    shape: square
+    width: 8
+    color: koi
 
 8" square grey:
     shape: square
@@ -162,11 +182,35 @@ full paprika:
     width: 6
     color: black
 
+3x6 bryce_canyon:
+    shape: rectangle
+    height: 3
+    width: 6
+    color: bryce_canyon
+
+3x6 koi:
+    shape: rectangle
+    height: 3
+    width: 6
+    color: koi
+
 3x8 white:
     shape: rectangle
     height: 3
     width: 8
     color: white
+
+3x8 bryce_canyon:
+    shape: rectangle
+    height: 3
+    width: 8
+    color: bryce_canyon
+
+3x8 koi:
+    shape: rectangle
+    height: 3
+    width: 8
+    color: koi
 
 3x10 white:
     shape: rectangle

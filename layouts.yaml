@@ -679,9 +679,9 @@ sp14:
     parameters: [tile_rect, tile_vert_rect, tile_square]
     defaults:
         tile_vert_rect: tile_rect.flipped
-    type: repeat
+    type: repeat       # angled
     step:
-        type: repeat
+        type: repeat   # up
         step:
             type: sequence
             steps:
@@ -689,7 +689,7 @@ sp14:
                   tile: tile_rect
                 - type: place
                   tile: tile_vert_rect
-                  delta_x: (tile_vert_rect.skip_x + plan.grout_gap)
+                  delta_x: -(tile_vert_rect.skip_x + plan.grout_gap)
                   delta_y: tile_rect.skip_y + plan.grout_gap
                 - type: place
                   tile: tile_square
