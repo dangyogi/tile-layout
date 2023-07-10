@@ -280,7 +280,7 @@ wall_settings:
                     type: flower
                     #tile: test_image
                     tile: Royal-6
-                    trace: [save, offset, delta]
+                    #trace: [save, offset, delta]
 
             hex:
                 alignment:
@@ -404,7 +404,7 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: stepped
-                    trace: [constants, sequence, save, inc_x, inc_y]
+                    #trace: [constants, sequence, inc_x, inc_y]
                     step:
                         type: flower
                         #type: place
@@ -433,7 +433,7 @@ wall_settings:
                         #tile: Nube Verde-4
                         #tile: Nube Verde-6              # too much green
                         #tile: Royal-4
-                        #tile: Royal-6                   # needs 'flower', then maybe?
+                        tile: Royal-6                   # needs 'flower', then maybe?
                         #tile: Taxco Real-4
                         #tile: Taxco Real-6              # maybe
 
@@ -1402,7 +1402,7 @@ wall_settings:
                           delta: [0, 43.1/4]
                           skip: true
                         - type: sequence        # 4" white border
-                          trace: [constants, save]
+                          #trace: [constants, save]
                           constants:
                               bottom: wall.panels['niche_sill'].bottom - plan.grout_gap
                               #bottom: wall.panels['niche_sill'].bottom - 1.31/32 - plan.grout_gap
@@ -1429,27 +1429,22 @@ wall_settings:
                             - type: repeat       # vert sides, left and right
                               step:
                                   type: sequence
-                                  trace: [save]
+                                  #trace: [save]
+                                  constants:
+                                      clip_y1: (niche_height - 1/8) / 2
                                   steps:
                                       - type: place
-                                        tile: tile_vert.clip((niche_height - 1/8) / 2)
-                                        save:
-                                            next_y: inc_y - plan.grout_gap
+                                        tile: tile_vert.clip(clip_y1)
                                       - type: place
                                         tile: 1/8" chocolate.clip(4) # .with_color('blue')
-                                        delta_y: next_y
-                                        save:
-                                            next_y: next_y + inc_y - 1/8
+                                        delta_y: clip_y1
                                       - type: place
                                         tile: tile_vert.clip(border_height - 1/4 - (niche_height - 1/8) / 2)
-                                        delta_y: next_y
+                                        delta_y: clip_y1 + 1/8
                               times: 2
                               increment: [border_width - 4.1/8, 0]
                               delta_x: 1/8
                               delta_y: 1/8
-                              save:
-                                  saved_inc_x: inc_x
-                                  saved_inc_y: inc_y
                             - type: place  # right grout line
                               tile: 1/8" chocolate.flipped.clip(border_height - 1/8) # .with_color('blue')
                               delta_x: border_width - 1/8
@@ -1491,7 +1486,7 @@ wall_settings:
                           #delta: [0, 43.1/4]
                           skip: false
                         - type: sequence   # diagonal squares
-                          trace: [constants, save]
+                          #trace: [constants, save]
                           constants:
                               bottom: wall.panels['niche_sill'].bottom - plan.grout_gap
                               top: wall.panels['niche_border'].top + 1.31/32
@@ -1513,27 +1508,22 @@ wall_settings:
                             - type: repeat       # vert sides, left and right
                               step:
                                   type: sequence
-                                  trace: [save]
+                                  constants:
+                                      clip_y1: (niche_height - 1/8) / 2
+                                  #trace: [save]
                                   steps:
                                       - type: place
-                                        tile: 4x12.flipped.clip((niche_height - 1/8) / 2)
-                                        save:
-                                            next_y: inc_y - plan.grout_gap
+                                        tile: 4x12.flipped.clip(clip_y1)
                                       - type: place
                                         tile: 1/8" chocolate.clip(4) # .with_color('blue')
-                                        delta_y: next_y
-                                        save:
-                                            next_y: next_y + inc_y - 1/8
+                                        delta_y: clip_y1
                                       - type: place
                                         tile: 4x12.flipped.clip(border_height - 1/4 - (niche_height - 1/8) / 2)
-                                        delta_y: next_y
+                                        delta_y: clip_y1 + 1/8
                               times: 2
                               increment: [border_width - 4.1/8, 0]
                               delta_x: 1/8
                               delta_y: 1/8
-                              save:
-                                  saved_inc_x: inc_x
-                                  saved_inc_y: inc_y
                             - type: place  # right grout line
                               tile: 1/8" chocolate.flipped.clip(border_height - 1/8) # .with_color('blue')
                               delta_x: border_width - 1/8
@@ -2139,6 +2129,8 @@ wall_settings:
                           size: [plan.canvas.width_in, 47]
                           layout:
                               type: sequence
+                              constants:
+                                  inc_y1: 8 * (multi_getattr(star-white, 'skip_y') + plan.grout_gap) - 1.1/2
                               steps:
                                   - type: checkerboard
                                     steps:
@@ -2147,19 +2139,15 @@ wall_settings:
                                         - type: place
                                           tile: cross-white
                                     num_y: 8
-                                    use:
-                                        offset_x: 2
-                                        offset_y: -1.1/2
-                                    save:
-                                        inc_y1: offset_y + inc_y
+                                    delta_x: 2
+                                    delta_y: -1.1/2
                                   - type: repeat
                                     step:
                                         type: place
                                         #tile: [Estrella de Fuego-6, Arabesque Azul-6]
                                         tile: Estrella de Fuego-6
-                                    use:
-                                        offset_x: 3.9/16 - 1.15/16 + plan.grout_gap
-                                        offset_y: inc_y1 - 6.1/16
+                                    delta_x: 3.9/16 - 1.15/16 + plan.grout_gap
+                                    delta_y: inc_y1 - 6.1/16
                                     #start: [3.3/4, 84.1/2]
                                     increment: [2 * (5.25/32 + plan.grout_gap), 0]
                         #- type: repeat
@@ -2194,6 +2182,8 @@ wall_settings:
                           size: [plan.canvas.width_in, 47]
                           layout:
                               type: sequence
+                              constants:
+                                  inc_y1: 8 * (multi_getattr(star-white, 'skip_y') + plan.grout_gap) - 1.1/2
                               steps:
                                   - type: checkerboard
                                     steps:
@@ -2202,19 +2192,15 @@ wall_settings:
                                         - type: place
                                           tile: cross-white
                                     num_y: 8
-                                    use:
-                                        offset_x: 2
-                                        offset_y: -1.1/2
-                                    save:
-                                        inc_y1: offset_y + inc_y
+                                    delta_x: 2
+                                    delta_y: -1.1/2
                                   - type: repeat
                                     step:
                                         type: place
                                         #tile: [Estrella de Fuego-6, Arabesque Azul-6]
                                         tile: Estrella de Fuego-6
-                                    use:
-                                        offset_x: 3.9/16 - 1.15/16 + plan.grout_gap
-                                        offset_y: inc_y1 - 6.1/16
+                                    delta_x: 3.9/16 - 1.15/16 + plan.grout_gap
+                                    delta_y: inc_y1 - 6.1/16
                                     #start: [3.3/4, 84.1/2]
                                     increment: [2 * (5.25/32 + plan.grout_gap), 0]
                         #- type: repeat
@@ -2261,17 +2247,15 @@ wall_settings:
                                         type: place
                                         tile: 4x12
                                     right: false
-                                    use:
-                                        offset_x: 2
-                                        offset_y: -1.1/2
+                                    delta_x: 2
+                                    delta_y: -1.1/2
                                   - type: repeat
                                     step:
                                         type: place
                                         #tile: [Estrella de Fuego-6, Arabesque Azul-6]
                                         tile: Estrella de Fuego-6
-                                    use:
-                                        offset_x: 3.9/16 - 1.15/16 + plan.grout_gap
-                                        offset_y: 47 - 6.1/16
+                                    delta_x: 3.9/16 - 1.15/16 + plan.grout_gap
+                                    delta_y: 47 - 6.1/16
                                     #start: [3.3/4, 84.1/2]
                                     increment: [2 * (5.25/32 + plan.grout_gap), 0]
                         #- type: repeat
@@ -2313,17 +2297,15 @@ wall_settings:
                                     #tile_horz: 3x12 caicos_blue
                                     tile_horz: 3x12 white
                                     right: true
-                                    use:
-                                        offset_x: 2
-                                        offset_y: -1.1/2
+                                    delta_x: 2
+                                    delta_y: -1.1/2
                                   - type: repeat
                                     step:
                                         type: place
                                         #tile: [Estrella de Fuego-6, Arabesque Azul-6]
                                         tile: Estrella de Fuego-6
-                                    use:
-                                        offset_x: 3.9/16 - 1.15/16 + plan.grout_gap
-                                        offset_y: 47 - 6.1/16
+                                    delta_x: 3.9/16 - 1.15/16 + plan.grout_gap
+                                    delta_y: 47 - 6.1/16
                                     #start: [3.3/4, 84.1/2]
                                     increment: [2 * (5.25/32 + plan.grout_gap), 0]
                         #- type: repeat

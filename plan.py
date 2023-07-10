@@ -167,21 +167,8 @@ class Plan:
         The sequence executes with it's own constants that are discarded when it's done.
         Additionally, each step executes with it's own disposable constants.
 
-        Values can be copied from an individual step's constants to the sequence's
-        constants by placing 'save' on that step with a dict of sequence keys and
-        expressions.
-
-        Values can be copied from the sequence's constants to an individual step's
-        constants by placing 'use' on that step with a dict of step keys and expressions.
-
-        Thus, 'use' processing is done prior to running the step, while 'save' processing
-        is done afterwards.
-
-        The initial offset is stored as constants in 'initial_x', 'initial_y'.  By default,
-        these are used for the offset of each step.
-
-        To override this default, each step may specify an 'offset' that is added to
-        'initial_x', 'initial_y', or specify the offset directly as 'offset_x', 'offset_y'.
+        The initial offset is stored as constants in 'initial_x', 'initial_y'.  These are
+        used for the offset fed to each step.
 
         Individual steps may be skipped by setting skip: true on the step.
         '''
@@ -203,44 +190,11 @@ class Plan:
             if my_eval(step.get('skip', False), constants, f"<{step_name}.sequence: skip"):
                 continue
             step_constants = my_constants.new_child()
-            step_constants['offset_x'] = step_constants['initial_x']
-            step_constants['offset_y'] = step_constants['initial_y']
-            if 'use' in step:
-                for key, value in step['use'].items():
-                    step_constants[key] = \
-                      my_eval(value, step_constants,
-                              f"<{step_name}.sequence: use {key}>")
-                    if 'use' in trace:
-                        print(f"{step_name}.sequence: step {i} 'use' setting {key=} to "
-                              f"{f_to_str(step_constants[key])}")
-            #if 'offset' in step:
-            #    x, y = my_eval(step['offset'], step_constants,
-            #                   f"<{step_name}.sequence: offset>")
-            #    step_constants['offset'] = \
-            #      step_constants['initial_x'] + x, step_constants['initial_y'] + y
-            #    if 'offset' in trace:
-            #        print(f"sequence step {i}: offset ({f_to_str(x)}, {f_to_str(y)}), "
-            #              f"final offset={f_to_str(step_constants['offset'])}")
-            #else:
-            #    step_constants['offset'] = \
-            #      step_constants['offset_x'], step_constants['offset_y']
-            #    if 'offset' in trace:
-            #        print(f"sequence step {i}: offset={f_to_str(step_constants['offset'])}")
-            step_constants['offset'] = step_constants['offset_x'], step_constants['offset_y']
+            step_constants['offset'] = initial_x, initial_y
             if 'offset' in trace:
                 print(f"sequence step {i}: offset={f_to_str(step_constants['offset'])}")
-            offset_x, offset_y = step_constants['offset']
             if self.do_step(f"sequence, step {i}", step, step_constants, trace=trace):
-                if 'save' in step:
-                    if 'save-constants' in trace:
-                        print(f"{step_name}.sequence: save {f_to_str(step_constants)}")
-                    for key, value in step['save'].items():
-                        my_constants[key] = \
-                          my_eval(value, step_constants,
-                                  f"{step_name}.sequence: save {key}>")
-                        if 'save' in trace:
-                            print(f"{step_name}.sequence step {i}: save {key} set to "
-                                  f"{f_to_str(my_constants[key])}")
+                offset_x, offset_y = step_constants['offset']
                 if inc_x is None or step_constants['inc_x'] + offset_x > inc_x:
                     inc_x = step_constants['inc_x'] + offset_x
                     if 'inc_x' in trace:

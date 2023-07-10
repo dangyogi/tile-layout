@@ -157,7 +157,7 @@ do_new_basketweave:
         and horizontal dimensions of the rectangles.  The size of the square should be the
         difference in dimensions / 2 minus one grout_gap.
     parameters: [rect_a, rect_b, tile_square]
-    trace: [constants, use]
+    #trace: [constants, use]
     constants:
         ainc: plan.get_inc_xy(rect_a, constants, "rect_a")   # includes all but last grout gap
         ainc_x: ainc[0]
@@ -180,6 +180,9 @@ do_new_basketweave:
                     delta: [ainc_x, (ainc_y - binc_y) / 2]
           increment: [-ainc_x + (ainc_x - binc_x) / 2, (ainc_y + binc_y) / 2]
         - type: repeat
+          constants:
+              square_inc_x: multi_getattr(tile_square, 'skip_x') + plan.grout_gap
+              square_inc_y: multi_getattr(tile_square, 'skip_y') + plan.grout_gap
           step:
               type: repeat
               step:
@@ -187,10 +190,7 @@ do_new_basketweave:
                   tile: tile_square
               increment: [binc_x + square_inc_x, 0]
           increment: [0, square_inc_y + ainc_y]
-          use:
-              square_inc_x: multi_getattr(tile_square, 'skip_x') + plan.grout_gap
-              square_inc_y: multi_getattr(tile_square, 'skip_y') + plan.grout_gap
-              offset_y: ainc_y
+          delta_y: ainc_y
           skip: tile_square is None
 
 new_basketweave:
@@ -456,29 +456,26 @@ border_row:
         start_x: 0
         start_y: 0
         tile_last: tile_first
+    constants:
+        left_inc_x: multi_getattr(tile_first, 'skip_x') + plan.grout_gap
+        right_inc_x: left_inc_x + num_middle * (multi_getattr(tile_middle, 'skip_x') + plan.grout_gap)
     type: sequence
     steps:
         - type: place
           tile: tile_first
           delta: [start_x, start_y]
-          save:
-              saved_inc_x: inc_x + start_x + offset_x
-        - type: repeat
+        - type: repeat    # bottom row
           step:
               type: place
               tile: tile_middle
           increment: [tile_middle.skip_x + plan.grout_gap, 0]
-          use:
-              offset_x: saved_inc_x
-              offset_y: start_y
+          delta_x: left_inc_x + start_x
+          delta_y: start_y
           times: num_middle
-          save:
-              saved_inc_x: inc_x + offset_x
         - type: place
           tile: tile_last
-          use:
-              offset_x: saved_inc_x
-              offset_y: start_y
+          delta_x: right_inc_x + start_x
+          delta_y: start_y
 
 border_column:
     description: >
@@ -489,29 +486,26 @@ border_column:
         start_x: 0
         start_y: 0
         tile_last: tile_first
+    constants:
+        bottom_inc_y: multi_getattr(tile_first, 'skip_y') + plan.grout_gap
+        top_inc_y: bottom_inc_y + num_middle * (multi_getattr(tile_middle, 'skip_y') + plan.grout_gap)
     type: sequence
     steps:
         - type: place
           tile: tile_first
           delta: [start_x, start_y]
-          save:
-              saved_inc_y: inc_y + start_y + offset_y
         - type: repeat
           step:
               type: place
               tile: tile_middle
           increment: [0, tile_middle.skip_y + plan.grout_gap]
-          use:
-              offset_x: start_x
-              offset_y: saved_inc_y
+          delta_x: start_x
+          delta_y: bottom_inc_y + start_y
           times: num_middle
-          save:
-              saved_inc_y: inc_y + offset_y
         - type: place
           tile: tile_last
-          use:
-              offset_x: start_x
-              offset_y: saved_inc_y
+          delta_x: start_x
+          delta_y: top_inc_y + start_y
 
 flower:
     description: >
@@ -519,8 +513,8 @@ flower:
       original tile.
     parameters: [tile]
     constants:
-        x: pick(tile, dict(index=0)).skip_x + plan.grout_gap
-        y: pick(tile, dict(index=0)).skip_y + plan.grout_gap
+        x: multi_getattr(tile, 'skip_x') + plan.grout_gap
+        y: multi_getattr(tile, 'skip_y') + plan.grout_gap
     type: sequence
     steps:
         - type: place
@@ -531,21 +525,18 @@ flower:
           tile: tile
           angle: 180
           index: 2
-          use:
-              offset_x: x
+          delta_x: x
         - type: place
           tile: tile
           angle: 0
           index: 0
-          use:
-              offset_y: y
+          delta_y: y
         - type: place
           tile: tile
           angle: -90
           index: 1
-          use:
-              offset_x: x
-              offset_y: y
+          delta_x: x
+          delta_y: y
 
 sp2:
     parameters: [tile_rect, tile_square]
@@ -559,8 +550,7 @@ sp2:
                   tile: tile_rect
                 - type: place
                   tile: tile_square
-                  use:
-                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+                  delta_y: tile_rect.skip_y + plan.grout_gap
         increment: [tile_rect.skip_x + plan.grout_gap, 0]
     increment: [0, tile_rect.skip_y + tile_square.skip_y + 2 * plan.grout_gap]
 
@@ -576,21 +566,17 @@ sp3:
               tile: tile_vert_rect
             - type: place
               tile: tile_square
-              use:
-                  offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+              delta_x: tile_vert_rect.skip_x + plan.grout_gap
             - type: place   # bottom horz tile
               tile: tile_rect
-              use:
-                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+              delta_y: tile_vert_rect.skip_y + plan.grout_gap
             - type: place   # top horz tile
               tile: tile_rect
-              use:
-                  offset_y: initial_y + tile_vert_rect.skip_y + tile_rect.skip_y + 2 * plan.grout_gap
+              delta_y: tile_vert_rect.skip_y + tile_rect.skip_y + 2 * plan.grout_gap
             - type: place
               tile: tile_vert_rect
-              use:
-                  offset_x: initial_x + tile_rect.skip_x + plan.grout_gap
-                  offset_y: initial_y + tile_square.skip_y + plan.grout_gap
+              delta_x: tile_rect.skip_x + plan.grout_gap
+              delta_y: tile_square.skip_y + plan.grout_gap
 
 sp4:
     parameters: [tile_vert_rect, tile_square]
@@ -602,17 +588,14 @@ sp4:
               tile: tile_vert_rect
             - type: place
               tile: tile_square
-              use:
-                  offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+              delta_x: tile_vert_rect.skip_x + plan.grout_gap
             - type: place
               tile: tile_square
-              use:
-                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+              delta_y: tile_vert_rect.skip_y + plan.grout_gap
             - type: place
               tile: tile_vert_rect
-              use:
-                  offset_x: initial_x + tile_square.skip_x + plan.grout_gap
-                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+              delta_x: tile_square.skip_x + plan.grout_gap
+              delta_y: tile_vert_rect.skip_y + plan.grout_gap
 
 sp6:
     parameters: [tile_vert_rect, tile_square]
@@ -624,12 +607,10 @@ sp6:
               tile: tile_vert_rect
             - type: place
               tile: tile_vert_rect
-              use:
-                  offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+              delta_x: tile_vert_rect.skip_x + plan.grout_gap
             - type: place
               tile: tile_square
-              use:
-                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+              delta_y: tile_vert_rect.skip_y + plan.grout_gap
 
 sp7:
     parameters: [tile_rect, tile_vert_rect]
@@ -643,16 +624,13 @@ sp7:
               tile: tile_vert_rect
             - type: place
               tile: tile_vert_rect
-              use:
-                  offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+              delta_x: tile_vert_rect.skip_x + plan.grout_gap
             - type: place
               tile: tile_rect
-              use:
-                  offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+              delta_y: tile_vert_rect.skip_y + plan.grout_gap
             - type: place
               tile: tile_rect
-              use:
-                  offset_y: initial_y + tile_vert_rect.skip_y + tile_rect.skip_y + 2 * plan.grout_gap
+              delta_y: tile_vert_rect.skip_y + tile_rect.skip_y + 2 * plan.grout_gap
 
 sp9:
     parameters: [tile_rect, percent_offset]
@@ -670,9 +648,8 @@ sp9:
               step:
                   type: place
                   tile: tile_rect
-              use:
-                  offset_x: initial_x + percent_offset * (tile_rect.skip_x + plan.grout_gap)
-                  offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+              delta_x: percent_offset * (tile_rect.skip_x + plan.grout_gap)
+              delta_y: tile_rect.skip_y + plan.grout_gap
     increment: [0, 2 * (tile_rect.skip_y + plan.grout_gap)]
 
 sp12:
@@ -689,13 +666,11 @@ sp12:
                   tile: tile_vert_rect
                 - type: place
                   tile: tile_square
-                  use:
-                      offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+                  delta_x: tile_vert_rect.skip_x + plan.grout_gap
                 - type: place
                   tile: tile_rect
-                  use:
-                      offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
-                      offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+                  delta_x: tile_vert_rect.skip_x + plan.grout_gap
+                  delta_y: tile_vert_rect.skip_y + plan.grout_gap
         increment: [tile_square.skip_x + plan.grout_gap, -(tile_vert_rect.skip_y + plan.grout_gap)]
     increment: [tile_vert_rect.skip_x + tile_square.skip_x + 2 * plan.grout_gap,
                 tile_rect.skip_y + plan.grout_gap]
@@ -714,22 +689,18 @@ sp14:
                   tile: tile_rect
                 - type: place
                   tile: tile_vert_rect
-                  use:
-                      offset_x: initial_x - (tile_vert_rect.skip_x + plan.grout_gap)
-                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+                  delta_x: (tile_vert_rect.skip_x + plan.grout_gap)
+                  delta_y: tile_rect.skip_y + plan.grout_gap
                 - type: place
                   tile: tile_square
-                  use:
-                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+                  delta_y: tile_rect.skip_y + plan.grout_gap
                 - type: place
                   tile: tile_vert_rect
-                  use:
-                      offset_x: initial_x + tile_square.skip_x + plan.grout_gap
-                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+                  delta_x: tile_square.skip_x + plan.grout_gap
+                  delta_y: tile_rect.skip_y + plan.grout_gap
                 - type: place
                   tile: tile_rect
-                  use:
-                      offset_y: initial_y + tile_rect.skip_y + tile_square.skip_y + 2 * plan.grout_gap
+                  delta_y: tile_rect.skip_y + tile_square.skip_y + 2 * plan.grout_gap
         increment: [0, 2 * tile_rect.skip_y + tile_square.skip_y + 3 * plan.grout_gap]
     increment: [tile_rect.skip_x + tile_vert_rect.skip_x + 2 * plan.grout_gap,
                 -(tile_vert_rect.skip_y + plan.grout_gap)]
@@ -748,13 +719,11 @@ sp18:
                   tile: tile_rect
                 - type: place
                   tile: tile_vert_rect
-                  use:
-                      offset_y: initial_y + tile_rect.skip_y + plan.grout_gap
+                  delta_y: tile_rect.skip_y + plan.grout_gap
                 - type: place
                   tile: tile_rect
-                  use:
-                      offset_x: initial_x + tile_vert_rect.skip_x - tile_rect.skip_x
-                      offset_y: initial_y + tile_rect.skip_y + tile_vert_rect.skip_y + 2 * plan.grout_gap
+                  delta_x: tile_vert_rect.skip_x - tile_rect.skip_x
+                  delta_y: tile_rect.skip_y + tile_vert_rect.skip_y + 2 * plan.grout_gap
         increment: [tile_vert_rect.skip_x + plan.grout_gap, tile_rect.skip_y + plan.grout_gap]
     increment: [tile_vert_rect.skip_x - tile_rect.skip_x - plan.grout_gap,
                 tile_rect.skip_y + tile_vert_rect.skip_y + 2 * plan.grout_gap]
@@ -773,14 +742,12 @@ sp23:
                   tile: tile_vert_rect
                 - type: place
                   tile: tile_rect
-                  use:
-                      offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
-                      offset_y: initial_y + (tile_rect.skip_y + plan.grout_gap) / 2
+                  delta_x: tile_vert_rect.skip_x + plan.grout_gap
+                  delta_y: (tile_rect.skip_y + plan.grout_gap) / 2
                 - type: place
                   tile: tile_rect
-                  use:
-                      offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
-                      offset_y: initial_y + (tile_rect.skip_y + plan.grout_gap) / 2 + tile_rect.skip_y + plan.grout_gap
+                  delta_x: tile_vert_rect.skip_x + plan.grout_gap
+                  delta_y: (tile_rect.skip_y + plan.grout_gap) / 2 + tile_rect.skip_y + plan.grout_gap
         increment: [0, 2 * (tile_rect.skip_y + plan.grout_gap)]
     increment: [tile_vert_rect.skip_x + tile_rect.skip_x + 2 * plan.grout_gap, 0]
 
@@ -803,12 +770,10 @@ sp24:
                       tile: tile_vert_rect
                     - type: place
                       tile: tile_vert_rect
-                      use:
-                          offset_x: initial_x + tile_vert_rect.skip_x + plan.grout_gap
+                      delta_x: tile_vert_rect.skip_x + plan.grout_gap
                     - type: place
                       tile: tile_rect
-                      use:
-                          offset_y: initial_y + tile_vert_rect.skip_y + plan.grout_gap
+                      delta_y: tile_vert_rect.skip_y + plan.grout_gap
             increment: [0, tile_vert_rect.skip_y + tile_rect.skip_y + 2 * plan.grout_gap]
         increment: [2 * (tile_vert_rect.skip_x + plan.grout_gap), -(tile_vert_rect.skip_y + plan.grout_gap)]
         times: 2
