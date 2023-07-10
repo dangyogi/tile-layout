@@ -257,6 +257,9 @@ class Plan:
         if visible:
             constants['inc_x'] = inc_x
             constants['inc_y'] = inc_y
+            if 'sequence' in trace:
+                print(f"{step_name}.sequence -> "
+                      f"inc_x={f_to_str(constants['inc_x'])}, inc_y={f_to_str(constants['inc_y'])}")
         if 'sequence' in trace:
             print(f"{step_name}.sequence -> {visible=}")
         return visible

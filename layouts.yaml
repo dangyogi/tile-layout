@@ -518,30 +518,34 @@ flower:
       Four tiles in a square (2x2 tiles) all sharing the lower-right corner of the
       original tile.
     parameters: [tile]
+    constants:
+        x: pick(tile, dict(index=0)).skip_x + plan.grout_gap
+        y: pick(tile, dict(index=0)).skip_y + plan.grout_gap
     type: sequence
     steps:
         - type: place
           tile: tile
           angle: 90
           index: 3
-          save:
-              first_inc_x: inc_x
-              first_inc_y: inc_y
         - type: place
           tile: tile
           angle: 180
           index: 2
-          delta: [first_inc_x, 0]
+          use:
+              offset_x: x
         - type: place
           tile: tile
           angle: 0
           index: 0
-          delta: [0, first_inc_y]
+          use:
+              offset_y: y
         - type: place
           tile: tile
           angle: -90
           index: 1
-          delta: [first_inc_x, first_inc_y]
+          use:
+              offset_x: x
+              offset_y: y
 
 sp2:
     parameters: [tile_rect, tile_square]

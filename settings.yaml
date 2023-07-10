@@ -278,7 +278,8 @@ wall_settings:
                 grout_gap: 1/4
                 layout:
                     type: flower
-                    tile: test_image
+                    #tile: test_image
+                    tile: Royal-6
                     trace: [save, offset, delta]
 
             hex:
@@ -393,7 +394,7 @@ wall_settings:
                     type: stepped
                     step:
                         type: place
-                        tile: 6" square white
+                        tile: 6" square white.with_color('bryce_canyon')
             stacked_image:
                 alignment:
                     angle: 0
@@ -403,9 +404,38 @@ wall_settings:
                 grout_gap: 1/8
                 layout:
                     type: stepped
+                    trace: [constants, sequence, save, inc_x, inc_y]
                     step:
-                        type: place
-                        tile: test_image
+                        type: flower
+                        #type: place
+                        #tile: Anillo de Flores-4
+                        #tile: Anillo de Flores-6       # very busy!
+                        #tile: Arabesque Azul-4
+                        #tile: Arabesque Azul-6         # Marilyn's favorite red tile
+                        #tile: Candela Cielo-4
+                        #tile: Candela Verde-6          # don't like
+                        #tile: Diamante Michoacana-4
+                        #tile: Diamante Michoacana-6     # Wow!  Very striking
+                        #tile: Escamilla Amarillo-4
+                        #tile: Escamilla Amarillo-6      # not really...
+                        #tile: Escamilla Rojo-4
+                        #tile: Escamilla Rojo-6          # not really...
+                        #tile: Estrella de Fuego-4
+                        #tile: Estrella de Fuego-6       # more straight laced...
+                        #tile: Flor de Amapola-4
+                        #tile: Flor de Amapola-6         # don't think so, need to use 'flower' on this
+                        #tile: Flor de Corazones-4
+                        #tile: Flor de Corazones-6       # something weird about this one...
+                        #tile: Lace Azul-4
+                        #tile: Lace Azul-6               # all black!  No go...
+                        #tile: Morocco-4
+                        #tile: Morocco-6                 # too busy
+                        #tile: Nube Verde-4
+                        #tile: Nube Verde-6              # too much green
+                        #tile: Royal-4
+                        #tile: Royal-6                   # needs 'flower', then maybe?
+                        #tile: Taxco Real-4
+                        #tile: Taxco Real-6              # maybe
 
             stepped:
                 alignment:
