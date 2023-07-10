@@ -312,7 +312,7 @@ wall_settings:
 
     Sink:
         #default_plan: star_X
-        default_plan: sp24
+        default_plan: mini_sc_koi
 
         plans:
             hex:
@@ -388,13 +388,13 @@ wall_settings:
                     angle: -45
                     x_offset: 0
                     y_offset: 0
-                grout_color: g_chocolate
-                grout_gap: 1/8
+                grout_color: gu_mahogany
+                grout_gap: 3/16
                 layout:
                     type: stepped
                     step:
                         type: place
-                        tile: 6" square white.with_color('bryce_canyon')
+                        tile: 6" square koi
             stacked_image:
                 alignment:
                     angle: 0
@@ -751,9 +751,21 @@ wall_settings:
                     type: checkerboard
                     steps:
                         - type: place
-                          tile: mini_cross-koi
+                          index_by_counter: cross
+                          #tile: mini_cross-koi
+                          tile:
+                              - mini_cross-koi
+                              - mini_cross-koi
+                              #- mini_cross-bryce_canyon
+                              - mini_cross-antique
+                              - mini_cross-koi
+                              - mini_cross-koi
+                          #tile: mini_cross-bryce_canyon
                         - type: place
+                          index_by_counter: star
                           tile: mini_star-koi
+                          #tile: mini_star-bryce_canyon
+                          #tile: mini_star-antique
             large_sc_tuolumne_meadows:
                 alignment:
                     angle: 0

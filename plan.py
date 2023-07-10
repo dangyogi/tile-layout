@@ -1,10 +1,10 @@
 # plan.py
 
-from collections import ChainMap
+from collections import ChainMap, Counter
 from itertools import count
 
 import app
-from utils import my_eval, eval_pair, eval_color, eval_tile, format, f_to_str, pick
+from utils import my_eval, eval_pair, eval_color, eval_tile, format, f_to_str, pick, unpick
 from tile import erase_tiles
 from alignment import Alignment
 from place_trace import pt_init, place
@@ -63,6 +63,7 @@ class Plan:
         erase_tiles(self.canvas)
         self.display_grout_color()
         pt_init()
+        app.Counters = Counter()
         #new_constants = dict(plan=self, offset=(-self.canvas.diagonal,
         #                                        -self.canvas.diagonal)))
         new_constants = dict(wall=app.Wall, plan=self, offset=(0, 0))
@@ -144,8 +145,8 @@ class Plan:
         if 'place' in trace:
             print(f"{step_name}.place(tile={tile}, angle={angle}, "
                   f"offset={f_to_str(constants['offset'])})")
-        the_tile = pick(tile, constants)
-        visible = the_tile.place_at(constants['offset'], pick(angle, constants), self,
+        the_tile = pick(tile, constants, 'tile')
+        visible = the_tile.place_at(constants['offset'], pick(angle, constants, 'angle'), self,
                                     constants.get('skip', False))
         place(constants['offset'], visible)
         if visible:
@@ -155,6 +156,8 @@ class Plan:
                 print(f"{step_name}.place {the_tile.name=} -> True, "
                       f"offset={f_to_str(constants['offset'])}")
             return True
+        unpick(constants, 'tile')
+        unpick(constants, 'angle')
         if 'place' in trace:
             print(f"{step_name}.place -> False")
         return False
@@ -186,7 +189,7 @@ class Plan:
 
         for i, step in enumerate(steps, 1):
             #print(f"{step_name}.sequence: step {i}, {step=}, {constants=}")
-            step = pick(step, constants)
+            step = pick(step, constants, 'step')
             if my_eval(step.get('skip', False), constants, f"<{step_name}.sequence: skip"):
                 continue
             step_constants = my_constants.new_child()
@@ -206,6 +209,8 @@ class Plan:
                     if 'inc_y' in trace:
                         print(f"{step_name}.sequence step {i}: inc_y set to {f_to_str(inc_y)}")
                 visible = True
+            else:
+                unpick(constants, 'step')
             #else:
             #    print(f"{step_name}.sequence step {i}: not visible")
         if visible:
@@ -266,7 +271,7 @@ class Plan:
             #print(f"{step_name} {index=}, offset={f_to_str(offset)}")
             constants['offset'] = offset
             constants['index'] = index + index_start
-            step_visible = self.do_step(f"repeat {index=}", pick(step, constants),
+            step_visible = self.do_step(f"repeat {index=}", pick(step, constants, 'step'),
                                         constants, trace=(trace if index < 3 else ()))
             if step_visible:
                 step_inc_x = constants['inc_x'] + index * x_inc
@@ -276,6 +281,8 @@ class Plan:
                 if inc_y is None or step_inc_y > inc_y:
                     inc_y = step_inc_y
                 visible = True
+            else:
+                unpick(constants, 'step')
             if times is None:
                 keep_going = step_visible or \
                              (x_inc == 0 and min_x <= x <= max_x or
@@ -308,7 +315,7 @@ class Plan:
                 constants['offset'] = offset
                 constants['index'] = index + index_start
                 step_visible = self.do_step(f"repeat backwards {index=}",
-                                            pick(step, constants), constants,
+                                            pick(step, constants, 'step-rev', reverse=True), constants,
                                             trace=(trace if index > -3 else ()))
                 if step_visible:
                     step_inc_x = constants['inc_x'] + index * x_inc
@@ -318,6 +325,8 @@ class Plan:
                     if inc_y is None or step_inc_y > inc_y:
                         inc_y = step_inc_y
                     visible = True
+                else:
+                    unpick(constants, 'step-rev', reverse=True)
                 #keep_going = step_visible or \
                 #             x_inc > 0 and x <= max_x or \
                 #             x_inc < 0 and x >= min_x or \
@@ -373,13 +382,19 @@ class Plan:
         '''
         if 'trace' in step:
             trace = tuple(step['trace'])
+        if 'name' in step:
+            step_name = step['name']
         if 'do_step' in trace:
             print(f"{self.name}.do_step({step_name=}, {step=})")
         if 'inc_x' in constants:
             constants['inc_x'] = None
         if 'inc_y' in constants:
             constants['inc_y'] = None
+        if 'index_by_counter' in constants:
+            constants['index_by_counter'] = None
         new_constants = ChainMap({}, constants)
+        if 'index_by_counter' in step:
+            new_constants['index_by_counter'] = step['index_by_counter']
         self.load_constants(new_constants, step, f"do_step {step_name} load_constants", trace)
         if 'offset' in step:
             constants['offset'] = eval_pair(step['offset'], new_constants,
@@ -429,7 +444,7 @@ class Plan:
             #      f"x={f_to_str(x)}, y={f_to_str(y)}, "
             #      f"x_off={f_to_str(x_off)}, y_off={f_to_str(y_off)}")
             new_constants['offset'] = x_off + x, y_off + y
-            visible = self.repeat((step['name'] if 'name' in step else step_name), new_constants,
+            visible = self.repeat(step_name, new_constants,
                                   my_eval(step['step'], new_constants,
                                     f"{step_name} repeat step"),
                                   my_eval(step['increment'], new_constants,

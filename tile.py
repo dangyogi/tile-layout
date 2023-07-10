@@ -53,7 +53,7 @@ class Base_tile:
         self.skip_x = skip_x
         self.skip_y = skip_y
 
-    def __str__(self):
+    def __repr__(self):
         return f"<{self.__class__.__name__}: {self.name}>"
 
     def dump(self, name):

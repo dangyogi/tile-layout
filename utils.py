@@ -206,10 +206,39 @@ def multi_getattr(value, attr):
     return ans
 
 
-def pick(value, constants):
+def pick(value, constants, selector=None, reverse=False):
+    r'''Picks a value out of `value` list round robin based on 'index' in `constants`.
+
+    If 'index_by_counter' is in `constants`, uses app.Counters[constants['index_by_counter'], selector].
+
+    `reverse` causes Counter to be initially set to len(value) - 1 and be decremented each time called.
+    '''
     if not isinstance(value, (tuple, list)):
         value = [value]
+    if 'index_by_counter' in constants:
+        key = constants['index_by_counter'], selector
+        if reverse and key not in app.Counters:
+            app.Counters[key] = len(value) - 1
+        ans = value[app.Counters[key] % len(value)]
+        print(f"pick({value}, , {selector=}, {reverse=}) got index_by_counter {key}, index {app.Counters[key]}, ans {ans}")
+        if reverse:
+            app.Counters[key] -= 1
+        else:
+            app.Counters[key] += 1
+        return ans
     return value[constants.get('index', 0) % len(value)]
+
+
+def unpick(constants, selector=None, reverse=False):
+    r'''Reverses a pick if it was 'index_by_counter'.
+    '''
+    if 'index_by_counter' in constants:
+        key = constants['index_by_counter'], selector
+        if reverse:
+            app.Counters[key] += 1
+        else:
+            app.Counters[key] -= 1
+        print(f"unpick(, {selector=}, {reverse=}) got index_by_counter {key}, index {app.Counters[key]}")
 
 
 def read_yaml(filename):
