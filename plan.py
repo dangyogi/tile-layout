@@ -260,13 +260,32 @@ class Plan:
                   f"min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}")
             print(f"{step_name} y_inc={f_to_str(y_inc)}, "
                   f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
-        x, y = offset = starting_offset = constants['offset']
+        x, y = constants['offset']
         if 'xy' in trace:
-            print(f"{step_name} forward direction: x={f_to_str(x)}, y={f_to_str(y)}")
-        #print(f"{step_name}.repeat offset={f_to_str(offset)}, {times=}, "
-        #      f"x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
-        #print(f"  min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}, "
-        #      f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
+            print(f"{step_name} initial offset: x={f_to_str(x)}, y={f_to_str(y)}")
+        if times is None:
+            # Back up x, y until they're before min/max ranges.
+            #
+            # Use index to also back up index_start.
+            for index in count(0):
+                keep_going = (x_inc == 0 and min_x <= x <= max_x or
+                              x_inc > 0 and x >= min_x or \
+                              x_inc < 0 and x <= max_x) and \
+                             (y_inc == 0 and min_y <= y <= max_y or
+                              y_inc > 0 and y >= min_y or \
+                              y_inc < 0 and y <= max_y)
+                if not keep_going:
+                    break
+                x, y = x - x_inc, y - y_inc
+                if index > 100:
+                    print(f"{step_name}: x={f_to_str(x)}, x_inc={f_to_str(x_inc)}")
+                    print(f"{step_name}: y={f_to_str(y)}, y_inc={f_to_str(y_inc)}")
+                    raise AssertionError(f"{step_name}: {index=} out of bounds backing up")
+            index_start -= index
+            if 'xy' in trace:
+                print(f"{step_name} adjusted starting offset: x={f_to_str(x)}, y={f_to_str(y)}, {index_start=}")
+        offset = starting_offset = x, y
+
         for index in (range(times) if times is not None else count(0)):
             #print(f"{step_name} {index=}, offset={f_to_str(offset)}")
             constants['offset'] = offset
@@ -302,54 +321,6 @@ class Plan:
             x, y = offset = x + x_inc, y + y_inc
             if 'xy' in trace:
                 print(f"{step_name} x={f_to_str(x)}, y={f_to_str(y)}, {step_visible=}, {index=}")
-        if times is None:
-            # go backwards
-            x_inc, y_inc = -x_inc, -y_inc
-            if 'xy_inc' in trace:
-                print(f"{step_name} reverse direction: x_inc={f_to_str(x_inc)}, y_inc={f_to_str(y_inc)}")
-            x, y = offset = starting_offset[0] + x_inc, starting_offset[1] + y_inc
-            if 'xy' in trace:
-                print(f"{step_name} reverse direction: x={f_to_str(x)}, y={f_to_str(y)}")
-            for index in count(-1, -1):
-                #print(f"{step_name} {index=}, offset={f_to_str(offset)}")
-                constants['offset'] = offset
-                constants['index'] = index + index_start
-                step_visible = self.do_step(f"repeat backwards {index=}",
-                                            pick(step, constants, 'step-rev', reverse=True), constants,
-                                            trace=(trace if index > -3 else ()))
-                if step_visible:
-                    step_inc_x = constants['inc_x'] + index * x_inc
-                    step_inc_y = constants['inc_y'] + index * y_inc
-                    if inc_x is None or step_inc_x > inc_x:
-                        inc_x = step_inc_x
-                    if inc_y is None or step_inc_y > inc_y:
-                        inc_y = step_inc_y
-                    visible = True
-                else:
-                    unpick(constants, 'step-rev', reverse=True)
-                #keep_going = step_visible or \
-                #             x_inc > 0 and x <= max_x or \
-                #             x_inc < 0 and x >= min_x or \
-                #             y_inc > 0 and y <= max_y or \
-                #             y_inc < 0 and y >= min_y
-                keep_going = step_visible or \
-                             (x_inc == 0 and min_x <= x <= max_x or
-                              x_inc > 0 and x <= max_x or \
-                              x_inc < 0 and x >= min_x) and \
-                             (y_inc == 0 and min_y <= y <= max_y or
-                              y_inc > 0 and y <= max_y or \
-                              y_inc < 0 and y >= min_y)
-                if not keep_going:
-                    break
-                if index < -100:
-                    print(f"{step_name}: x={f_to_str(x)}, x_inc={f_to_str(x_inc)}, "
-                          f"min_x={f_to_str(min_x)}, max_x={f_to_str(max_x)}")
-                    print(f"{step_name}: y={f_to_str(y)}, y_inc={f_to_str(y_inc)}, "
-                          f"min_y={f_to_str(min_y)}, max_y={f_to_str(max_y)}")
-                    raise AssertionError(f"{step_name}: {index=} out of bounds, {step_visible=}")
-                x, y = offset = x + x_inc, y + y_inc
-                if 'xy' in trace:
-                    print(f"{step_name}: x={f_to_str(x)}, y={f_to_str(y)}, {step_visible=}, {index=}")
         if visible:
             constants['inc_x'] = inc_x
             constants['inc_y'] = inc_y
