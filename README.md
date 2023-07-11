@@ -13,7 +13,10 @@ addition to the standard TK colors.
 The colors.csv in the repository may not be that useful to you, depending on
 what grout company and tile company you use.
 
-Columns: Name, value (can be any TK color value, e.g., blue or #123456)
+    Columns:
+        Name,value
+
+    value can be any TK color value, e.g., blue or #123456.
 
 Reader: colors.read_colors(filename='colors.csv') -> \{name: value\}
 
@@ -37,18 +40,19 @@ The shapes.yaml in the repository may define all that you need.
         skip_y: <exp>
         is_rect: true|false
 
-For shape_types, only polygon is currently accepted.
+For <shape_types>, only polygon is currently accepted.
 
 is_rect defaults to false.
 
 ### tiles.yaml
 
 This defines all of the tiles available to make patterns out of.  Each tile
-has either a uniform color or an image.  Images are only supported for square
-and rectangular tiles.
+has either a uniform color or an image.  Images are only currently supported
+for square and rectangular tiles.
 
 The tiles.yaml in the repository probably has some useful tiles for your project,
-but also probably has many useless tiles for you.
+but also probably has many useless tiles.  You'll need to modify it to include
+what tiles you might use.
 
     <name>:
         shape: <name>
@@ -63,8 +67,8 @@ Reader: tiles.read_tiles(colors, filename="tiles.csv") -> \{name: tile\}
 This file defines the walls the you need to tile.  These could also be other
 surfaces (e.g., floors).
 
-The walls.yaml file in the repository defines walls that useless to you.  But
-it may still serve as an example.
+The walls.yaml file in the repository defines walls that are useless to you.
+But it may still serve as an example.
 
     <name>:
         grout: [<width>, <height>]
@@ -84,7 +88,7 @@ settings.yaml file can refer to, much like calling a function in a programming
 language.
 
 The layouts.yaml file in the repository includes many patterns that should be
-useful to everybody.
+useful to everybody.  You may not need to add anything to this.
 
     <name>:
         description: <string>
@@ -108,7 +112,7 @@ All steps may use the following tags:
     delta_x: <x>
     delta_y: <y>
 
-Only type is required.
+Only type is required here.  But each type has additional tags.
 
 #### Built-in step types:
 
@@ -117,6 +121,8 @@ To place one tile:
     place
         tile:
         angle:
+
+    angle defaults to 0.
 
 To compose a step out of sequence of smaller steps:
 
@@ -137,10 +143,14 @@ To repeat a step (either horizontally, or vertically, or at an angle):
         step_height_limit: <exp>
         index_start: <exp>
 
+    Only step and increment are required.
+
+    times defaults to None (meaning infinate in both directions)
+
 To divide the wall into sections, such that each section is 
 individually cropped.
 
-Note, this is a bit crude...
+Note, this looks a bit crude...
 
     section:
         pos: [<x>, <y>]
@@ -162,7 +172,8 @@ This is how you use a layout, from layouts.yaml, as a step in larger plan.
 This defines the various "plans" to tile each wall in the walls.yaml file.
 
 The settings.yaml file in the repository would only serve as an example
-for other tiling projects.
+for other tiling projects.  You'll need to replace this with your own plans
+for your own walls.
 
     default_wall: <wall name>
     wall_settings:
