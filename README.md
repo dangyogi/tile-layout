@@ -1,4 +1,5 @@
 # tile-layout
+
 Crude program to help with ceramic tile layout.
 
 This directly supports fractional numbers to make measurements in inches easier.
@@ -14,7 +15,7 @@ The colors.csv in the repository may not be that useful to you, depending on
 what grout company and tile company you use.
 
     Columns:
-        Name,value
+        name,value
 
     value can be any TK color value, e.g., blue or #123456.
 
@@ -67,8 +68,9 @@ Reader: tiles.read_tiles(colors, filename="tiles.csv") -> \{name: tile\}
 This file defines the walls the you need to tile.  These could also be other
 surfaces (e.g., floors).
 
-The walls.yaml file in the repository defines walls that are useless to you.
-But it may still serve as an example.
+The walls.yaml file in the repository would only serve as an example
+for other tiling projects.  You'll need to replace this with definitions of
+your own walls (or floors).
 
     <name>:
         grout: [<width>, <height>]
@@ -80,6 +82,10 @@ But it may still serve as an example.
             color: <color>
             image: <filename>
             skip: true|false
+
+    The panels define any area that must be tiled around.  These may be
+    cabinets, windows, outlets, etc.  They always appear on top of any
+    tile patterns.
 
 ### layouts.yaml
 
@@ -124,13 +130,14 @@ To place one tile:
 
     angle defaults to 0.
 
-To compose a step out of sequence of smaller steps:
+To compose a step out of a sequence of smaller steps:
 
     sequence:
         steps:
             - <step>
 
-    Each step may include skip: <exp>.
+    Each step may include skip: <exp>.  The step is skipped if skip is true.
+    This allows for alternative "plan A"/"plan B" steps within a sequence.
 
 To repeat a step (either horizontally, or vertically, or at an angle):
 
@@ -145,12 +152,19 @@ To repeat a step (either horizontally, or vertically, or at an angle):
 
     Only step and increment are required.
 
-    times defaults to None (meaning infinate in both directions)
+    times defaults to None (meaning infinite in both directions).
+
+    To cover a wall with repeat, you need to use it twice at two
+    levels:
+
+        - an inner repeat that repeats horizontally to make a row of tiles.
+        - and an outer repeat that repeats the above repeat
+          vertically to fill the wall.
 
 To divide the wall into sections, such that each section is 
 individually cropped.
 
-Note, this looks a bit crude...
+Note, this looks a bit crude on the screen due to TK limitations...
 
     section:
         pos: [<x>, <y>]
