@@ -67,7 +67,9 @@ Reader: tiles.read_tiles(colors, filename="tiles.csv") -> \{name: tile\}
 
 All steps may use the following tags:
 
+    name: step_name
     trace: [<trace_flag>]
+    index_by_counter: <name>
     constants:
         <name>: <exp>
     type: <step type>
@@ -76,33 +78,35 @@ All steps may use the following tags:
     delta_x: <x>
     delta_y: <y>
 
+Only type is required.
+
 #### Built-in step types:
 
-place
-    tile:
-    angle:
+    place
+        tile:
+        angle:
 
-sequence:
-    steps:
-        - <step>
+    sequence:
+        steps:
+            - <step>
 
-Each step may include skip: <exp>.
+    Each step may include skip: <exp>.
 
-repeat:
-    step: <step>
-    start: [<x>, <y>]
-    increment: [<x>, <y>]
-    times: <exp>
-    step_width_limit: <exp>
-    step_height_limit: <exp>
-    index_start: <exp>
+    repeat:
+        step: <step>
+        start: [<x>, <y>]
+        increment: [<x>, <y>]
+        times: <exp>
+        step_width_limit: <exp>
+        step_height_limit: <exp>
+        index_start: <exp>
 
-section:
-    pos: [<x>, <y>]
-    size: [<width>, <height>]
-    <plan>
+    section:
+        pos: [<x>, <y>]
+        size: [<width>, <height>]
+        <plan>
 
-For <plan>, see plans in settings.yaml, excluding grout_color.
+    For <plan>, see plans in settings.yaml, excluding grout_color.
 
 #### Layout step types:
 
