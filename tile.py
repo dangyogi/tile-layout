@@ -6,6 +6,7 @@ from PIL import Image, ImageTk
 
 import app
 from utils import my_eval, eval_pair, eval_color, f_to_str
+from alignment import Alignment
 
 
 def erase_tiles(canvas):
@@ -26,7 +27,9 @@ def generate_tile(name, shape, args, color, image, rotation=0):
         return eval_fn(value, constants, f"<generate_tile({name})>")
     if color is not None:
         return Tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
-                    color, get('is_rect', default=False), shape, args)
+                    color, is_rect=get('is_rect', default=False),
+                    is_square=get('is_square', default=False),
+                    shape=shape, args=args)
     return Image_tile(name, get('points', eval_points), get('skip_x'), get('skip_y'),
                       image, rotation)
 
@@ -82,14 +85,16 @@ class Tile(Base_tile):
     upper_right = 2
     lower_right = 3
 
-    def __init__(self, name, points, skip_x, skip_y, color, is_rect, shape, args):
+    def __init__(self, name, points, skip_x, skip_y, color,
+                 is_rect=False, is_square=False, shape=None, args=None):
         super().__init__(name, points, skip_x, skip_y)
         self.color = color
         self.is_rect = is_rect and skip_x != skip_y
         if self.is_rect:
             self.alignment = 'horz' if skip_x > skip_y else 'vert'
-        self.shape = shape
-        self.args = args
+        self.is_square = is_square and abs(skip_x - skip_y) < 0.1
+        self.shape = shape if shape is not None else {}
+        self.args = args if args is not None else {}
 
     def __str__(self):
         return f"<{self.__class__.__name__}: {self.name}, {self.color}>"
@@ -113,7 +118,8 @@ class Tile(Base_tile):
         tk_color = eval_color(color)
         print(f"Tile({self.name}).with_color({color}) -> {tk_color=}")
         ans = Tile(f"{self.name}-{color}", self.points, self.skip_x, self.skip_y,
-                   tk_color, self.is_rect, self.shape, self.args)
+                   tk_color, is_rect=self.is_rect, is_square=self.is_square,
+                   shape=self.shape, args=self.args)
         ans.flip()
         return ans
 
@@ -140,8 +146,8 @@ class Tile(Base_tile):
                 points[self.upper_right] = [self.skip_x, length]
                 skip_x = self.skip_x
                 skip_y = length
-            ans = Tile(f"{self.name}-clipped", points, skip_x, skip_y, self.color, True,
-                       self.shape, self.args)
+            ans = Tile(f"{self.name}-clipped", points, skip_x, skip_y, self.color,
+                       is_rect=True, shape=self.shape, args=self.args)
             ans.flip()
             return ans
         if corner not in ('lower_left', 'lower_right', 'upper_left', 'upper_right'):
@@ -205,10 +211,40 @@ class Tile(Base_tile):
                 points[self.upper_right] = [self.skip_x, short_length]
             skip_x = self.skip_x
             skip_y = length
-        ans = Tile(f"{self.name}-mitred", points, skip_x, skip_y, self.color, True,
-                   self.shape, self.args)
+        ans = Tile(f"{self.name}-mitred", points, skip_x, skip_y, self.color,
+                   is_rect=True, shape=self.shape, args=self.args)
         ans.flip()
         return ans
+
+    def as_diamond(self):
+        assert self.is_square, f"Tile({self.name}).as_diamond: tile is not square"
+        return self.rotate(45)
+
+    def as_corner(self, corner_to_cut):
+        r'''`corner_to_cut` is index into self.points (0-3).
+        '''
+        assert self.is_square, f"Tile({self.name}).as_corner: tile is not square"
+        points = list(self.points)
+        del points[corner_to_cut]
+        skip_x = self.skip_x
+        skip_y = self.skip_y
+        if abs(self.points[0][1] - self.points[1][1]) > 0.5:
+            # diamond
+            if corner_to_cut == 0:
+                points = points[2:] + points[:2]
+            if corner_to_cut in (0, 2):
+                skip_x /= 2
+            else:
+                skip_y /= 2
+        return Tile(f"{self.name}-corner-{corner_to_cut}", tuple(points),
+                    skip_x, skip_y, self.color)
+
+    def rotate(self, angle):
+        alignment = Alignment(dict(angle=angle, x_offset=0, y_offset=0), {})
+        return Tile(f"{self.name}-rotated-{angle}", alignment.align(self.points),
+                    abs(self.skip_y / alignment.sin),  # I think these work for all rectangles?
+                    abs(self.skip_y / alignment.cos),
+                    self.color, is_rect=self.is_rect, is_square=self.is_square)
 
     def place_at(self, offset, angle, plan, skip):
         r'''The `angle` is ignored here.  Only used for Image_tiles.

@@ -18,6 +18,8 @@ class Alignment:
         for attr in self.attrs:
             setattr(self, attr, my_eval(alignment[attr], constants, f"<Alignment {attr}>"))
         self.radians = radians(self.angle)
+        self.sin = sin(self.radians)
+        self.cos = cos(self.radians)
 
     def dump(self):
         return {attr: format(getattr(self, attr)) for attr in self.attrs}
@@ -27,7 +29,7 @@ class Alignment:
         self.radians = radians(angle)
 
     def rotate(self, pt):
-        s, c = sin(self.radians), cos(self.radians)
+        s, c = self.sin, self.cos
         x, y = pt
         return x * c - y * s, x * s + y * c
 
@@ -39,7 +41,7 @@ class Alignment:
         return [self.align_pt(p) for p in pts]
 
     def unrotate(self, pt):
-        s, c = sin(-self.radians), cos(-self.radians)
+        s, c = -self.sin, self.cos  # sin/cos of -self.radians
         x, y = pt
         return x * c - y * s, x * s + y * c
 

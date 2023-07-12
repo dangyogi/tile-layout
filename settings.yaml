@@ -310,6 +310,45 @@ wall_settings:
                         tile: picket
                     percent_offset: 1/2
 
+            diamond_test:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_acorn
+                grout_gap: 1/8
+                layout:
+                    type: sequence
+                    constants:
+                        tile_sq: lf_brilliant_carrot-6
+                        tile_dia: lf_brilliant_carrot-6.as_diamond()
+                    delta_x: 4.1/2
+                    delta_y: 10
+                    steps:
+                        - type: repeat
+                          step:
+                              type: place
+                              tile:
+                                  - tile_sq
+                                  - tile_sq.as_corner(0)
+                                  - tile_sq.as_corner(1)
+                                  - tile_sq.as_corner(2)
+                                  - tile_sq.as_corner(3)
+                          increment: [9, 0]
+                          times: 5
+                        - type: repeat
+                          step:
+                              type: place
+                              tile:
+                                  - tile_dia
+                                  - tile_dia.as_corner(0)
+                                  - tile_dia.as_corner(1)
+                                  - tile_dia.as_corner(2)
+                                  - tile_dia.as_corner(3)
+                          increment: [9, 0]
+                          times: 5
+                          delta_y: 20
+
     Sink:
         #default_plan: star_X
         default_plan: mini_sc_koi
@@ -368,7 +407,7 @@ wall_settings:
                           tile: cross-white
                         - type: place
                           tile: star-white
-            star_X:
+            star_X:   # We like this better than star_+
                 alignment:
                     angle: 0
                     x_offset: 0
@@ -395,9 +434,9 @@ wall_settings:
                     step:
                         type: place
                         tile: 6" square koi
-            stacked_image:
+            talavera:
                 alignment:
-                    angle: 0
+                    angle: 45
                     x_offset: 0
                     y_offset: 0
                 grout_color: g_chocolate
@@ -407,35 +446,70 @@ wall_settings:
                     #trace: [constants, sequence, inc_x, inc_y]
                     step:
                         type: flower
-                        #type: place
+                        index_by_counter: flower
+                        # We like the 6" tiles better
+                        tile:
+                            #- Anillo de Flores-4
+                            #- Arabesque Azul-4
+                            #- Candela Cielo-4
+                            #- Diamante Michoacana-4
+                            #- Escamilla Amarillo-4
+                            #- Escamilla Rojo-4
+                            #- Estrella de Fuego-4
+                            #- Flor de Amapola-4
+                            #- Flor de Corazones-4
+                            #- Lace Azul-4
+                            #- Morocco-4
+                            #- Nube Verde-4
+                            #- Royal-4
+                            #- Taxco Real-4
+
+                            # Likes
+                            #- Anillo de Flores-6       # very busy!   M likes on 45 angle
+                            #- Arabesque Azul-6         # Marilyn's favorite red tile  M likes on 45
+                            #- Escamilla Amarillo-6      # not really...  M likes, but better at angle 0
+                            #- Escamilla Rojo-6          # not really...  M 45/0 angle same, likes
+                            - Estrella de Fuego-6       # more straight laced...  M better on 45, likes
+                            #- Royal-6                   # M likes, 45 better
+
+                            # Not sure/No
+                            #- Morocco-6                 # too busy  M 45 better, not sure
+                            #- Candela Verde-6          # don't like  M better on 45, but no, has green
+                            #- Diamante Michoacana-6     # Wow!  Very striking  M better on 45, too busy
+                            #- Flor de Amapola-6         # M ugly
+                            #- Flor de Corazones-6       # something weird about this one...  M no
+                            #- Lace Azul-6               # all black!  white border is mistake  M no
+                            #- Nube Verde-6              # too much green, M 45 better, too green, no
+                            #- Taxco Real-6              # M too much green, no
+
                         #tile: Anillo de Flores-4
-                        #tile: Anillo de Flores-6       # very busy!
+                        #tile: Anillo de Flores-6       # very busy!   M likes on 45 angle
                         #tile: Arabesque Azul-4
-                        #tile: Arabesque Azul-6         # Marilyn's favorite red tile
+                        #tile: Arabesque Azul-6         # Marilyn's favorite red tile  M likes on 45
                         #tile: Candela Cielo-4
-                        #tile: Candela Verde-6          # don't like
+                        #tile: Candela Verde-6          # don't like  M better on 45, but no, has green
                         #tile: Diamante Michoacana-4
-                        #tile: Diamante Michoacana-6     # Wow!  Very striking
+                        #tile: Diamante Michoacana-6     # Wow!  Very striking  M better on 45, too busy
                         #tile: Escamilla Amarillo-4
-                        #tile: Escamilla Amarillo-6      # not really...  M likes
+                        #tile: Escamilla Amarillo-6      # not really...  M likes, but better at angle 0
                         #tile: Escamilla Rojo-4
-                        #tile: Escamilla Rojo-6          # not really...
+                        #tile: Escamilla Rojo-6          # not really...  M 45/0 angle same, likes
                         #tile: Estrella de Fuego-4
-                        #tile: Estrella de Fuego-6       # more straight laced...
+                        #tile: Estrella de Fuego-6       # more straight laced...  M better on 45, likes
                         #tile: Flor de Amapola-4
-                        #tile: Flor de Amapola-6         # don't think so, need to use 'flower' on this
+                        #tile: Flor de Amapola-6         # M ugly
                         #tile: Flor de Corazones-4
                         #tile: Flor de Corazones-6       # something weird about this one...  M no
                         #tile: Lace Azul-4
-                        #tile: Lace Azul-6               # all black!  No go...
+                        #tile: Lace Azul-6               # all black!  white border is mistake  M no
                         #tile: Morocco-4
-                        #tile: Morocco-6                 # too busy
+                        #tile: Morocco-6                 # too busy  M 45 better, not sure
                         #tile: Nube Verde-4
-                        #tile: Nube Verde-6              # too much green
+                        #tile: Nube Verde-6              # too much green, M 45 better, too green, no
                         #tile: Royal-4
-                        #tile: Royal-6                   # needs 'flower', then maybe?   M likes
+                        #tile: Royal-6                   # M likes, 45 better
                         #tile: Taxco Real-4
-                        tile: Taxco Real-6              # maybe
+                        #tile: Taxco Real-6              # M too much green, no
 
             stepped:
                 alignment:
@@ -959,6 +1033,38 @@ wall_settings:
                           tile: mini_cross-antique
                         - type: place
                           tile: mini_star-antique
+            bordered_1:
+                alignment:
+                    angle: 0
+                    x_offset: 0
+                    y_offset: 0
+                grout_color: gu_mahogany
+                grout_gap: 3/16
+                layout:
+                    type: sequence
+                    constants:
+                        border_inc_y: 8
+                        tile_b: lf_red_terra_cotta-6.as_diamond()
+                        tile_b1: tile_b.as_corner(2)
+                        tile_b2: tile_b.as_corner(0)
+                        grout_angle: plan.grout_gap * sqrt(2)
+                    steps:
+                        - type: repeat
+                          step:
+                              type: repeat
+                              step:
+                                  type: sequence
+                                  steps:
+                                      - type: place
+                                        tile: tile_b1
+                                        delta_y: -tile_b1.skip_y/2
+                                      - type: place
+                                        tile: tile_b2
+                                        delta_x: tile_b1.skip_x/2 + grout_angle
+                              increment: [tile_b1.skip_x + grout_angle, 0]
+                          increment: [0, border_inc_y]
+                          times: 2
+
 
     Stove:
         default_plan: star_X

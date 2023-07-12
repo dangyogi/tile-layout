@@ -12,6 +12,7 @@ square:
         - [width,0]
     skip_x: width
     skip_y: width
+    is_square: true
 
 rectangle:
     type: polygon
@@ -62,16 +63,30 @@ picket:
 
 diamond:
     type: polygon
-    parameters:
-        - length
-        - width         # in middle (at widest point)
+    parameters: [width] # of square
+    constants:
+        diagonal: sqrt(2) * width
     points:
-        - [0, 0]
-        - [length / 2, width / 2]
-        - [length, 0]
-        - [length / 2, -width / 2]
-    skip_x: length
-    skip_y: width / 2
+        - [0, 0]                             # left
+        - [diagonal / 2, diagonal / 2]       # top
+        - [diagonal, 0]                      # right
+        - [diagonal / 2, -diagonal / 2]      # bottom
+    skip_x: diagonal
+    skip_y: diagonal
+    is_square: true
+
+corner:   # not used...
+    type: polygon
+    parameters: [width] # of square
+    constants:
+        diagonal: sqrt(2) * width
+    points:
+        - [0, 0]                             # left
+        - [diagonal / 2, diagonal / 2]       # top
+        - [diagonal, 0]                      # right
+        - [diagonal / 2, -diagonal / 2]      # bottom
+    skip_x: diagonal
+    skip_y: diagonal
 
 star_cross:
     type: polygon

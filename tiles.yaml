@@ -307,6 +307,9 @@ floor:
     width: 23.1/2
     color: "#c4b4ae"
 
+
+# Star/Cross tiles from fireclaytile.com:
+
 large_star-koi:
     shape: star_cross
     width: 5.1/2
@@ -451,6 +454,9 @@ mini_cross-antique:
     point_direction: -1
     color: antique
 
+# end star/cross tiles from fireclaytile.com
+
+
 star-white:
     shape: star_cross
     width: 5.25/32
@@ -505,6 +511,13 @@ test_image:
     shape: square
     width: 6
     image: test.webp
+
+
+# Beach scene mural of 12 6"x6" tiles, from tilemuralstore.com
+#
+# This mural is 4 tiles wide and 3 tiles high.
+# The tiles are located with spreadsheet coordinates,
+# so A1 is upper left, A2 is below A1, A3 is lower left, etc.
 
 Mural_A1:
     shape: square
@@ -566,143 +579,216 @@ Mural_D3:
     width: 6
     image: Mural/Mural_D3.v01.jpg
 
+# end mural
+
+
+# Talavera tiles from lafuente.com
+
 Anillo de Flores-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Anillo de Flores-4.25-6.25.jpg
 
 Anillo de Flores-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Anillo de Flores-4.25-6.25.jpg
 
 Arabesque Azul-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Arabesque Azul-4.25-6.25.jpg
 
 Arabesque Azul-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Arabesque Azul-4.25-6.25.jpg
 
 Candela Cielo-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Candela Cielo-4.25.jpg
 
 Candela Verde-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Candela Verde-6.25.jpg
 
 Diamante Michoacana-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Diamante Michoacana-4.25-6.25.jpg
 
 Diamante Michoacana-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Diamante Michoacana-4.25-6.25.jpg
 
 Escamilla Amarillo-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Escamilla Amarillo-4.25-6.25.jpg
 
 Escamilla Amarillo-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Escamilla Amarillo-4.25-6.25.jpg
 
 Escamilla Rojo-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Escamilla Rojo-4.25-6.25.jpg
 
 Escamilla Rojo-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Escamilla Rojo-4.25-6.25.jpg
 
 Estrella de Fuego-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Estrella de Fuego-4.25-6.25.jpg
 
 Estrella de Fuego-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Estrella de Fuego-4.25-6.25.jpg
 
 Flor de Amapola-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Flor de Amapola-4.25-6.25.jpg
 
 Flor de Amapola-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Flor de Amapola-4.25-6.25.jpg
 
 Flor de Corazones-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Flor de Corazones-4.25-6.25.jpg
 
 Flor de Corazones-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Flor de Corazones-4.25-6.25.jpg
 
 Lace Azul-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Lace Azul-4.25-6.25.jpg
 
 Lace Azul-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Lace Azul-4.25-6.25.jpg
 
 Morocco-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Morocco-4.25-6.25.jpg
 
 Morocco-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Morocco-4.25-6.25.jpg
 
 Nube Verde-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Nube Verde-4.25-6.25.jpg
 
 Nube Verde-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Nube Verde-4.25-6.25.jpg
 
 Royal-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Royal-4.25-6.25.jpg
 
 Royal-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Royal-4.25-6.25.jpg
 
 Taxco Real-4:
     shape: square
-    width: 4
+    width: 4.1/8
     image: Taxco Real-4.25-6.25.jpg
 
 Taxco Real-6:
     shape: square
-    width: 6
+    width: 6.1/8
     image: Taxco Real-4.25-6.25.jpg
+
+lf_red_terra_cotta-4:
+    shape: square
+    width: 4.1/8
+    color: lf_red_terra_cotta
+lf_red_wine-4:
+    shape: square
+    width: 4.1/8
+    color: lf_red_wine
+lf_caramel-4:
+    shape: square
+    width: 4.1/8
+    color: lf_caramel
+lf_clay_terra_cotta-4:
+    shape: square
+    width: 4.1/8
+    color: lf_clay_terra_cotta
+lf_cream_white-4:
+    shape: square
+    width: 4.1/8
+    color: lf_cream_white
+lf_washed_yellow-4:
+    shape: square
+    width: 4.1/8
+    color: lf_washed_yellow
+lf_mustard_yellow-4:
+    shape: square
+    width: 4.1/8
+    color: lf_mustard_yellow
+lf_brilliant_carrot-4:
+    shape: square
+    width: 4.1/8
+    color: lf_brilliant_carrot
+
+lf_red_terra_cotta-6:
+    shape: square
+    width: 6.1/8
+    color: lf_red_terra_cotta
+lf_red_wine-6:
+    shape: square
+    width: 6.1/8
+    color: lf_red_wine
+lf_caramel-6:
+    shape: square
+    width: 6.1/8
+    color: lf_caramel
+lf_clay_terra_cotta-6:
+    shape: square
+    width: 6.1/8
+    color: lf_clay_terra_cotta
+lf_cream_white-6:
+    shape: square
+    width: 6.1/8
+    color: lf_cream_white
+lf_washed_yellow-6:
+    shape: square
+    width: 6.1/8
+    color: lf_washed_yellow
+lf_mustard_yellow-6:
+    shape: square
+    width: 6.1/8
+    color: lf_mustard_yellow
+lf_brilliant_carrot-6:
+    shape: square
+    width: 6.1/8
+    color: lf_brilliant_carrot
+
+# end Talavera tiles
 
